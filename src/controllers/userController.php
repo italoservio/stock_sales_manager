@@ -15,7 +15,8 @@ class userController {
 		// Buscando usuários da classe User:
 		$userRepository = $db->getRepository(User::class);
 		$findedUser = $userRepository->findAll();
-		var_dump($findedUser); exit;
+		var_dump($findedUser);
+		exit;
 
 
 		// $User = new User();
