@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManager;
 
 class Database {
 
-	public function manager() {
+	public static function manager() {
 		$paths = [
 			__DIR__ . '/entities'
 		];

@@ -10,13 +10,13 @@ class userController {
 
 	public function getUsers(Request $req, Response $res, $args) : Response {
 
-		$db = Database::manager();
+		$em = Database::manager();
 
 		// Buscando usuários da classe User:
-		$userRepository = $db->getRepository(User::class);
-		$findedUser = $userRepository->findAll();
-		var_dump($findedUser);
-		exit;
+		$userRepository = $em->getRepository(User::class);
+		$findedUser = $userRepository->find(1);
+
+		echo "<pre>"; var_dump($findedUser); exit;		
 
 
 		// $User = new User();
@@ -24,8 +24,8 @@ class userController {
 		// 	'status' => $User->getName()
 		// ]);
 		// $html = file_get_contents(__DIR__ . '/../../public/index.html');
-		// $res->getBody()->write($html);
-		// return $res;
+		//$res->getBody()->write($json);
+		//return $res;
 	}
 
 }
