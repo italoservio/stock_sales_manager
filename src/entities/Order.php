@@ -12,35 +12,35 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Order
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="id", type="integer", nullable=false)
+	 * @ORM\Id
+	 * @ORM\GeneratedValue(strategy="IDENTITY")
+	 */
+	private $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="active", type="integer", nullable=false)
-     */
-    private $active = '0';
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="active", type="integer", nullable=false)
+	 */
+	private $active = '0';
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
-     */
-    private $createdat = 'datetime(\'now\')';
+	/**
+	 * @var string
+	 *
+	 * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
+	 */
+	private $createdat = 'datetime(\'now\')';
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="clientId", type="integer", nullable=false)
-     */
-    private $clientid;
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="clientId", type="integer", nullable=false)
+	 */
+	private $clientid;
 
 
 }
