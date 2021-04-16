@@ -2,8 +2,11 @@
 
 namespace App\Entities;
 
+use \App\Entities\Client;
+use \App\Entities\Orderproduct;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Order
@@ -11,8 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="order")
  * @ORM\Entity
  */
-class Order
-{
+class Order {
   /**
    * @var int
    *
@@ -43,48 +45,64 @@ class Order
    */
   private $clientid;
 
+  /**
+   * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="order")
+   */
+  private $orderproducts;
+
+  /**
+   * @ORM\ManyToOne(targetEntity="Client", inversedBy="order")
+   * @ORM\JoinColumn(name="clientId", referencedColumnName="id")
+   */
+  private $client;
+
+  public function __construct() {
+    $this->orderproducts = new ArrayCollection();
+  }
+
   /*
    * Getters
    */
-  public function getId()
-  {
+  public function getId() {
     return $this->id;
   }
 
-  public function getActive()
-  {
+  public function getActive() {
     return $this->active;
   }
 
-  public function getCreatedat()
-  {
+  public function getCreatedat() {
     return $this->createdat;
   }
 
-  public function getClientid()
-  {
+  public function getClientid() {
     return $this->clientid;
   }
+
+  public function getOrderProducts() {
+    return $this->orderproducts;
+  }
+
+  public function getClient() {
+    return $this->client;
+  }
+
   /*
    * Setters
    */
-  public function setId($p_id)
-  {
+  public function setId($p_id) {
     $this->id = $p_id;
   }
 
-  public function setActive($p_active)
-  {
+  public function setActive($p_active) {
     $this->active = $p_active;
   }
 
-  public function setCreatedat($p_createdat)
-  {
+  public function setCreatedat($p_createdat) {
     $this->createdat = $p_createdat;
   }
 
-  public function setClientid($p_clientid)
-  {
+  public function setClientid($p_clientid) {
     $this->clientid = $p_clientid;
   }
 }

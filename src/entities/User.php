@@ -1,8 +1,8 @@
 <?php
 namespace App\Entities;
 
-
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * User
@@ -10,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="user_name_IDX", columns={"name"})}, indexes={@ORM\Index(name="user_id_IDX", columns={"id", "login", "name", "pass"})})
  * @ORM\Entity
  */
-class User
-{
+class User {
   /**
    * @var int
    *
@@ -70,6 +69,15 @@ class User
    */
   private $updatedat = 'datetime(\'now\')';
 
+  /**
+   * @ORM\OneToMany(targetEntity="Product", mappedBy="user")
+   */
+  private $products;
+
+  public function __construct() {
+    $this->products = new ArrayCollection();
+  }
+
   /*
    * Getters
    */
@@ -103,6 +111,10 @@ class User
 
   public function getUpdatedAt() {
     return $this->updatedat;
+  }
+
+  public function getProducts() {
+    return $this->products;
   }
 
   /*

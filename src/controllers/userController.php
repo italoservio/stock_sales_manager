@@ -5,6 +5,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Database;
 use \App\Entities\User;
+use \App\Entities\Product;
 
 class userController {
 
@@ -13,10 +14,14 @@ class userController {
 		$em = Database::manager();
 
 		// Buscando usuários da classe User:
-		$userRepository = $em->getRepository(User::class);
-		$findedUser = $userRepository->find(1);
+		//$userRepository = $em->getRepository(User::class);
+		$productRepository = $em->getRepository(Product::class);
 
-		echo "<pre>"; var_dump($findedUser); exit;		
+		//$findedUser = $userRepository->find(1);
+
+		$Product = $productRepository->find(1);
+
+		echo "<pre>"; var_dump($Product->getCategory()->getName()); exit;
 
 
 		// $User = new User();

@@ -2,8 +2,8 @@
 
 namespace App\Entities;
 
-
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Category
@@ -11,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="category")
  * @ORM\Entity
  */
-class Category
-{
+class Category {
 	/**
 	 * @var int
 	 *
@@ -29,28 +28,38 @@ class Category
 	 */
 	private $name;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="Product", mappedBy="category")
+	 */
+	private $products;
+
+	public function __construct() {
+	  $this->products = new ArrayCollection();
+	}
+
 	/*
    * Getters
    */
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 
-	public function getName()
-	{
+	public function getName() {
 		return $this->name;
 	}
+
+	public function getProducts() {
+		return $this->products;
+	}
+
 	/*
    * Setters
    */
-	public function setId($p_id)
-	{
+	public function setId($p_id) {
 		$this->id = $p_id;
 	}
 
-	public function setName($p_name)
-	{
+	public function setName($p_name) {
 		$this->name = $p_name;
 	}
 }

@@ -2,8 +2,8 @@
 
 namespace App\Entities;
 
-
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Client
@@ -11,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="client")
  * @ORM\Entity
  */
-class Client
-{
+class Client {
 	/**
 	 * @var int
 	 *
@@ -71,89 +70,96 @@ class Client
 	 */
 	private $userid;
 
+	/**
+	 * @ORM\OneToOne(targetEntity="User")
+	 * @ORM\JoinColumn(name="userId", referencedColumnName="id")
+	 */
+	private $user;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Order", mappedBy="Client")
+	 */
+	private $orders;
+
+	public function __construct() {
+	  $this->orders = new ArrayCollection();
+	}
+
 	/*
    * Getters
    */
-	public function getId()
-	{
+	public function getId() {
 		return $this->id;
 	}
 
-	public function getCep()
-	{
+	public function getCep() {
 		return $this->cep;
 	}
 
-	public function getCidade()
-	{
+	public function getCidade() {
 		return $this->cidade;
 	}
 
-	public function getBairro()
-	{
+	public function getBairro() {
 		return $this->bairro;
 	}
 
-	public function getLogradouro()
-	{
+	public function getLogradouro() {
 		return $this->logradouro;
 	}
 
-	public function getNumero()
-	{
+	public function getNumero() {
 		return $this->numero;
 	}
 
-	public function getComplemento()
-	{
+	public function getComplemento() {
 		return $this->complemento;
 	}
 
-	public function getUserid()
-	{
+	public function getUserId() {
 		return $this->userid;
+	}
+
+	public function getUser() {
+		return $this->user;
+	}
+
+	public function getOrders() {
+		return $this->orders;
 	}
 
 	/*
    * Setters
    */
-	public function setId($p_id)
-	{
+	public function setId($p_id) {
 		$this->id = $p_id;
 	}
 
-	public function setCep($p_cep)
-	{
+	public function setCep($p_cep) {
 		$this->cep = $p_cep;
 	}
 
-	public function setCidade($p_cidade)
-	{
+	public function setCidade($p_cidade) {
 		$this->cidade = $p_cidade;
 	}
 
-	public function setBairro($p_bairro)
-	{
+	public function setBairro($p_bairro) {
 		$this->bairro = $p_bairro;
 	}
 
-	public function setLogradouro($p_logradouro)
-	{
+	public function setLogradouro($p_logradouro) {
 		$this->logradouro = $p_logradouro;
 	}
 
-	public function setNumero($p_numero)
-	{
+	public function setNumero($p_numero) {
 		$this->numero = $p_numero;
 	}
 
-	public function setComplemnto($p_complemento)
-	{
+	public function setComplemnto($p_complemento) {
 		$this->complemento = $p_complemento;
 	}
 
-	public function setUserid($p_userid)
-	{
+	public function setUserId($p_userid) {
 		$this->userid = $p_userid;
 	}
 }

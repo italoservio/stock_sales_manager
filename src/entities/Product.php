@@ -1,8 +1,8 @@
 <?php
 namespace App\Entities;
 
-
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
 * Product
@@ -10,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 * @ORM\Table(name="product")
 * @ORM\Entity
 */
-class Product
-{
+class Product {
 	/**
 	 * @var int
 	 *
@@ -84,6 +83,27 @@ class Product
 	 */
 	private $categoryid;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
+	 * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+	 */
+	private $category;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="User", inversedBy="product")
+	 * @ORM\JoinColumn(name="createdBy", referencedColumnName="id")
+	 */
+	private $user;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="product")
+	 */
+	private $orders;
+
+	public function __construct() {
+	  $this->orders = new ArrayCollection();
+	}
+
 	/*
    * Getters
    */
@@ -127,6 +147,18 @@ class Product
     return $this->categoryid;
   }
 
+  public function getCategory() {
+    return $this->category;
+  }
+
+  public function getUser() {
+    return $this->user;
+  }
+
+  public function getOrders() {
+    return $this->orders;
+  }
+
   /*
    * Setters
    */
@@ -152,7 +184,7 @@ class Product
 
   public function setUpdatedAt($p_updatedAt) {
     $this->updatedat = $p_updatedAt;
-  }  
+  }
 
   public function setImagePath($p_imagePath) {
     $this->imagepath = $p_imagePath;
