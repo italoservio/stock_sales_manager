@@ -1,1 +1,1 @@
-alert('entrei');
+alert('Entrei no Javascript');
