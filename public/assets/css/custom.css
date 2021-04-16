@@ -1,3 +1,7 @@
+* {
+	font-family: "Barlow";
+}
+
 input {
 	font-size: 1rem !important;
 }
