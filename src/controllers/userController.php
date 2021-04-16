@@ -11,26 +11,44 @@ class userController {
 
 	public function getUsers(Request $req, Response $res, $args) : Response {
 
+		// Exemplo usando associação do banco de dados:
+
 		$em = Database::manager();
-
-		// Buscando usuários da classe User:
-		//$userRepository = $em->getRepository(User::class);
 		$productRepository = $em->getRepository(Product::class);
-
-		//$findedUser = $userRepository->find(1);
-
 		$Product = $productRepository->find(1);
 
-		echo "<pre>"; var_dump($Product->getCategory()->getName()); exit;
+		$arr = [
+			'id' => $Product->getId(),
+			'name' => $Product->getName(),
+			'descricao' => $Product->getDesc(),
+			'categoria' => $Product->getCategory()->getName()
+		];
 
+		$res->getBody()->write(json_encode($arr));
+		return $res;
+	}
 
-		// $User = new User();
-		// $json = json_encode([
-		// 	'status' => $User->getName()
-		// ]);
-		// $html = file_get_contents(__DIR__ . '/../../public/index.html');
-		//$res->getBody()->write($json);
-		//return $res;
+	public function createUser(Request $req, Response $res, $args) : Response {
+
+		// Exemplo de criação de usuário:
+
+		$em = Database::manager();
+		$User = new User();
+		$User->setName('Matheus Henrique 5');
+		$User->setLogin('matts');
+		$User->setPass('123');
+		$User->setEmail('matheus@gmail.com');
+		$User->setAdmin(0);
+		$em->persist($User);
+		$em->flush();
+
+		$arr = [
+			'id' => $User->getId(),
+			'login' => $User->getLogin()
+		];
+
+		$res->getBody()->write(json_encode($arr));
+		return $res;
 	}
 
 }
