@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * User
  *
- * @ORM\Table(name="user", uniqueConstraints={@ORM\UniqueConstraint(name="user_name_IDX", columns={"name"})}, indexes={@ORM\Index(name="user_id_IDX", columns={"id", "login", "name", "pass"})})
+ * @ORM\Table(name="user")
  * @ORM\Entity
  */
 class User {

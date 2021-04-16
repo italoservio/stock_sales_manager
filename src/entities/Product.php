@@ -5,11 +5,11 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
-* Product
-*
-* @ORM\Table(name="product")
-* @ORM\Entity
-*/
+ * Product
+ *
+ * @ORM\Table(name="product")
+ * @ORM\Entity
+ */
 class Product {
 	/**
 	 * @var int
