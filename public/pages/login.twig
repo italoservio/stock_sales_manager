@@ -1,0 +1,33 @@
+{% extends "templates/centered.twig" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+	<div class="container d-flex justify-content-center">
+		<div class="col-lg-5">
+	    <div class="card px-5 pt-3 pb-5">
+	    	<div class="d-flex justify-content-center">
+	    		<img src="{{assetsPath}}/img/sys/SSMLogo.png" height="150px" width="150px" alt="SSM Logo">
+	    	</div>
+	    	<h1 class="h3 mb-3 text-center">Acesse o Sistema</h1>
+	    	<h2 class="h6 text-secondary text-center">
+	    		Caso já possua uma conta realize o acesso abaixo:<br>
+	    		Não possui uma conta? <a class="link text-primary" href="">Criar agora</a>
+	    	</h2>
+    		<hr class="my-3">
+    		<input type="text" class="form-control my-1" placeholder="Usuário">
+    		<input type="password" class="form-control my-1" placeholder="Senha">
+    		<div class="d-flex justi">
+    			<small><a class="link text-primary" href="">Esqueci minha senha</a></small>
+    		</div>
+    		<hr class="my-3">
+  			<button class="btn btn-success">Acessar</button>
+	    </div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block script %}
+	{{ parent() }}
+	<!-- <script type="text/javascript" src="{{assetsPath}}/js/pages/index.js"></script> -->
+{% endblock %}

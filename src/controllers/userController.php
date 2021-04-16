@@ -6,8 +6,13 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Database;
 use \App\Entities\User;
 use \App\Entities\Product;
+use \App\Services\Helper;
 
 class userController {
+
+	public function login(Request $req, Response $res, $args) : Response {
+		return Helper::render('login', 'Login', $req, $res);
+	}
 
 	public function getUsers(Request $req, Response $res, $args) : Response {
 

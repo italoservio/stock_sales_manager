@@ -1,0 +1,23 @@
+input {
+	font-size: 1rem !important;
+}
+
+.btn:focus, input:focus {
+	box-shadow: none !important;
+}
+
+input:focus {
+	border: 1px solid #b1b1b1 !important;
+}
+
+.centered {
+	min-height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr;
+	align-items: center;
+	justify-content: center;
+}
+
+.link {
+	text-decoration: underline;
+}
