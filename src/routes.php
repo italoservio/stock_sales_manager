@@ -9,6 +9,8 @@ use \App\Controllers\orderController;
 use \App\Controllers\categoryController;
 use \App\Controllers\indexController;
 
+$app->get('/home', indexController::class . ':index');
+
 $app->get('/', userController::class . ':getUsers');
 
 $app->group('/users', function (RouteCollectorProxy $group) {
