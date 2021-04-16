@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 
@@ -31,22 +32,25 @@ class Category
 	/*
    * Getters
    */
-  public function getId() {
-    return $this->id;
-  }
+	public function getId()
+	{
+		return $this->id;
+	}
 
-  public function getName() {
-    return $this->name;
-  }
-
-  /*
+	public function getName()
+	{
+		return $this->name;
+	}
+	/*
    * Setters
    */
-  public function setId($p_id) {
-    $this->id = $p_id;
-  }
+	public function setId($p_id)
+	{
+		$this->id = $p_id;
+	}
 
- 	public function setName($p_name) {
-    $this->name = $p_name;
-  }
+	public function setName($p_name)
+	{
+		$this->name = $p_name;
+	}
 }

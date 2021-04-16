@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 
@@ -70,5 +71,89 @@ class Client
 	 */
 	private $userid;
 
+	/*
+   * Getters
+   */
+	public function getId()
+	{
+		return $this->id;
+	}
 
+	public function getCep()
+	{
+		return $this->cep;
+	}
+
+	public function getCidade()
+	{
+		return $this->cidade;
+	}
+
+	public function getBairro()
+	{
+		return $this->bairro;
+	}
+
+	public function getLogradouro()
+	{
+		return $this->logradouro;
+	}
+
+	public function getNumero()
+	{
+		return $this->numero;
+	}
+
+	public function getComplemento()
+	{
+		return $this->complemento;
+	}
+
+	public function getUserid()
+	{
+		return $this->userid;
+	}
+
+	/*
+   * Setters
+   */
+	public function setId($p_id)
+	{
+		$this->id = $p_id;
+	}
+
+	public function setCep($p_cep)
+	{
+		$this->cep = $p_cep;
+	}
+
+	public function setCidade($p_cidade)
+	{
+		$this->cidade = $p_cidade;
+	}
+
+	public function setBairro($p_bairro)
+	{
+		$this->bairro = $p_bairro;
+	}
+
+	public function setLogradouro($p_logradouro)
+	{
+		$this->logradouro = $p_logradouro;
+	}
+
+	public function setNumero($p_numero)
+	{
+		$this->numero = $p_numero;
+	}
+
+	public function setComplemnto($p_complemento)
+	{
+		$this->complemento = $p_complemento;
+	}
+
+	public function setUserid($p_userid)
+	{
+		$this->userid = $p_userid;
+	}
 }
