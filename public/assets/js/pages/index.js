@@ -1,1 +1,5 @@
-alert('Entrei no Javascript');
+$(document).ready(function() {
+
+	// Listagem dos produtos
+
+});

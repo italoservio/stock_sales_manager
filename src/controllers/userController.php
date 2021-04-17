@@ -54,7 +54,7 @@ class userController {
 		$userRepository = $em->getRepository(User::class);
 		$User = $userRepository->findOneBy([
 			'login' => $arr['user'],
-			'pass' => $arr['pass']
+			'pass' => md5($arr['pass'])
 		]);
 
 		if (!is_null($User)) {
@@ -99,7 +99,7 @@ class userController {
 		$User = new User();
 		$User->setName('Matheus Henrique 5');
 		$User->setLogin('matts');
-		$User->setPass('123');
+		$User->setPass(md5('123456'));
 		$User->setEmail('matheus@gmail.com');
 		$User->setAdmin(0);
 		$em->persist($User);
