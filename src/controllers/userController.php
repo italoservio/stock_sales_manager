@@ -10,50 +10,81 @@ use \App\Services\Helper;
 
 class userController {
 
+	// Views:
 	public function login(Request $req, Response $res, $args) : Response {
-		return Helper::render('login', 'Login', $req, $res);
+		return Helper::render('login', 'Acesso', $req, $res);
 	}
 
-	public function getUsers(Request $req, Response $res, $args) : Response {
+	public function admin(Request $req, Response $res, $args) : Response {
+		return Helper::render('admin', 'Administração', $req, $res);
+	}
 
-		// Exemplo usando associação do banco de dados:
+	// Methods:
+	public function authenticate(Request $req, Response $res, $args) : Response {
 
 		$em = Database::manager();
-		$productRepository = $em->getRepository(Product::class);
-		$Product = $productRepository->find(1);
+		$arr = $req->getQueryParams();
 
-		$arr = [
-			'id' => $Product->getId(),
-			'name' => $Product->getName(),
-			'descricao' => $Product->getDesc(),
-			'categoria' => $Product->getCategory()->getName()
-		];
+		$userRepository = $em->getRepository(User::class);
+		$User = $userRepository->findOneBy([
+			'login' => $arr['user'],
+			'pass' => $arr['pass']
+		]);
 
-		$res->getBody()->write(json_encode($arr));
+		if (!is_null($User)) {
+			$res->getBody()->write(json_encode([
+				'status' => true,
+				'admin' => $User->getAdmin()
+			]));
+		}else {
+			$res->getBody()->write(json_encode([
+				'status' => false,
+				'message' => 'Usuário ou senha inválidos'
+			]));
+		}
 		return $res;
 	}
 
-	public function createUser(Request $req, Response $res, $args) : Response {
+	// public function getUsers(Request $req, Response $res, $args) : Response {
 
-		// Exemplo de criação de usuário:
+	// 	// Exemplo usando associação do banco de dados:
+	// 	// $arr = get_object_vars(objdoctrine)
+	// 	$em = Database::manager();
+	// 	$productRepository = $em->getRepository(Product::class);
+	// 	$Product = $productRepository->find(1);
 
-		$em = Database::manager();
-		$User = new User();
-		$User->setName('Matheus Henrique 5');
-		$User->setLogin('matts');
-		$User->setPass('123');
-		$User->setEmail('matheus@gmail.com');
-		$User->setAdmin(0);
-		$em->persist($User);
-		$em->flush();
+	// 	$arr = [
+	// 		'id' => $Product->getId(),
+	// 		'name' => $Product->getName(),
+	// 		'description' => $Product->getDesc(),
+	// 		'category' => $Product->getCategory()->getName()
+	// 	];
 
-		$arr = [
-			'id' => $User->getId(),
-			'login' => $User->getLogin()
-		];
+	// 	$res->getBody()->write(json_encode($arr));
+	// 	return $res;
+	// }
 
-		$res->getBody()->write(json_encode($arr));
-		return $res;
-	}
+	// public function createUser(Request $req, Response $res, $args) : Response {
+
+	// 	// Exemplo de criação de usuário:
+
+	// 	$em = Database::manager();
+	// 	$User = new User();
+	// 	$User->setName('Matheus Henrique 5');
+	// 	$User->setLogin('matts');
+	// 	$User->setPass('123');
+	// 	$User->setEmail('matheus@gmail.com');
+	// 	$User->setAdmin(0);
+	// 	$em->persist($User);
+	// 	$em->flush();
+
+	// 	$arr = [
+	// 		'id' => $User->getId(),
+	// 		'login' => $User->getLogin()
+	// 	];
+
+	// 	$res->getBody()->write(json_encode($arr));
+	// 	return $res;
+	// }
 
 }

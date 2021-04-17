@@ -10,6 +10,7 @@ class Helper {
 		$twig = Twig::fromRequest($p_req);
 		return $twig->render($p_res, "{$p_filename}.twig", [
 			'assetsPath' => $_ENV['BASE_PATH'] . $_ENV['ASSETS_PATH'],
+			'basePath' => $_ENV['BASE_PATH'],
 			'title' => $p_title
 		]);
 	}
