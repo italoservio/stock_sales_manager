@@ -36,7 +36,7 @@ class Order {
    *
    * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
    */
-  private $createdat = 'datetime(\'now\')';
+  private $createdat;
 
   /**
    * @var int
@@ -58,6 +58,9 @@ class Order {
 
   public function __construct() {
     $this->orderproducts = new ArrayCollection();
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $this->createdat = (string) date('Y-m-d H:i:s');
   }
 
   /*

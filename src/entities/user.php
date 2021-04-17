@@ -60,14 +60,14 @@ class User {
    *
    * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
    */
-  private $createdat = 'datetime(\'now\')';
+  private $createdat;
 
   /**
    * @var string|null
    *
    * @ORM\Column(name="updatedAt", type="text", nullable=true, options={"default"="datetime('now')"})
    */
-  private $updatedat = 'datetime(\'now\')';
+  private $updatedat;
 
   /**
    * @ORM\OneToMany(targetEntity="Product", mappedBy="user")
@@ -76,6 +76,10 @@ class User {
 
   public function __construct() {
     $this->products = new ArrayCollection();
+
+    date_default_timezone_set('America/Sao_Paulo');
+    $this->createdat = (string) date('Y-m-d H:i:s');
+    $this->updatedat = (string) date('Y-m-d H:i:s');
   }
 
   /*

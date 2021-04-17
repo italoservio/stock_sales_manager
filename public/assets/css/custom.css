@@ -6,6 +6,17 @@ input {
 	font-size: 1rem !important;
 }
 
+.btn {
+	font-size: .8rem;
+	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.5);
+	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.5);
+}
+
+.card {
+	-webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.5);
+	box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.5);
+}
+
 .btn:focus, input:focus {
 	box-shadow: none !important;
 }

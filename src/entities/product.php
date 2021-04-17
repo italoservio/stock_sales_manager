@@ -53,14 +53,14 @@ class Product {
 	 *
 	 * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
 	 */
-	private $createdat = 'datetime(\'now\')';
+	private $createdat;
 
 	/**
 	 * @var string
 	 *
 	 * @ORM\Column(name="updatedAt", type="text", nullable=false, options={"default"="datetime('now')"})
 	 */
-	private $updatedat = 'datetime(\'now\')';
+	private $updatedat;
 
 	/**
 	 * @var string|null
@@ -102,6 +102,10 @@ class Product {
 
 	public function __construct() {
 	  $this->orders = new ArrayCollection();
+
+	  date_default_timezone_set('America/Sao_Paulo');
+    $this->createdat = (string) date('Y-m-d H:i:s');
+    $this->updatedat = (string) date('Y-m-d H:i:s');
 	}
 
 	/*

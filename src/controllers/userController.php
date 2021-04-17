@@ -3,23 +3,49 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use \App\Services\Helper;
+use \App\Services\Auth;
 use \App\Database;
 use \App\Entities\User;
 use \App\Entities\Product;
-use \App\Services\Helper;
 
 class userController {
 
 	// Views:
 	public function login(Request $req, Response $res, $args) : Response {
-		return Helper::render('login', 'Acesso', $req, $res);
+		if (Auth::hasSession()) {
+			$User = Auth::getSession();
+			if ($User->getAdmin() === 1) {
+				return Helper::render('admin', $req, $res);
+			} else {
+				return Helper::render('index', $req, $res);
+			}
+		} else {
+			return Helper::render('login', $req, $res);
+		}
 	}
 
 	public function admin(Request $req, Response $res, $args) : Response {
-		return Helper::render('admin', 'Administração', $req, $res);
+		if (Auth::hasSession()) {
+			$User = Auth::getSession();
+			if ($User->getAdmin() === 1) {
+				return Helper::render('admin', $req, $res);
+			} else {
+				return Helper::render('index', $req, $res);
+			}
+		} else {
+			return Helper::render('login', $req, $res);
+		}
 	}
 
 	// Methods:
+	public function logout(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession()) {
+			Auth::clearSession();
+		}
+		return Helper::render('login', $req, $res);
+	}
+
 	public function authenticate(Request $req, Response $res, $args) : Response {
 
 		$em = Database::manager();
@@ -32,6 +58,7 @@ class userController {
 		]);
 
 		if (!is_null($User)) {
+			Auth::setSession($User);
 			$res->getBody()->write(json_encode([
 				'status' => true,
 				'admin' => $User->getAdmin()
@@ -64,27 +91,27 @@ class userController {
 	// 	return $res;
 	// }
 
-	// public function createUser(Request $req, Response $res, $args) : Response {
+	public function create(Request $req, Response $res, $args) : Response {
 
-	// 	// Exemplo de criação de usuário:
+		// Exemplo de criação de usuário:
 
-	// 	$em = Database::manager();
-	// 	$User = new User();
-	// 	$User->setName('Matheus Henrique 5');
-	// 	$User->setLogin('matts');
-	// 	$User->setPass('123');
-	// 	$User->setEmail('matheus@gmail.com');
-	// 	$User->setAdmin(0);
-	// 	$em->persist($User);
-	// 	$em->flush();
+		$em = Database::manager();
+		$User = new User();
+		$User->setName('Matheus Henrique 5');
+		$User->setLogin('matts');
+		$User->setPass('123');
+		$User->setEmail('matheus@gmail.com');
+		$User->setAdmin(0);
+		$em->persist($User);
+		$em->flush();
 
-	// 	$arr = [
-	// 		'id' => $User->getId(),
-	// 		'login' => $User->getLogin()
-	// 	];
+		$arr = [
+			'id' => $User->getId(),
+			'login' => $User->getLogin()
+		];
 
-	// 	$res->getBody()->write(json_encode($arr));
-	// 	return $res;
-	// }
+		$res->getBody()->write(json_encode($arr));
+		return $res;
+	}
 
 }
