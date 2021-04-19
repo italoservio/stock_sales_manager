@@ -38,6 +38,10 @@ class userController {
 		}
 	}
 
+	public function signup(Request $req, Response $res, $args) : Response {
+		return Helper::render('signup', $req, $res);
+	}
+
 	// Methods:
 	public function logout(Request $req, Response $res, $args) : Response {
 		if (Auth::hasSession()) {

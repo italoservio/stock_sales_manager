@@ -11,6 +11,7 @@ use \App\Controllers\indexController;
 
 $app->get('/', indexController::class . ':index');
 $app->get('/login', userController::class . ':login');
+$app->get('/signup', userController::class . ':signup');
 $app->get('/logout', userController::class . ':logout');
 $app->get('/admin', userController::class . ':admin');
 
