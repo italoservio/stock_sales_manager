@@ -6,7 +6,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Services\Helper;
 use \App\Services\Auth;
 use \App\Database;
+use Exception;
 use \App\Entities\User;
+use \App\Entities\Client;
 use \App\Entities\Product;
 
 class userController {
@@ -97,22 +99,53 @@ class userController {
 
 	public function create(Request $req, Response $res, $args) : Response {
 
-		// Exemplo de criação de usuário:
-
+		$data = $req->getParsedBody();
 		$em = Database::manager();
-		$User = new User();
-		$User->setName('Matheus Henrique 5');
-		$User->setLogin('matts');
-		$User->setPass(md5('123456'));
-		$User->setEmail('matheus@gmail.com');
-		$User->setAdmin(0);
-		$em->persist($User);
-		$em->flush();
 
-		$arr = [
-			'id' => $User->getId(),
-			'login' => $User->getLogin()
-		];
+		try {
+
+			$em->getConnection()->beginTransaction();
+
+			// Creating user:
+			$User = new User();
+			$User->setLogin($data['user']);
+			$User->setPass(md5($data['pass']));
+			$User->setName($data['name']);
+			$User->setEmail($data['email']);
+			$User->setAdmin(0);
+			$em->persist($User);
+
+			// Creating Client:
+			$Client = new Client();
+			$Client->setCep($data['cep']);
+			$Client->setCidade($data['cidade']);
+			$Client->setBairro($data['estado']);
+			$Client->setLogradouro($data['bairro']);
+			$Client->setNumero($data['numero']);
+			$Client->setComplemento($data['complemento']);
+			$Client->setLogradouro($data['logradouro']);
+			$Client->setUserId($User->getId());
+			$Client->setUser($User);
+			$em->persist($Client);
+
+			$em->flush();
+			$em->getConnection()->commit();
+
+			// Starting session:
+			Auth::setSession($User);
+
+			$arr = [
+				'status' => true
+			];
+
+		} catch (Exception $th) {
+			$em->getConnection()->rollBack();
+			$arr = [
+				'status' => false,
+				'message' => 'Ocorreu um erro ao criar o usuário',
+				'error' => $th->getMessage()
+			];
+		}
 
 		$res->getBody()->write(json_encode($arr));
 		return $res;

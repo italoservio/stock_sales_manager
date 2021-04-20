@@ -155,11 +155,15 @@ class Client {
 		$this->numero = $p_numero;
 	}
 
-	public function setComplemnto($p_complemento) {
+	public function setComplemento($p_complemento) {
 		$this->complemento = $p_complemento;
 	}
 
 	public function setUserId($p_userid) {
 		$this->userid = $p_userid;
+	}
+
+	public function setUser($p_user) {
+		$this->user = $p_user;
 	}
 }

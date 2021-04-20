@@ -17,5 +17,5 @@ $app->get('/admin', userController::class . ':admin');
 
 $app->group('/users', function (RouteCollectorProxy $group) {
 	$group->get('/auth', userController::class . ':authenticate');
-	$group->get('/create', userController::class . ':create');
+	$group->post('/create', userController::class . ':create');
 });

@@ -14,6 +14,9 @@ const helper = {
 				case 'number':
 					valid = /^[0-9]+$/g.test(p_value);
 					break;
+				case 'textnumber':
+					valid = /^[0-9A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]*$/g.test(p_value);
+					break;
 				case 'email':
 					valid = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g.test(p_value);
 					break;
@@ -24,7 +27,7 @@ const helper = {
 
 	alert(p_flag, p_msg) {
 		$html = `
-		<div class="alert alert-dismissible alert-${p_flag}">
+		<div class="alert alert-dismissible alert-${p_flag} my-2">
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  <strong>ERRO:</strong> ${p_msg}.
 		</div>
