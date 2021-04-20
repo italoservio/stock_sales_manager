@@ -15,6 +15,10 @@ $app->get('/signup', userController::class . ':signup');
 $app->get('/logout', userController::class . ':logout');
 $app->get('/admin', userController::class . ':admin');
 
+$app->group('/products', function (RouteCollectorProxy $group) {
+	$group->get('[/]', productController::class . ':getAll');
+});
+
 $app->group('/users', function (RouteCollectorProxy $group) {
 	$group->get('/auth', userController::class . ':authenticate');
 	$group->post('/create', userController::class . ':create');
