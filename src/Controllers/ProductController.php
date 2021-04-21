@@ -9,7 +9,7 @@ use \App\Services\Auth;
 use \App\Database;
 use \App\Entities\Product;
 
-class productController
+class ProductController
 {
 
   public function getAll(Request $req, Response $res, $args): Response {

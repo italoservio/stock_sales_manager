@@ -3,23 +3,23 @@ namespace App;
 
 use Slim\Routing\RouteCollectorProxy;
 
-use \App\Controllers\userController;
-use \App\Controllers\productController;
-use \App\Controllers\orderController;
-use \App\Controllers\categoryController;
-use \App\Controllers\indexController;
+use \App\Controllers\UserController;
+use \App\Controllers\ProductController;
+use \App\Controllers\OrderController;
+use \App\Controllers\CategoryController;
+use \App\Controllers\IndexController;
 
-$app->get('/', indexController::class . ':index');
-$app->get('/login', userController::class . ':login');
-$app->get('/signup', userController::class . ':signup');
-$app->get('/logout', userController::class . ':logout');
-$app->get('/admin', userController::class . ':admin');
+$app->get('/', IndexController::class . ':index');
+$app->get('/login', UserController::class . ':login');
+$app->get('/signup', UserController::class . ':signup');
+$app->get('/logout', UserController::class . ':logout');
+$app->get('/admin', UserController::class . ':admin');
 
 $app->group('/products', function (RouteCollectorProxy $group) {
-	$group->get('[/]', productController::class . ':getAll');
+	$group->get('[/]', ProductController::class . ':getAll');
 });
 
 $app->group('/users', function (RouteCollectorProxy $group) {
-	$group->get('/auth', userController::class . ':authenticate');
-	$group->post('/create', userController::class . ':create');
+	$group->get('/auth', UserController::class . ':authenticate');
+	$group->post('/create', UserController::class . ':create');
 });

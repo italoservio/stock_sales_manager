@@ -15,7 +15,7 @@ class Database {
 
 		$conn = [
 			'driver' => 'pdo_sqlite',
-			'path' => __DIR__ . '/database/db.sqlite'
+			'path' => __DIR__ . '/Database/db.sqlite'
 		];
 		$entityManager = EntityManager::create($conn, $config);
 		return $entityManager;

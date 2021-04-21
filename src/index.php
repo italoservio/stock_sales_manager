@@ -15,6 +15,9 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $app = AppFactory::create();
 $app->setBasePath($_ENV['BASE_PATH']);
 
+// Errors enabled
+$app->addErrorMiddleware(true, true, true);
+
 // Setting view render
 $twig = Twig::create(__DIR__ . '/../public/pages');
 $app->add(TwigMiddleware::create($app, $twig));
@@ -22,3 +25,4 @@ $app->add(TwigMiddleware::create($app, $twig));
 require 'routes.php';
 
 $app->run();
+

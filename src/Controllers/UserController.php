@@ -11,7 +11,7 @@ use \App\Entities\User;
 use \App\Entities\Client;
 use \App\Entities\Product;
 
-class userController {
+class UserController {
 
 	// Views:
 	public function login(Request $req, Response $res, $args) : Response {

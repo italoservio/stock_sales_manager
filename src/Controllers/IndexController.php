@@ -6,8 +6,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Services\Helper;
 use \App\Services\Auth;
 use \App\Database;
-use \App\Entities\Order;
 
-class orderController {
+
+class IndexController {
+
+	public function index(Request $req, Response $res, $args) {
+		return Helper::render('index', $req, $res);
+	}
 
 }
