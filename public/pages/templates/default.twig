@@ -17,19 +17,22 @@
   <div id="overlay" onclick="helper.closeNav()"></div>
   <div id="sidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="helper.closeNav()">&times;</a>
+
+    {% if user is not null %}
     <hr class="my-3">
 
     <div class="card p-3 mx-3">
       <div class="d-flex">
-        <img class="rounded-circle profile-pic" src="https://i.picsum.photos/id/845/100/100.jpg?hmac=5rZ4YGatIsJ9XnHr80ZeJ1H4bqZXMHcwGpn-DshKTHU" alt="Foto de perfil">
+        <img class="rounded-circle profile-pic" src="https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1" alt="Foto de perfil">
         <div class="ml-3">
-          <span>Nome do usuário</span>
+          <span class="breakline">{{ user['name'] }}</span>
           <div class="d-flex align-items-center">
             <span class="online mr-1"></span><span>Online</span>
           </div>
         </div>
       </div>
     </div>
+    {% endif %}
 
     <hr class="my-3">
 
@@ -74,15 +77,24 @@
         </div>
       </div>
 
+      {% if user is not null %}
       <div class="col-6 px-1">
         <div class="card-menu card text-center p-3">
-          <img class="mb-2" src="{{assetsPath}}/img/sys/icons/exit.svg" alt="Sair">
+          <img class="mb-2" src="{{assetsPath}}/img/sys/icons/signout.svg" alt="Sair">
           <span>SAIR</span>
-          <a href="" class="stretched-link"></a>
+          <a href="logout" class="stretched-link"></a>
         </div>
       </div>
+      {% else %}
+      <div class="col-6 px-1">
+        <div class="card-menu card text-center p-3">
+          <img class="mb-2" src="{{assetsPath}}/img/sys/icons/signin.svg" alt="Entrar">
+          <span>ENTRAR</span>
+          <a href="login" class="stretched-link"></a>
+        </div>
+      </div>
+      {% endif %}
     </div>
-
   </div>
 
   <div class="navbar py-3">

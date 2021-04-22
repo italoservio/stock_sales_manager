@@ -8,7 +8,7 @@ use \App\Services\Auth;
 use \App\DB\Database;
 
 
-class indexController {
+class IndexController {
 
 	public function index(Request $req, Response $res, $args) {
 		return Helper::render('index', $req, $res);

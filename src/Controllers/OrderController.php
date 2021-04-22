@@ -8,6 +8,6 @@ use \App\Services\Auth;
 use \App\DB\Database;
 use \App\Entities\Order;
 
-class orderController {
+class OrderController {
 
 }

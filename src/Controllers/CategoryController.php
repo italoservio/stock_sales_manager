@@ -9,6 +9,6 @@ use \App\Services\Auth;
 use \App\DB\Database;
 use \App\Entities\Category;
 
-class categoryController {
+class CategoryController {
 
 }
