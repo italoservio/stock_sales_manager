@@ -9,9 +9,9 @@
     "autoload": {
     	"psr-4": {
 	        "App\\": "src/",
-	      	"App\\Controller\\": "src/controllers",
 	        "App\\DB\\": "src/database",
-	        "App\\Entities\\": "src/entities"
+	        "App\\Entities\\": "src/entities",
+	      	"App\\Controller\\": "src/controllers"
 	    }
 	}
 }

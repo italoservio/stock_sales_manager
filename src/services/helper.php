@@ -11,7 +11,7 @@ class Helper {
 			case 'index': return 'SSM: Página Inicial';
 			case 'admin': return 'SSM: Administração';
 			case 'login': return 'SSM: Acesso';
-            case 'signup': return 'SSM: Cadastro';
+      case 'signup': return 'SSM: Cadastro';
 		}
 	}
 
