@@ -11,4 +11,12 @@ use \App\Entities\Category;
 
 class CategoryController {
 
+  public function adminCategories(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+			return Helper::render('adminCategories', $req, $res);
+		} else {
+			return Helper::render('login', $req, $res);
+		}
+	}
+
 }

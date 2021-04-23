@@ -27,21 +27,16 @@ class UserController {
 		}
 	}
 
-	public function admin(Request $req, Response $res, $args) : Response {
-		if (Auth::hasSession()) {
-			$User = Auth::getSession();
-			if ($User->getAdmin() === 1) {
-				return Helper::render('admin', $req, $res);
-			} else {
-				return Helper::render('index', $req, $res);
-			}
+	public function signup(Request $req, Response $res, $args) : Response {
+		return Helper::render('signup', $req, $res);
+	}
+
+	public function adminUsers(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+			return Helper::render('adminUsers', $req, $res);
 		} else {
 			return Helper::render('login', $req, $res);
 		}
-	}
-
-	public function signup(Request $req, Response $res, $args) : Response {
-		return Helper::render('signup', $req, $res);
 	}
 
 	// Methods:
@@ -77,25 +72,6 @@ class UserController {
 		}
 		return $res;
 	}
-
-	// public function getUsers(Request $req, Response $res, $args) : Response {
-
-	// 	// Exemplo usando associação do banco de dados:
-	// 	// $arr = get_object_vars(objdoctrine)
-	// 	$em = Database::manager();
-	// 	$productRepository = $em->getRepository(Product::class);
-	// 	$Product = $productRepository->find(1);
-
-	// 	$arr = [
-	// 		'id' => $Product->getId(),
-	// 		'name' => $Product->getName(),
-	// 		'description' => $Product->getDesc(),
-	// 		'category' => $Product->getCategory()->getName()
-	// 	];
-
-	// 	$res->getBody()->write(json_encode($arr));
-	// 	return $res;
-	// }
 
 	public function create(Request $req, Response $res, $args) : Response {
 

@@ -34,4 +34,13 @@ class ProductController
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
+
+  public function adminProducts(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+			return Helper::render('adminProducts', $req, $res);
+		} else {
+			return Helper::render('login', $req, $res);
+		}
+	}
+
 }

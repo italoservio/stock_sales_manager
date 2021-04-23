@@ -10,9 +10,15 @@ class Helper {
 	public static function pageTitle($p_filename) {
 		switch ($p_filename) {
 			case 'index': return 'SSM: Página Inicial';
-			case 'admin': return 'SSM: Administração';
 			case 'login': return 'SSM: Acesso';
       case 'signup': return 'SSM: Cadastro';
+			case 'admin': return 'SSM Admin: Home';
+			case 'adminOrders': return 'SSM Admin: Vendas';
+			case 'adminUsers': return 'SSM Admin: Usuários';
+			case 'adminProducts': return 'SSM Admin: Produtos';
+			case 'adminCategories': return 'SSM Admin: Categorias';
+			case 'adminStatistics': return 'SSM Admin: Estatísticas';
+			default: return 'SSM';
 		}
 	}
 
@@ -21,6 +27,7 @@ class Helper {
 		if (Auth::hasSession()) {
 			$User = Auth::getSession();
 			$User = [
+				'id' 		=> $User->getId(),
 				'login' => $User->getLogin(),
 				'pass' 	=> $User->getPass(),
 				'name' 	=> $User->getName(),

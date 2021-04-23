@@ -14,4 +14,25 @@ class IndexController {
 		return Helper::render('index', $req, $res);
 	}
 
+	public function admin(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession()) {
+			$User = Auth::getSession();
+			if ($User->getAdmin() === 1) {
+				return Helper::render('admin', $req, $res);
+			} else {
+				return Helper::render('index', $req, $res);
+			}
+		} else {
+			return Helper::render('login', $req, $res);
+		}
+	}
+
+	public function adminStatistics(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+			return Helper::render('adminStatistics', $req, $res);
+		} else {
+			return Helper::render('login', $req, $res);
+		}
+	}
+
 }
