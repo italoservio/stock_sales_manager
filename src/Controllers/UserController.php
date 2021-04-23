@@ -73,6 +73,39 @@ class UserController {
 		return $res;
 	}
 
+	public function getAll(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+			$arr = [];
+			try {
+				$em = Database::manager();
+				$userRepository = $em->getRepository(User::class);
+				$users = $userRepository->findAll();
+				foreach ($users as $value) {
+					$arr[] = [
+						'id' 		=> $value->getId(),
+						'name' 	=> $value->getName(),
+						'email' => $value->getEmail(),
+						'login' => $value->getLogin(),
+						'pass' 	=> $value->getPass(),
+						'admin' => $value->getAdmin()
+					];
+				}
+				$arr = [
+					'status' => true,
+					'users' => $arr
+				];
+			} catch (Exception $e) {
+				$arr = [
+					'status' => false,
+					'message' => 'Ocorreu um erro ao buscar os usuários no banco',
+					'error' => $e->getMessage()
+				];
+			}
+			$res->getBody()->write(json_encode($arr));
+			return $res;
+		}
+	}
+
 	public function create(Request $req, Response $res, $args) : Response {
 
 		$data = $req->getParsedBody();

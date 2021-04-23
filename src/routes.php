@@ -19,6 +19,7 @@ $app->group('/products', function(RouteCollectorProxy $group) {
 });
 
 $app->group('/users', function(RouteCollectorProxy $group) {
+	$group->get('[/]', UserController::class . ':getAll');
 	$group->get('/auth', UserController::class . ':authenticate');
 	$group->post('/create', UserController::class . ':create');
 });

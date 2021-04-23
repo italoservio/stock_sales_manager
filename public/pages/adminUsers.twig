@@ -3,11 +3,26 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <h1 class="display-3">Bem-vindo(a) à {{title}}!</h1>
+  <div class="container mt-5">
+    <h2 class="h2 text-center mb-4">Usuários</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">Ações</th>
+        </tr>
+      </thead>
+      <tbody id="users">
+
+      </tbody>
+    </table>
+
   </div>
 {% endblock %}
 
 {% block script %}
 {{ parent() }}
+<script type="text/javascript" src="{{assetsPath}}/js/pages/adminUsers.js"></script>
 {% endblock %}

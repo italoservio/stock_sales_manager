@@ -26,6 +26,12 @@
   font-family: "Barlow";
 }
 
+footer {
+  position:absolute;
+  bottom:0;
+  width:100%;
+}
+
 input {
   font-size: 1rem !important;
 }
