@@ -14,6 +14,12 @@ $app->get('/login', UserController::class . ':login');
 $app->get('/signup', UserController::class . ':signup');
 $app->get('/logout', UserController::class . ':logout');
 
+$app->group('/categories', function(RouteCollectorProxy $group) {
+	$group->get('[/]', CategoryController::class . ':getAll');
+	$group->post('/create', CategoryController::class . ':create');
+	$group->delete('/delete/{id}', CategoryController::class . ':delete');
+});
+
 $app->group('/products', function(RouteCollectorProxy $group) {
 	$group->get('[/]', ProductController::class . ':getAll');
 });
