@@ -75,7 +75,7 @@ class CategoryController {
 				$arr = [
 					'status' => false,
 					'message' => 'Ocorreu um erro ao criar a categoria',
-					'error' => $th->getMessage()
+					'error' => $e->getMessage()
 				];
 			}
 			$res->getBody()->write(json_encode($arr));
