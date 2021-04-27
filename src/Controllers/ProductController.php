@@ -70,4 +70,8 @@ class ProductController {
       return Helper::render('login', $req, $res);
     }
   }
+
+  public function details(Request $req, Response $res, $args): Response {
+    return Helper::productDetails('product', $req, $res, $args['id']);
+  }
 }

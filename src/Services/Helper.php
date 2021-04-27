@@ -18,6 +18,7 @@ class Helper {
 			case 'adminProducts': return 'SSM Admin: Produtos';
 			case 'adminCategories': return 'SSM Admin: Categorias';
 			case 'adminStatistics': return 'SSM Admin: Estatísticas';
+      case 'product': return 'SSM: Produto';
 			default: return 'SSM';
 		}
 	}
@@ -45,5 +46,30 @@ class Helper {
 			'user' => $User
 		]);
 	}
+
+  public static function productDetails($p_filename, $p_req, $p_res, $p_id) {
+    $User = null;
+		if (Auth::hasSession()) {
+			$User = Auth::getSession();
+			$User = [
+				'id' 		=> $User->getId(),
+				'login' => $User->getLogin(),
+				'pass' 	=> $User->getPass(),
+				'name' 	=> $User->getName(),
+				'email' => $User->getEmail(),
+				'admin' => $User->getAdmin()
+			];
+		}
+
+		$twig = Twig::fromRequest($p_req);
+
+		return $twig->render($p_res, "{$p_filename}.twig", [
+			'assetsPath' => $_ENV['BASE_PATH'] . $_ENV['ASSETS_PATH'],
+			'basePath' => $_ENV['BASE_PATH'],
+			'title' => self::pageTitle($p_filename),
+			'user' => $User,
+      'productId' => $p_id
+		]);
+  }
 
 }

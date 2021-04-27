@@ -12,30 +12,36 @@ $(document).ready(function () {
       method: 'get',
       url: 'products',
       data: { category }
-    }).done(function (data) {
-      data = JSON.parse(data);
-      if (data.status && data.products.length > 0) {
-        displayProducts(data.products);
+    }).done(function (p_data) {
+      p_data = JSON.parse(p_data);
+      if (p_data.status && p_data.products.length > 0) {
+        displayProducts(p_data.products);
+      }
+      else {
+        // ERROR
       }
     });
-  
+
   }
-  
+
   function getAllCategories() {
     $.ajax({
       method: 'get',
       url: 'categories'
-    }).done(function (data) {
-      data = JSON.parse(data);
-      let categories = $('#categories');
-      data.categories.map(e => {
-        categories.append(`        
+    }).done(function (p_data) {
+      p_data = JSON.parse(p_data);
+      if (p_data.status) {
+        let categories = $('#categories');
+        p_data.categories.map(e => {
+          categories.append(`        
             <option value="${e.id}">${e.name}</option>`);
-      });
+        });
+      }
     });
   }
-  
+
   function displayProducts(p_data) {
+    console.log(p_data);
     let product = $('#products');
     product.html('');
     if (p_data !== undefined) {
@@ -54,6 +60,9 @@ $(document).ready(function () {
         </div>
       </div>`)
       });
+    }
+    else {
+
     }
   }
 });
