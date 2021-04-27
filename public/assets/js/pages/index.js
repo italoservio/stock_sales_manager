@@ -21,7 +21,6 @@ $(document).ready(function () {
         // ERROR
       }
     });
-
   }
 
   function getAllCategories() {
@@ -41,7 +40,6 @@ $(document).ready(function () {
   }
 
   function displayProducts(p_data) {
-    console.log(p_data);
     let product = $('#products');
     product.html('');
     if (p_data !== undefined) {
