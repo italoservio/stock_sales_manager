@@ -22,19 +22,16 @@ class CategoryController {
 
   public function getAll(Request $req, Response $res, $args): Response {
     $arr = [];
-    $produt = [];
     try {
       $em = Database::manager();
       $categoryRepository = $em->getRepository(Category::class);
       $categories = $categoryRepository->findAll();
       foreach ($categories as $value) {
-        foreach ($value->getProducts() as $produts) {
-          if($produts->getId() !== null){
-            $arr[] = [
-              'id'     => $value->getId(),
-              'name'   => $value->getName()
-            ];
-          }
+        if (count($value->getProducts()) > 0) {
+          $arr[] = [
+            'id'     => $value->getId(),
+            'name'   => $value->getName()
+          ];
         }
       }
       $arr = [
@@ -88,8 +85,7 @@ class CategoryController {
     }
   }
 
-  public function delete(Request $req, Response $res, $args): Response
-  {
+  public function delete(Request $req, Response $res, $args): Response {
     $id = $args['id'];
     $arr = [];
     try {

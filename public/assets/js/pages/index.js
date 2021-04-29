@@ -7,7 +7,7 @@ $(document).ready(function () {
   });
 
   function getAllProducts(p_category = null) {
-    let category = (p_category == null || p_category == '') ? -1 : $('#categories').val();
+    let category = $('#categories').val();
     $.ajax({
       method: 'get',
       url: 'products',
@@ -48,12 +48,12 @@ $(document).ready(function () {
         let price = `R$ ${e.price}`;
         product.append(`
       <div class="col-lg-3">
-        <div id="teste" class="card">
+        <div  class="card card-product">
           <img src="${imgPath}" class="card-img-top" alt="...">
           <div class="card-body">
             <h5 class="card-title">${e.name}</h5>
             <span>${price}</span>
-            <a href="products/${e.id}" class="stretched-link"></a>
+            <a href="products/details/${e.id}" class="stretched-link"></a>
           </div>
         </div>
       </div>`)

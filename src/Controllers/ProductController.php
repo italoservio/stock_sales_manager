@@ -12,8 +12,20 @@ use Exception;
 
 class ProductController {
 
-  public function getAll(Request $req, Response $res, $args): Response {
+  public function details(Request $req, Response $res, $args): Response {
 
+    return Helper::productDetails('product', $req, $res, $args['id']);
+  }
+
+  public function adminProducts(Request $req, Response $res, $args): Response {
+    if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+      return Helper::render('adminProducts', $req, $res);
+    } else {
+      return Helper::render('login', $req, $res);
+    }
+  }
+
+  public function getAll(Request $req, Response $res, $args): Response {
     $arr = [];
     $category = ($req->getQueryParams())['category'];
 
@@ -21,7 +33,7 @@ class ProductController {
       $em = Database::manager();
       $productRepository = $em->getRepository(Product::class);
 
-      if ($category === '-1') {
+      if ($category === '0') {
         $products = $productRepository->findAll();
       } else {
         $products = $productRepository->findBy(array('categoryid' => $category));
@@ -36,7 +48,7 @@ class ProductController {
             'price' => $value->getPrice(),
             'imagePath' => $value->getImagePath(),
             'category' => [
-              'id' =>  $value->getCategory()->getId(),
+              'id' => $value->getCategory()->getId(),
               'name' => $value->getCategory()->getName()
             ]
           ];
@@ -63,15 +75,8 @@ class ProductController {
     return $res;
   }
 
-  public function adminProducts(Request $req, Response $res, $args): Response {
-    if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
-      return Helper::render('adminProducts', $req, $res);
-    } else {
-      return Helper::render('login', $req, $res);
-    }
+  public function get() {
+
   }
 
-  public function details(Request $req, Response $res, $args): Response {
-    return Helper::productDetails('product', $req, $res, $args['id']);
-  }
 }

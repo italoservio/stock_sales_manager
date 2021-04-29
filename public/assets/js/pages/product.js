@@ -1,1 +1,6 @@
-console.log(productId);
+$(document).ready(function () {
+    $.ajax({
+        method: "get",
+        url:"products/"
+    })
+});

@@ -22,7 +22,8 @@ $app->group('/categories', function(RouteCollectorProxy $group) {
 
 $app->group('/products', function(RouteCollectorProxy $group) {
 	$group->get('[/]', ProductController::class . ':getAll');
-  $group->get('/{id}', ProductController::class . ':details');
+  $group->get('/details/{id}', ProductController::class . ':details');
+  $group->get('/{id}', ProductController::class . ':get');
 });
 
 $app->group('/users', function(RouteCollectorProxy $group) {
