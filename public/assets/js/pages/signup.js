@@ -31,7 +31,7 @@ $(document).ready(function() {
 
   $('#btnSignup').on('click', function() {
     var alrt   = $('#alert');
-    var user   = $('#inputUser').val();
+    var login  = $('#inputLogin').val();
     var pass   = $('#inputPass').val();
     var name   = $('#inputName').val();
     var email  = $('#inputEmail').val();
@@ -48,9 +48,10 @@ $(document).ready(function() {
         method: 'post',
         url: 'users/create',
         data: {
-          user, pass, name, email,
+          login, pass, name, email,
           cep, cidade, estado, bairro,
           numero, complemento, logradouro,
+          admin: false, hasClient: true
         }
       }).done(function(data) {
         $data = JSON.parse(data);
@@ -67,7 +68,7 @@ $(document).ready(function() {
   });
 
   function validateAll() {
-    var inputUser   = $('#inputUser');
+    var inputLogin   = $('#inputLogin');
     var inputPass   = $('#inputPass');
     var inputPass2  = $('#inputPass2');
     var inputName   = $('#inputName');
@@ -83,12 +84,12 @@ $(document).ready(function() {
     var arrFail = [];
 
     helper.clearFieldValidation([
-      inputUser, inputPass, inputPass2, inputName, inputEmail, inputCidade, inputCep,
+      inputLogin, inputPass, inputPass2, inputName, inputEmail, inputCidade, inputCep,
       inputEstado, inputBairro, inputNumero, inputComplemento, inputLogradouro
     ]);
 
-    if (!helper.validate(inputUser.val(), ['required', 'text'])) {
-      arrFail.push(inputUser);
+    if (!helper.validate(inputLogin.val(), ['required', 'text'])) {
+      arrFail.push(inputLogin);
       bool = false;
     }
 

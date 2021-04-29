@@ -111,53 +111,86 @@ class UserController {
 		$data = $req->getParsedBody();
 		$em = Database::manager();
 
+		$hasClient = ($data['hasClient'] === 'true');
+		$admin = ($data['admin'] === 'true') ? 1 : 0;
+
 		try {
 
 			$em->getConnection()->beginTransaction();
 
+			if ($this->userExists($data['login'], $data['email'])) {
+				$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)']));
+				return $res;
+			}
+
 			// Creating user:
 			$User = new User();
-			$User->setLogin($data['user']);
+			$User->setLogin($data['login']);
 			$User->setPass(md5($data['pass']));
 			$User->setName($data['name']);
 			$User->setEmail($data['email']);
-			$User->setAdmin(0);
+			$User->setAdmin($admin);
 			$em->persist($User);
 
-			// Creating Client:
-			$Client = new Client();
-			$Client->setCep($data['cep']);
-			$Client->setCidade($data['cidade']);
-			$Client->setBairro($data['estado']);
-			$Client->setLogradouro($data['bairro']);
-			$Client->setNumero($data['numero']);
-			$Client->setComplemento($data['complemento']);
-			$Client->setLogradouro($data['logradouro']);
-			$Client->setUserId($User->getId());
-			$Client->setUser($User);
-			$em->persist($Client);
+			if ($hasClient) {
+				// Creating Client:
+				$Client = new Client();
+				$Client->setCep($data['cep']);
+				$Client->setCidade($data['cidade']);
+				$Client->setBairro($data['estado']);
+				$Client->setLogradouro($data['bairro']);
+				$Client->setNumero($data['numero']);
+				$Client->setComplemento($data['complemento']);
+				$Client->setLogradouro($data['logradouro']);
+				$Client->setUserId($User->getId());
+				$Client->setUser($User);
+				$em->persist($Client);
+			}
 
 			$em->flush();
 			$em->getConnection()->commit();
 
-			// Starting session:
-			Auth::setSession($User);
+			if ($hasClient) {
+				// Starting session:
+				Auth::setSession($User);
+			}
 
 			$arr = [
-				'status' => true
+				'status' => true,
+				'user' => [
+					'id' => $User->getId(),
+					'login' => $User->getLogin(),
+					'pass' => $User->getPass(),
+					'name' => $User->getName(),
+					'email' => $User->getEmail(),
+					'admin' => $User->getAdmin()
+				]
 			];
 
-		} catch (Exception $th) {
+		} catch (Exception $e) {
 			$em->getConnection()->rollBack();
 			$arr = [
 				'status' => false,
 				'message' => 'Ocorreu um erro ao criar o usuário',
-				'error' => $th->getMessage()
+				'error' => $e->getMessage()
 			];
 		}
 
 		$res->getBody()->write(json_encode($arr));
 		return $res;
+	}
+
+	private function userExists($p_login, $p_email) {
+		$em = Database::manager();
+		$userRepository = $em->getRepository(User::class);
+
+		$User = $userRepository->findOneBy(['login' => $p_login]);
+		if ($User) return true;
+
+		$User = $userRepository->findOneBy(['email' => $p_email]);
+		if ($User) return true;
+
+		return false;
 	}
 
 }

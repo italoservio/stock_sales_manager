@@ -2,7 +2,6 @@ $(document).ready(function() {
 
   var arrCategories = [];
 
-
   $.ajax({
     method: 'get',
     url: basePath + '/categories'
@@ -30,7 +29,6 @@ $(document).ready(function() {
 
 
   $(document).on('click', 'button#create', function() {
-
     let categories    = $('#categories');
     let inputCategory = $('#inputCategory');
     let alrt  = $('#alert');
@@ -68,7 +66,6 @@ $(document).ready(function() {
 			alrt.html(helper.alert('danger', 'Nome da categoria é inválido'));
 			helper.addFieldValidation([inputCategory], false);
     }
-
   });
 
 
