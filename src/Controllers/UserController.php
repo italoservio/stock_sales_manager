@@ -27,6 +27,14 @@ class UserController {
 		}
 	}
 
+	public function profile(Request $req, Response $res, $args) : Response {
+		if (Auth::hasSession()) {
+			return Helper::render('profile', $req, $res);
+		} else {
+			return Helper::render('profile', $req, $res);
+		}
+	}
+
 	public function signup(Request $req, Response $res, $args) : Response {
 		return Helper::render('signup', $req, $res);
 	}

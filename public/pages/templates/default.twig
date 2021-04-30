@@ -23,7 +23,7 @@
 
     <div class="card p-3 mx-3">
       <div class="d-flex">
-        <img class="rounded-circle profile-pic" src="https://i1.wp.com/terracoeconomico.com.br/wp-content/uploads/2019/01/default-user-image.png?ssl=1" alt="Foto de perfil">
+        <img class="rounded-circle profile-pic" src="{{assetsPath}}/img/profiles/default.png" alt="Foto de perfil">
         <div class="ml-3">
           <span class="breakline">{{ user['name'] }}</span>
           <div class="d-flex align-items-center">
@@ -41,7 +41,7 @@
         <div class="card-menu card text-center p-3">
           <img class="mb-2" src="{{assetsPath}}/img/sys/icons/shop.svg" alt="Início">
           <span>INÍCIO</span>
-          <a href="{{basePath}}/{{user['id']}}" class="stretched-link"></a>
+          <a href="{{basePath}}/" class="stretched-link"></a>
         </div>
       </div>
 
@@ -49,7 +49,7 @@
         <div class="card-menu card text-center p-3">
           <img class="mb-2" src="{{assetsPath}}/img/sys/icons/profile.svg" alt="Perfil">
           <span>PERFIL</span>
-          <a href="" class="stretched-link"></a>
+          <a href="{{basePath}}/users/{{user['id']}}" class="stretched-link"></a>
         </div>
       </div>
 

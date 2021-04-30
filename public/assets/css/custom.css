@@ -169,3 +169,9 @@ input:focus {
 .breakline {
   white-space: pre-line !important;
 }
+
+.img-edit {
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+}
