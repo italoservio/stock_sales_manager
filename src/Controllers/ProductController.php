@@ -13,8 +13,7 @@ use Exception;
 class ProductController {
 
   public function details(Request $req, Response $res, $args): Response {
-
-    return Helper::productDetails('product', $req, $res, $args['id']);
+    return Helper::render('product', $req, $res, ['productId' => $args['id']]);
   }
 
   public function adminProducts(Request $req, Response $res, $args): Response {

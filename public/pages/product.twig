@@ -11,7 +11,7 @@
 {% block script %}
 {{ parent() }}
 <script>
-  const productId = '{{ productId }}';
+  const productId = "{{optionals['productId']}}";
 </script>
 <script type="text/javascript" src="{{assetsPath}}/js/pages/product.js"></script>
 {% endblock %}

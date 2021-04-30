@@ -41,7 +41,7 @@
         <div class="card-menu card text-center p-3">
           <img class="mb-2" src="{{assetsPath}}/img/sys/icons/shop.svg" alt="Início">
           <span>INÍCIO</span>
-          <a href="" class="stretched-link"></a>
+          <a href="{{basePath}}/{{user['id']}}" class="stretched-link"></a>
         </div>
       </div>
 
@@ -112,7 +112,8 @@
   </main>
 
   <footer>
-    {% block footer %} &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>. {% endblock %}
+    {% block footer %}
+    {% endblock %}
   </footer>
 
   {% block script %}

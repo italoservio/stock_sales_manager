@@ -1,0 +1,16 @@
+{% extends "templates/default.twig" %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      Hello world {{ user['name'] }}
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  {{ parent() }}
+  <script type="text/javascript" src="{{assetsPath}}/js/pages/profile.js"></script>
+{% endblock %}
