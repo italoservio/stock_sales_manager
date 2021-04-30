@@ -51,7 +51,7 @@ $(document).ready(function() {
           login, pass, name, email,
           cep, cidade, estado, bairro,
           numero, complemento, logradouro,
-          admin: false, hasClient: true
+          id: 0, admin: false, hasClient: true
         }
       }).done(function(data) {
         $data = JSON.parse(data);

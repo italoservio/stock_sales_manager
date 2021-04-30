@@ -48,7 +48,6 @@ class UserController {
 	}
 
 	public function authenticate(Request $req, Response $res, $args) : Response {
-
 		$em = Database::manager();
 		$arr = $req->getQueryParams();
 
@@ -106,8 +105,31 @@ class UserController {
 		}
 	}
 
-	public function create(Request $req, Response $res, $args) : Response {
+	public function delete(Request $req, Response $res, $args) : Response {
+		$id = $args['id'];
+    $arr = [];
+    try {
+      $em = Database::manager();
+      $userRepository = $em->getRepository(User::class);
+      $User = $userRepository->find($id);
+      $em->remove($User);
+      $em->flush();
 
+      $arr = [
+        'status' => true
+      ];
+    } catch (Exception $e) {
+      $arr = [
+        'status' => false,
+        'message' => 'Ocorreu um erro ao remover a categoria',
+        'error' => $e->getMessage()
+      ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+	}
+
+	public function create(Request $req, Response $res, $args) : Response {
 		$data = $req->getParsedBody();
 		$em = Database::manager();
 
@@ -118,13 +140,21 @@ class UserController {
 
 			$em->getConnection()->beginTransaction();
 
-			if ($this->userExists($data['login'], $data['email'])) {
-				$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)']));
-				return $res;
-			}
 
-			// Creating user:
-			$User = new User();
+			if ($data['id'] === 0) {
+				// Verifying if already exists:
+				if ($this->userExists($data['login'], $data['email'])) {
+					$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)']));
+					return $res;
+				}
+				// Creating user:
+				$User = new User();
+
+			} else {
+				// Retrieving user from database:
+				$userRepository = $em->getRepository(User::class);
+				$User = $userRepository->find($data['id']);
+			}
 			$User->setLogin($data['login']);
 			$User->setPass(md5($data['pass']));
 			$User->setName($data['name']);
@@ -180,7 +210,7 @@ class UserController {
 		return $res;
 	}
 
-	private function userExists($p_login, $p_email) {
+	private function userExists($p_login, $p_email) : bool {
 		$em = Database::manager();
 		$userRepository = $em->getRepository(User::class);
 

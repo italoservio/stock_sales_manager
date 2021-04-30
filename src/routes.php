@@ -30,6 +30,7 @@ $app->group('/users', function(RouteCollectorProxy $group) {
 	$group->get('[/]', UserController::class . ':getAll');
 	$group->get('/auth', UserController::class . ':authenticate');
 	$group->post('/create', UserController::class . ':create');
+	$group->delete('/delete/{id}', UserController::class . ':delete');
 });
 
 $app->group('/admin', function(RouteCollectorProxy $group) {

@@ -11,24 +11,13 @@ $(document).ready(function() {
 
     if (data.status) {
       arrCategories = data.categories;
-      data.categories.forEach((e, index) => {
-        categories.append(`
-        <tr id="${index}">
-          <th scope="row">${e.id}</th>
-          <td>${e.name}</td>
-          <td align="end">
-            <button id="${index}" class="btn btn-secondary mx-1">Ver Produtos</button>
-            <button id="${index}" class="btn btn-danger mx-1 actRemove">Remover</button>
-          </td>
-        </tr>
-        `);
-      });
+      reloadTable();
     }
 
   });
 
 
-  $(document).on('click', 'button#create', function() {
+  $(document).on('click', 'button#btnCreate', function() {
     let categories    = $('#categories');
     let inputCategory = $('#inputCategory');
     let alrt  = $('#alert');
@@ -46,16 +35,7 @@ $(document).ready(function() {
 		    data = JSON.parse(data);
 		  	if (data.status) {
           arrCategories.splice(arrCategories.length, 0, data.category);
-          categories.append(`
-            <tr id="${arrCategories.length}">
-              <th scope="row">${data.category.id}</th>
-              <td>${data.category.name}</td>
-              <td align="end">
-                <button id="${arrCategories.length}" class="btn btn-secondary mx-1">Ver Produtos</button>
-                <button id="${arrCategories.length}" class="btn btn-danger mx-1 actRemove">Remover</button>
-              </td>
-            </tr>
-          `);
+          reloadTable();
           closeCreateModal();
 		  	} else {
 		  		alrt.html(helper.alert('danger', data.message));
@@ -87,19 +67,18 @@ $(document).ready(function() {
   });
 
   function reloadTable() {
-    console.log(arrCategories);
     let categories = $('#categories');
     categories.html('');
     arrCategories.forEach((e, index) => {
       categories.append(`
-        <tr id="${index}">
-          <th scope="row">${e.id}</th>
-          <td>${e.name}</td>
-          <td align="end">
-            <button id="${index}" class="btn btn-secondary mx-1">Ver Produtos</button>
-            <button id="${index}" class="btn btn-danger mx-1 actRemove">Remover</button>
-          </td>
-        </tr>
+      <tr id="${index}">
+        <th scope="row">${e.id}</th>
+        <td>${e.name}</td>
+        <td align="end">
+          <button id="${index}" class="btn btn-secondary mx-1">Ver Produtos</button>
+          <button id="${index}" class="btn btn-danger mx-1 actRemove">Remover</button>
+        </td>
+      </tr>
       `);
     });
   }
