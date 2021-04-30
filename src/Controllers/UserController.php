@@ -149,7 +149,7 @@ class UserController {
 			$em->getConnection()->beginTransaction();
 
 
-			if ($data['id'] === 0) {
+			if ($data['id'] === '0') {
 				// Verifying if already exists:
 				if ($this->userExists($data['login'], $data['email'])) {
 					$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)']));
@@ -164,7 +164,7 @@ class UserController {
 				$User = $userRepository->find($data['id']);
 			}
 			$User->setLogin($data['login']);
-			$User->setPass(md5($data['pass']));
+			$User->setPass(md5($data['pass'])); // Se for edit devemos verificar se foi alterada antes de dar update!!! md5 do md5!!!
 			$User->setName($data['name']);
 			$User->setEmail($data['email']);
 			$User->setAdmin($admin);
