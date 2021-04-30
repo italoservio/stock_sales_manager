@@ -74,8 +74,44 @@ class ProductController {
     return $res;
   }
 
-  public function get() {
-
+  public function get(Request $req, Response $res, $args): Response {
+    $arr = [];
+    $id = $args['id'];
+    try {
+      $em = Database::manager();
+      $productRepository = $em->getRepository(Product::class);
+      $product = $productRepository->findOneBy(array('id' => $id));
+      if (!is_null($product)) {
+        $arr[] = [
+          'id' => $product->getId(),
+          'name' => $product->getName(),
+          'desc' => $product->getDesc(),
+          'qtd' => $product->getQtd(),
+          'price' => $product->getPrice(),
+          'imagePath' => $product->getImagePath(),
+          'category' => [
+            'id' => $product->getCategory()->getId(),
+            ]
+        ];
+        $arr = [
+          'status' => true,
+          'product' => $arr
+        ];
+      } else {
+        $arr = [
+          'status' => false,
+          'message' => 'NIGUEM NO BANCO'
+        ];
+      }
+    } catch (Exception $e) {
+      $arr = [
+        'status' => false,
+        'message' => 'DEU ERRO GERAL',
+        'error' => $e->getMessage()
+      ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
   }
 
 }

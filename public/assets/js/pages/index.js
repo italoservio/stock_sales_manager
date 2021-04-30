@@ -53,7 +53,7 @@ $(document).ready(function () {
           <div class="card-body">
             <h5 class="card-title">${e.name}</h5>
             <span>${price}</span>
-            <a href="products/details/${e.id}" class="stretched-link"></a>
+            <a href="products/${e.id}/details" class="stretched-link"></a>
           </div>
         </div>
       </div>`)
