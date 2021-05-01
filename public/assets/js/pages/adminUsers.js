@@ -35,7 +35,6 @@ $(document).ready(function() {
     $('#inputLogin').val(element.login);
     $('#inputName').val(element.name);
     $('#inputEmail').val(element.email);
-    $('#inputPass').val(element.pass);
     if (element.admin === 1) $("#inputAdmin").prop("checked", true);
 
     $('#createModal').modal('show');
@@ -66,8 +65,8 @@ $(document).ready(function() {
     let pass   = $('#inputPass').val();
     let admin  = $('#inputAdmin').is(':checked');
 
-    if (pass !== '' && arrUsers['editingIndex'].pass !== MD5(pass)) pass = MD5(pass);
-    else pass = arrUsers['editingIndex'].pass;
+    if (pass !== '' && arrUsers[editingIndex].pass !== MD5(pass)) pass = MD5(pass);
+    else pass = arrUsers[editingIndex].pass;
 
     if (validateAll()) {
       $.ajax({
@@ -157,11 +156,6 @@ $(document).ready(function() {
 
     if (!helper.validate(inputEmail.val(), ['required', 'email'])) {
       arrFail.push(inputEmail);
-      bool = false;
-    }
-
-    if (!helper.validate(inputPass.val(), ['required'])) {
-      arrFail.push(inputPass);
       bool = false;
     }
 

@@ -58,7 +58,8 @@ $(document).ready(function() {
 
         if (pass !== '' && MD5(pass) !== userOldPass) pass = MD5(pass);
         else pass = userOldPass;
-        userAdmin = (userAdmin === 1);
+
+        userAdmin = (userAdmin === '1');
 
         if (hasClient) {
           form = {
