@@ -62,7 +62,7 @@ class UserController {
 		$userRepository = $em->getRepository(User::class);
 		$User = $userRepository->findOneBy([
 			'login' => $arr['user'],
-			'pass' => md5($arr['pass'])
+			'pass' => $arr['pass']
 		]);
 
 		if (!is_null($User)) {
@@ -138,9 +138,11 @@ class UserController {
 	}
 
 	public function create(Request $req, Response $res, $args) : Response {
+		date_default_timezone_set('America/Sao_Paulo');
 		$data = $req->getParsedBody();
 		$em = Database::manager();
 
+		// Preparing data:
 		$hasClient = ($data['hasClient'] === 'true');
 		$admin = ($data['admin'] === 'true') ? 1 : 0;
 
@@ -148,35 +150,34 @@ class UserController {
 
 			$em->getConnection()->beginTransaction();
 
-
 			if ($data['id'] === '0') {
-				// Verifying if already exists:
 				if ($this->userExists($data['login'], $data['email'])) {
-					$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)']));
-					return $res;
+					$res->getBody()->write(json_encode(['status' => false, 'message' => 'Usuário e/ou e-mail já cadastrado(s)'])); return $res;
 				}
-				// Creating user:
 				$User = new User();
-
 			} else {
-				// Retrieving user from database:
 				$userRepository = $em->getRepository(User::class);
 				$User = $userRepository->find($data['id']);
+				$User->setUpdatedAt(date('Y-m-d H:i:s'));
 			}
 			$User->setLogin($data['login']);
-			$User->setPass(md5($data['pass'])); // Se for edit devemos verificar se foi alterada antes de dar update!!! md5 do md5!!!
+			$User->setPass($data['pass']);
 			$User->setName($data['name']);
 			$User->setEmail($data['email']);
 			$User->setAdmin($admin);
 			$em->persist($User);
 
 			if ($hasClient) {
-				// Creating Client:
-				$Client = new Client();
+				if ($data['id'] === '0') {
+					$Client = new Client();
+				} else {
+					$clientRepository = $em->getRepository(Client::class);
+					$Client = $clientRepository->findOneBy(['id' => $data['clientId']]);
+				}
 				$Client->setCep($data['cep']);
 				$Client->setCidade($data['cidade']);
-				$Client->setBairro($data['estado']);
-				$Client->setLogradouro($data['bairro']);
+				$Client->setEstado($data['estado']);
+				$Client->setBairro($data['bairro']);
 				$Client->setNumero($data['numero']);
 				$Client->setComplemento($data['complemento']);
 				$Client->setLogradouro($data['logradouro']);
@@ -189,7 +190,7 @@ class UserController {
 			$em->getConnection()->commit();
 
 			if ($hasClient) {
-				// Starting session:
+				if (Auth::hasSession()) Auth::clearSession();
 				Auth::setSession($User);
 			}
 

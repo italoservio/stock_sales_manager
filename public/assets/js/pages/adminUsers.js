@@ -60,12 +60,14 @@ $(document).ready(function() {
   // Action to button create/edit user:
   $(document).on('click', 'button#btnCreate', function() {
     let alrt   = $('#alert');
-    let users  = $('#users');
     let login  = $('#inputLogin').val();
     let name   = $('#inputName').val();
     let email  = $('#inputEmail').val();
     let pass   = $('#inputPass').val();
     let admin  = $('#inputAdmin').is(':checked');
+
+    if (pass !== '' && arrUsers['editingIndex'].pass !== MD5(pass)) pass = MD5(pass);
+    else pass = arrUsers['editingIndex'].pass;
 
     if (validateAll()) {
       $.ajax({
@@ -79,11 +81,10 @@ $(document).ready(function() {
           if (id !== 0) {
             // If editing, is necessary to remove from the array "users" the old user:
             arrUsers.splice(editingIndex, 1);
-            
           }
           // Add returned user to array "users":
-          arrUsers.splice(arrUsers.length, 0, data.user);          
-          reloadTable();         
+          arrUsers.splice(arrUsers.length, 0, data.user);
+          reloadTable();
           closeCreateModal();
 		  	} else {
 		  		alrt.html(helper.alert('danger', data.message));

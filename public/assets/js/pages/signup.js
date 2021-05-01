@@ -42,6 +42,7 @@ $(document).ready(function() {
     var numero = $('#inputNum').val();
     var complemento = $('#inputComplemento').val();
     var logradouro  = $('#inputLogradouro').val();
+    pass = MD5(pass);
 
     if (validateAll()) {
       $.ajax({

@@ -18,6 +18,7 @@ class Helper {
 			case 'adminProducts': return 'SSM Admin: Produtos';
 			case 'adminCategories': return 'SSM Admin: Categorias';
 			case 'adminStatistics': return 'SSM Admin: Estatísticas';
+			case 'profile': return 'SSM: Perfil';
       case 'product': return 'SSM: Produto';
 			default: return 'SSM';
 		}
@@ -25,8 +26,11 @@ class Helper {
 
 	public static function render($p_filename, $p_req, $p_res, $p_optionals = []) {
 		$User = null;
+		$Client = null;
 		if (Auth::hasSession()) {
-			$User = Auth::getSession();
+			$arrSession = Auth::getCompleteSession();
+			$User = $arrSession['user'];
+			$Client = $arrSession['client'];
 			$User = [
 				'id' 		=> $User->getId(),
 				'login' => $User->getLogin(),
@@ -35,6 +39,18 @@ class Helper {
 				'email' => $User->getEmail(),
 				'admin' => $User->getAdmin(),
 			];
+			if (!is_null($Client)) {
+				$Client = [
+					'id' 		 => $Client->getId(),
+					'cep' 	 => $Client->getCep(),
+					'cidade' => $Client->getCidade(),
+					'estado' => $Client->getEstado(),
+					'bairro' => $Client->getBairro(),
+					'numero' => $Client->getNumero(),
+					'logradouro' 	=> $Client->getLogradouro(),
+					'complemento' => $Client->getComplemento()
+				];
+			}
 		}
 
 		$twig = Twig::fromRequest($p_req);
@@ -44,6 +60,7 @@ class Helper {
 			'basePath' => $_ENV['BASE_PATH'],
 			'title' => self::pageTitle($p_filename),
 			'user' => $User,
+			'client' => $Client,
 			'optionals' => $p_optionals
 		]);
 	}

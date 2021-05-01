@@ -10,6 +10,7 @@ $(document).ready(function() {
 		helper.clearFieldValidation([inputUser, inputPass]);
 
 		if (helper.validate(user, ['required', 'text']) && helper.validate(pass, ['required'])) {
+			pass = MD5(pass);
 			$.ajax({
 			  method: 'get',
 			  url: 'users/auth',

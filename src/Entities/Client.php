@@ -45,6 +45,13 @@ class Client {
 	/**
 	 * @var string|null
 	 *
+	 * @ORM\Column(name="estado", type="text", nullable=true)
+	 */
+	private $estado;
+
+	/**
+	 * @var string|null
+	 *
 	 * @ORM\Column(name="logradouro", type="text", nullable=true)
 	 */
 	private $logradouro;
@@ -100,6 +107,10 @@ class Client {
 		return $this->cidade;
 	}
 
+	public function getEstado() {
+		return $this->estado;
+	}
+
 	public function getBairro() {
 		return $this->bairro;
 	}
@@ -141,6 +152,10 @@ class Client {
 
 	public function setCidade($p_cidade) {
 		$this->cidade = $p_cidade;
+	}
+
+	public function setEstado($p_estado) {
+		$this->estado = $p_estado;
 	}
 
 	public function setBairro($p_bairro) {
