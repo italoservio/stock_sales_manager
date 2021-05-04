@@ -26,7 +26,7 @@ $(document).ready(function () {
   function getAllCategories() {
     $.ajax({
       method: 'get',
-      url: 'categories'
+      url: 'categories/byproduct'
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {
@@ -47,7 +47,7 @@ $(document).ready(function () {
         let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
         let price = `R$ ${e.price}`;
         product.append(`
-      <div class="col-lg-3">
+      <div class="col-lg-3 mb-3">
         <div  class="card card-product">
           <img src="${imgPath}" class="card-img-top" alt="...">
           <div class="card-body">

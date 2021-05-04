@@ -16,14 +16,16 @@ $app->get('/logout', UserController::class . ':logout');
 
 $app->group('/categories', function(RouteCollectorProxy $group) {
 	$group->get('[/]', CategoryController::class . ':getAll');
+  $group->get('/byproduct', CategoryController::class . ':get');
 	$group->post('/create', CategoryController::class . ':create');
 	$group->delete('/delete/{id}', CategoryController::class . ':delete');
 });
 
 $app->group('/products', function(RouteCollectorProxy $group) {
 	$group->get('[/]', ProductController::class . ':getAll');
-  $group->get('/{id}/details', ProductController::class . ':details');
+  $group->post('/create', ProductController::class . ':create');
   $group->get('/{id}', ProductController::class . ':get');
+  $group->get('/{id}/details', ProductController::class . ':details');
 });
 
 $app->group('/users', function(RouteCollectorProxy $group) {

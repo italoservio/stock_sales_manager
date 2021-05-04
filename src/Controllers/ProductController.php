@@ -13,6 +13,7 @@ use Exception;
 class ProductController {
 
   public function details(Request $req, Response $res, $args): Response {
+
     return Helper::render('product', $req, $res, ['productId' => $args['id']]);
   }
 
@@ -69,7 +70,6 @@ class ProductController {
         'error' => $e->getMessage()
       ];
     }
-
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
@@ -91,7 +91,7 @@ class ProductController {
           'imagePath' => $product->getImagePath(),
           'category' => [
             'id' => $product->getCategory()->getId(),
-            ]
+          ]
         ];
         $arr = [
           'status' => true,
@@ -114,4 +114,35 @@ class ProductController {
     return $res;
   }
 
+  public function create(Request $req, Response $res, $args): Response {
+    $arr = [];
+    date_default_timezone_set('America/Sao_Paulo');
+    $data = $req->getParsedBody();
+    $em = Database::manager();
+    $productRepository = $em->getRepository(Product::class);
+    $Product = new Product();
+    var_dump($data);
+    try {
+//      if ($data['id'] !== '0') {
+//        $Product = $productRepository->find($data['id']);
+//      }
+      move_uploaded_file($_FILES['fileimagem']['tmp_name'], '../public\assets\img\sys\products/' . $_FILES['fileimagem']['name']);
+
+
+      $Product->setName($data['inputName']);
+      $Product->setImagePath("products/".$data['fileName']);
+      $Product->setQtd($data['inputQtd']);
+      $Product->setPrice($data['inputPrice']);
+      $Product->setCategoryId($data['categories']);
+      $Product->setDesc($data['des']);
+      $Product->setUpdatedAt(date('Y-m-d H:i:s'));
+      $em->persist($Product);
+      $em->flush();
+      $em->getConnection()->commit();
+    } catch (Exception $e) {
+
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+  }
 }
