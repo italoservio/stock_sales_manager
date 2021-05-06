@@ -5,7 +5,7 @@ $(document).ready(function () {
   $.ajax({
     method: 'get',
     url: basePath + '/products',
-    data: {category}
+    data: { category }
   }).done(function (p_data) {
     p_data = JSON.parse(p_data);
     if (p_data.status) {
@@ -20,10 +20,9 @@ $(document).ready(function () {
   }).done(function (p_data) {
     p_data = JSON.parse(p_data);
     if (p_data.status) {
-      let categories = $('#categories');
+      let categories = $('#inputCategory');
       p_data.categories.map(e => {
-        categories.append(`        
-            <option value="${e.id}">${e.name}</option>`);
+        categories.append(`<option value="${e.id}">${e.name}</option>`);
       });
     }
   });
@@ -41,28 +40,32 @@ $(document).ready(function () {
   });
 
   $(document).on('click', 'button#btnCreate', function () {
-    let data = new FormData();
+    let fileData = $('#inputImg').prop('files')[0];
+    let formData = new FormData();
 
-    data.append('fileName', $('#fileimagem')[0].files[0]["name"]);
-    data.append('fileimagem', $('#fileimagem')[0].files[0]);
-    data.append('fileType', $('#fileimagem').prop('files')[0]["type"]);
-    data.append('inputName', $('#inputName').val());
-    data.append('inputQtd', $('#inputQtd').val());
-    data.append('inputPrice', $('#inputPrice').val());
-    data.append('categories', $('#categories').val());
-    data.append('des', $('#inputDes').val());
-    console.log($('#categories').val());
+    inputName = $('#inputName');
+    inputQtd = $('#inputQtd');
+    inputPrice = $('#inputPrice');
+    inputCategory = $('#inputCategory');
+    inputDesc = $('#inputDesc');
 
-    if (true) {
-      $.ajax({
-        method: 'post',
-        url: basePath + '/products/create',
-        data: data,
-        processData: false,
-        contentType: false
-      }).done(function (p_data) {
-      });
-    }
+    formData.append('file', fileData);
+    formData.append('name', inputName.val());
+    formData.append('qtd', inputQtd.val());
+    formData.append('price', inputPrice.val());
+    formData.append('category', inputCategory.val());
+    formData.append('desc', inputDesc.val());
+
+    $.ajax({
+      method: 'post',
+      url: basePath + '/products/create',
+      data: formData,
+      cache: false,
+      contentType: false,
+      processData: false,
+    }).done(function (data) {
+      console.log(data);
+    });
   });
 
   $(document).on('click', 'button.actCreate', function () {
@@ -70,7 +73,6 @@ $(document).ready(function () {
     $('#inputId').val('');
     $('.spanContext').html('Criar');
     $('#createModal').modal('show');
-
   });
 
   function reloadTable(p_data) {
@@ -97,8 +99,8 @@ $(document).ready(function () {
   function validateAll() {
     let inputName = $('#inputName');
     let inputQtd = $('#inputQtd');
-    let inputPrice = $('#inputDes');
-    let inputDes = $('#inputDes');
+    let inputPrice = $('#inputDesc');
+    let inputDesc = $('#inputDesc');
     var bool = true;
     var arrFail = [];
 

@@ -7,6 +7,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Services\Helper;
 use \App\Services\Auth;
 use \App\DB\Database;
+use \App\Entities\Category;
 use \App\Entities\Product;
 use Exception;
 
@@ -115,33 +116,53 @@ class ProductController {
   }
 
   public function create(Request $req, Response $res, $args): Response {
-    $arr = [];
     date_default_timezone_set('America/Sao_Paulo');
+    $arr = [];
+    $file = $_FILES['file'];
     $data = $req->getParsedBody();
+    $file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
+
     $em = Database::manager();
-    $productRepository = $em->getRepository(Product::class);
-    $Product = new Product();
-    var_dump($data);
+    $em->getConnection()->beginTransaction();
+
     try {
-//      if ($data['id'] !== '0') {
-//        $Product = $productRepository->find($data['id']);
-//      }
-      move_uploaded_file($_FILES['fileimagem']['tmp_name'], '../public\assets\img\sys\products/' . $_FILES['fileimagem']['name']);
+      // Movendo arquivo:
+      move_uploaded_file($file['tmp_name'], '../public/assets/img/sys/products/' . $file['name']);
 
+      // Criando produto:
+      $User = Auth::getSession();
+      $categoryRepository = $em->getRepository(Category::class);
+      $Category = $categoryRepository->find((int) $data['category']);
 
-      $Product->setName($data['inputName']);
-      $Product->setImagePath("products/".$data['fileName']);
-      $Product->setQtd($data['inputQtd']);
-      $Product->setPrice($data['inputPrice']);
-      $Product->setCategoryId($data['categories']);
-      $Product->setDesc($data['des']);
-      $Product->setUpdatedAt(date('Y-m-d H:i:s'));
-      $em->persist($Product);
+      $Product = new Product();
+      $Product->setName($data['name']);
+      $Product->setQtd($data['qtd']);
+      $Product->setPrice($data['price']);
+      $Product->setDesc($data['desc']);
+      $Product->setImagePath("products/" . $file['name']);
+      $Product->setCreatedBy($User->getId());
+      $Product->setCategoryId($data['category']);
+      $Product->setUser($User);
+      $Product->setCategory($Category);
+
+      $em->merge($Product);
       $em->flush();
       $em->getConnection()->commit();
-    } catch (Exception $e) {
 
+      $arr = [
+        'status' => true,
+        'message' => 'Produto criado com sucesso'
+      ];
+
+    } catch (Exception $e) {
+      $em->getConnection()->rollBack();
+      $arr = [
+        'status' => false,
+        'message' => 'Falha na criação do produto',
+        'error' => $e->getMessage()
+      ];
     }
+
     $res->getBody()->write(json_encode($arr));
     return $res;
   }

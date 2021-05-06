@@ -70,16 +70,16 @@ class Product {
 	private $imagepath;
 
 	/**
-	 * @var int|null
+	 * @var int
 	 *
-	 * @ORM\Column(name="createdBy", type="integer", nullable=true)
+	 * @ORM\Column(name="createdBy", type="integer", nullable=false)
 	 */
 	private $createdby;
 
 	/**
-	 * @var int|null
+	 * @var int
 	 *
-	 * @ORM\Column(name="categoryId", type="integer", nullable=true)
+	 * @ORM\Column(name="categoryId", type="integer", nullable=false)
 	 */
 	private $categoryid;
 
@@ -166,6 +166,14 @@ class Product {
   /*
    * Setters
    */
+	public function setUser($p_User) {
+    $this->user = $p_User;
+  }
+
+	public function setCategory($p_Category) {
+    $this->category = $p_Category;
+  }
+
   public function setId($p_id) {
     $this->id = $p_id;
   }
