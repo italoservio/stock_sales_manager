@@ -128,31 +128,54 @@ class ProductController {
     try {
       // Movendo arquivo:
       move_uploaded_file($file['tmp_name'], '../public/assets/img/sys/products/' . $file['name']);
+      $Product = new Product();
 
       // Criando produto:
       $User = Auth::getSession();
       $categoryRepository = $em->getRepository(Category::class);
-      $Category = $categoryRepository->find((int) $data['category']);
+      $Category = $categoryRepository->find((int)$data['category']);
+      $userId = $User->getId();
+      if ($data['id'] === '0') {
 
-      $Product = new Product();
-      $Product->setName($data['name']);
-      $Product->setQtd($data['qtd']);
-      $Product->setPrice($data['price']);
-      $Product->setDesc($data['desc']);
-      $Product->setImagePath("products/" . $file['name']);
-      $Product->setCreatedBy($User->getId());
-      $Product->setCategoryId($data['category']);
-      $Product->setUser($User);
-      $Product->setCategory($Category);
+        $Product->setName($data['name']);
+        $Product->setQtd($data['qtd']);
+        $Product->setPrice($data['price']);
+        $Product->setDesc($data['desc']);
+        $Product->setImagePath("products/" . $file['name']);
+        $Product->setCreatedBy($User->getId());
+        $Product->setCategoryId($data['category']);
+        $Product->setUser($User);
+        $Product->setCategory($Category);
+        $Product->setUpdatedAt(date('Y-m-d H:i:s'));
+        $em->merge($Product);
+        $em->flush();
+        $em->getConnection()->commit();
 
-      $em->merge($Product);
-      $em->flush();
-      $em->getConnection()->commit();
+        $arr = [
+          'status' => true,
+          'message' => 'Produto criado com sucesso'
+        ];
 
-      $arr = [
-        'status' => true,
-        'message' => 'Produto criado com sucesso'
-      ];
+      } else {
+        $productRepository = $em->getRepository(Product::class);
+        $Product = $productRepository->find($data['id']);
+        $Product->setName($data['name']);
+        $Product->setQtd($data['qtd']);
+        $Product->setPrice($data['price']);
+        $Product->setDesc($data['desc']);
+        $Product->setImagePath("products/" . $file['name']);
+        $Product->setCreatedBy($userId);
+        $Product->setCategoryId($data['category']);
+        $Product->setUpdatedAt(date('Y-m-d H:i:s'));
+        $em->persist($Product);
+        $em->flush();
+        $em->getConnection()->commit();
+
+        $arr = [
+          'status' => true,
+          'message' => 'Produto editado com sucesso'
+        ];
+      }
 
     } catch (Exception $e) {
       $em->getConnection()->rollBack();
@@ -162,7 +185,6 @@ class ProductController {
         'error' => $e->getMessage()
       ];
     }
-
     $res->getBody()->write(json_encode($arr));
     return $res;
   }

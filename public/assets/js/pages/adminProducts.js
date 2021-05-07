@@ -2,30 +2,9 @@ $(document).ready(function () {
   let category = 0;
   var arrProducts = [];
   var id = 0;
-  $.ajax({
-    method: 'get',
-    url: basePath + '/products',
-    data: { category }
-  }).done(function (p_data) {
-    p_data = JSON.parse(p_data);
-    if (p_data.status) {
-      arrProducts = p_data.products;
-      reloadTable(p_data.products);
-    }
-  });
 
-  $.ajax({
-    method: 'get',
-    url: basePath + '/categories'
-  }).done(function (p_data) {
-    p_data = JSON.parse(p_data);
-    if (p_data.status) {
-      let categories = $('#inputCategory');
-      p_data.categories.map(e => {
-        categories.append(`<option value="${e.id}">${e.name}</option>`);
-      });
-    }
-  });
+  reloadTable();
+  getCategory();
 
   $(document).on('click', 'button.actEdit', function () {
     $('#inputNameCheck').show();
@@ -48,14 +27,13 @@ $(document).ready(function () {
     inputPrice = $('#inputPrice');
     inputCategory = $('#inputCategory');
     inputDesc = $('#inputDesc');
-
+    formData.append('id', id);
     formData.append('file', fileData);
     formData.append('name', inputName.val());
     formData.append('qtd', inputQtd.val());
     formData.append('price', inputPrice.val());
     formData.append('category', inputCategory.val());
     formData.append('desc', inputDesc.val());
-
     $.ajax({
       method: 'post',
       url: basePath + '/products/create',
@@ -65,6 +43,7 @@ $(document).ready(function () {
       processData: false,
     }).done(function (data) {
       console.log(data);
+      reloadTable();
     });
   });
 
@@ -75,25 +54,52 @@ $(document).ready(function () {
     $('#createModal').modal('show');
   });
 
-  function reloadTable(p_data) {
-    let products = $('#products');
-    products.html('');
-    p_data.map(e => {
-        let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
-        products.append(`
+  function reloadTable() {
+    $.ajax({
+      method: 'get',
+      url: basePath + '/products',
+      data: {category}
+    }).done(function (p_data) {
+      p_data = JSON.parse(p_data);
+      if (p_data.status) {
+        arrProducts = p_data.products;
+        let products = $('#products');
+        products.html('');
+        p_data.products.map(e => {
+            let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
+            products.append(`
       <tr id="${e.id}">
-        <th scope="row">${e.id}</th>
-        <td> <img src="${imgPath}" class="img-fluid w-25 p-3" alt="..."></td>
+        <td class="w-25"> <img src="${imgPath}" class="img-fluid w-50 p-3" alt="..."></td>
         <td>${e.name}</td>
-        <td>${e.desc}</td>
         <td>${e.price}</td>
+        <td>${e.qtd}</td>
+        <td>${e.desc}</td>
+        <td>${e.category['name']}</td>
+        
         <td align="end">
           <button id="${e.id}" class="btn btn-secondary mx-1 actEdit">Ver Produtos</button>
           <button id="${e.id}" class="btn btn-danger mx-1 actRemove">Remover</button>
         </td>
       </tr>`)
+          }
+        );
       }
-    );
+    });
+  }
+
+  function getCategory() {
+    $.ajax({
+      method: 'get',
+      url: basePath + '/categories'
+    }).done(function (p_data) {
+      p_data = JSON.parse(p_data);
+      if (p_data.status) {
+        let categories = $('#inputCategory');
+        p_data.categories.map(e => {
+          categories.append(`<option value="${e.id}">${e.name}</option>`);
+        });
+      }
+    });
   }
 
   function validateAll() {
