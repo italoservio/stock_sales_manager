@@ -24,6 +24,7 @@ $app->group('/categories', function(RouteCollectorProxy $group) {
 $app->group('/products', function(RouteCollectorProxy $group) {
 	$group->get('[/]', ProductController::class . ':getAll');
   $group->post('/create', ProductController::class . ':create');
+  $group->delete('/delete/{id}', ProductController::class . ':delete');
   $group->get('/{id}', ProductController::class . ':get');
   $group->get('/{id}/details', ProductController::class . ':details');
 });

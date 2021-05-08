@@ -1,26 +1,68 @@
 $(document).ready(function () {
   let category = 0;
-  var arrProducts = [];
   var id = 0;
 
   reloadTable();
   getCategory();
 
   $(document).on('click', 'button.actEdit', function () {
+    let image = $('#image');
+    let imgPath;
+
+    id = $(this).attr("id");
+    $.ajax({
+      method: 'get',
+      url: basePath + `/products/${id}`
+    }).done(function (p_data) {
+      p_data = JSON.parse(p_data);
+      if (p_data.status) {
+        imgPath = `${assetsPath}/img/sys/${p_data.product[0]["imagePath"]}`;
+        $('#inputId').val(p_data.product[0]["name"]);
+        $('#inputName').val(p_data.product[0]["name"]);
+        $('#inputQtd').val(p_data.product[0]["qtd"]);
+        $('#inputPrice').val(p_data.product[0]["price"]);
+        $('#inputCategory').val(p_data.product[0]["category"]["id"]);
+        $('#inputDesc').val(p_data.product[0]["desc"]);
+
+        image.html(`
+        <label for="inputPrice">Imagem do produto</label>
+        <img id="blah" src="${imgPath}" alt="..." idth="100" height="100" >
+        <input id="inputImg" type="file"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+        
+`);
+      }
+    });
+
     $('#inputNameCheck').show();
     $('.spanContext').html('Editar');
     $('#inputId').attr('disabled', 'disabled');
-    id = $(this).attr("id");
-    let index = id - 1;
-    let element = arrProducts[index];
+    $('#createModal').modal('show');
+  });
 
-    $('#inputId').val(element.name);
+  $(document).on('click', 'button.actCreate', function () {
+    let image = $('#image');
+    image.html(`
+        <label for="inputPrice">Imagem do produto</label>
+        <img id="blah" alt="" idth="100" height="100" />
+        <input id="inputImg" type="file"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+`);
+    $('#inputNameCheck').hide();
+    $('#inputId').val('');
+    $('.spanContext').html('Criar');
     $('#createModal').modal('show');
   });
 
   $(document).on('click', 'button#btnCreate', function () {
-    let fileData = $('#inputImg').prop('files')[0];
+    let imageUpdate;
+    let fileData;
     let formData = new FormData();
+
+    if ($('#inputImg').prop('files')[0] !== undefined) {
+      fileData = $('#inputImg').prop('files')[0];
+      imageUpdate = 0;
+    } else {
+      imageUpdate = 1;
+    }
 
     inputName = $('#inputName');
     inputQtd = $('#inputQtd');
@@ -29,6 +71,7 @@ $(document).ready(function () {
     inputDesc = $('#inputDesc');
     formData.append('id', id);
     formData.append('file', fileData);
+    formData.append('imageUpdate', imageUpdate);
     formData.append('name', inputName.val());
     formData.append('qtd', inputQtd.val());
     formData.append('price', inputPrice.val());
@@ -42,16 +85,44 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
     }).done(function (data) {
-      console.log(data);
+      Swal.fire(
+        'Ação confirmada',
+        '',
+        'success'
+      )
       reloadTable();
     });
   });
 
-  $(document).on('click', 'button.actCreate', function () {
-    $('#inputNameCheck').hide();
-    $('#inputId').val('');
-    $('.spanContext').html('Criar');
-    $('#createModal').modal('show');
+  $(document).on('click', 'button.actRemove', function () {
+    let index = $(this).attr("id");
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você não será capaz de reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, delete!',
+      cancelButtonText: 'Cancelar!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          method: 'delete',
+          url: basePath + `/products/delete/${index}`,
+        }).done(function (data) {
+          data = JSON.parse(data);
+          if (data.status) {
+            reloadTable();
+          }
+        });
+        Swal.fire(
+          'Deletado!',
+          'Seu produto foi excluído.',
+          'success'
+        )
+      }
+    })
   });
 
   function reloadTable() {
@@ -62,7 +133,6 @@ $(document).ready(function () {
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {
-        arrProducts = p_data.products;
         let products = $('#products');
         products.html('');
         p_data.products.map(e => {
@@ -139,4 +209,5 @@ $(document).ready(function () {
     return bool;
   }
 
-});
+})
+;

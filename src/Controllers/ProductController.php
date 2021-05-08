@@ -76,6 +76,7 @@ class ProductController {
   }
 
   public function get(Request $req, Response $res, $args): Response {
+
     $arr = [];
     $id = $args['id'];
     try {
@@ -118,16 +119,22 @@ class ProductController {
   public function create(Request $req, Response $res, $args): Response {
     date_default_timezone_set('America/Sao_Paulo');
     $arr = [];
-    $file = $_FILES['file'];
+    $rota = '../public/assets/img/sys/products/';
     $data = $req->getParsedBody();
-    $file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
+
 
     $em = Database::manager();
     $em->getConnection()->beginTransaction();
 
     try {
-      // Movendo arquivo:
-      move_uploaded_file($file['tmp_name'], '../public/assets/img/sys/products/' . $file['name']);
+
+      if ($data["imageUpdate"] !== '1') {
+        $file = $_FILES['file'];
+        $file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
+        // Movendo arquivo:
+        move_uploaded_file($file['tmp_name'], $rota . $file['name']);
+
+      }
       $Product = new Product();
 
       // Criando produto:
@@ -159,11 +166,17 @@ class ProductController {
       } else {
         $productRepository = $em->getRepository(Product::class);
         $Product = $productRepository->find($data['id']);
+
         $Product->setName($data['name']);
         $Product->setQtd($data['qtd']);
         $Product->setPrice($data['price']);
         $Product->setDesc($data['desc']);
-        $Product->setImagePath("products/" . $file['name']);
+        if ($data["imageUpdate"] !== '1') {
+          $nameImage = explode("/", $Product->getImagePath());
+          unlink($rota . $nameImage[1]);
+
+          $Product->setImagePath("products/" . $file['name']);
+        }
         $Product->setCreatedBy($userId);
         $Product->setCategoryId($data['category']);
         $Product->setUpdatedAt(date('Y-m-d H:i:s'));
@@ -187,5 +200,33 @@ class ProductController {
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
+  }
+
+  public function delete(Request $req, Response $res, $args): Response {
+    $id = $args['id'];
+    $arr = [];
+    try {
+      $em = Database::manager();
+      $productRepository = $em->getRepository(Product::class);
+      $Product = $productRepository->find($id);
+
+      $nameImage = explode("/", $Product->getImagePath());
+      unlink('../public/assets/img/sys/products/' . $nameImage[1]);
+      $em->remove($Product);
+      $em->flush();
+
+      $arr = [
+        'status' => true
+      ];
+    } catch (Exception $e) {
+      $arr = [
+        'status' => false,
+        'message' => 'Ocorreu um erro ao remover o produto',
+        'error' => $e->getMessage()
+      ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+
   }
 }
