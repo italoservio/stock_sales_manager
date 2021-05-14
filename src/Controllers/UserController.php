@@ -56,8 +56,57 @@ class UserController {
 	}
 
 	public function changeImage(Request $req, Response $res, $args) : Response {
-		$imgFile = $_FILES['imgFile'];
-		var_dump($imgFile);exit;
+		date_default_timezone_set('America/Sao_Paulo');
+		$em = Database::manager();
+
+		try {
+			$file = $_FILES['imgFile'];
+
+			// Only less than 1MB:
+			if ($file['size'] > 1048576) {
+				$arr = ['status' => false, 'message' => 'Não são aceitas imagens maiores do que 1Mb'];
+				$res->getBody()->write(json_encode($arr));
+				return $res;
+			}
+
+			$file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
+
+			if (move_uploaded_file($file['tmp_name'], '../public/assets/img/profiles/' . $file['name'])) {
+				$UserAuth = Auth::getSession();
+				$userRepository = $em->getRepository(User::class);
+				$User = $userRepository->find($UserAuth->getId());
+
+				// Removing old image:
+				$oldImagePath = $User->getImagePath();
+				$fullOldImagePath = '../public/assets' . $User->getImagePath();
+				if ($oldImagePath !== '/img/profiles/default.jpg') {
+					if (file_exists($fullOldImagePath)) {
+						unlink($fullOldImagePath);
+					}
+				}
+
+				$User->setImagePath('/img/profiles/' . $file['name']);
+				$em->persist($User);
+				$em->flush();
+				$arr = [
+					'status' => true,
+					'message' => 'Imagem alterada com sucesso, suas mudanças serão aplicadas na proxima vez em que logar'
+				];
+			} else {
+				$arr = [
+					'status' => false,
+					'message' => 'Ocorreu um erro ao mover o arquivo enviado'
+				];
+			}
+		} catch (Exception $e) {
+			$arr = [
+				'status' => false,
+				'message' => 'Ocorreu um erro ao alterar a imagem',
+				'error' => $e->getMessage()
+			];
+		}
+		$res->getBody()->write(json_encode($arr));
+		return $res;
 	}
 
 	public function authenticate(Request $req, Response $res, $args) : Response {
@@ -152,7 +201,6 @@ class UserController {
 		$admin = ($data['admin'] === 'true') ? 1 : 0;
 
 		try {
-
 			$em->getConnection()->beginTransaction();
 
 			if ($data['id'] === '0') {

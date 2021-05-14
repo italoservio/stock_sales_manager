@@ -30,12 +30,12 @@ $(document).ready(function() {
         contentType: false,
         processData: false,
       }).done(function (data) {
+        data = JSON.parse(data);
+        $('#modalProfile').modal('hide');
         if (data.status) {
-          Swal.fire(
-            'Ação confirmada',
-            'Sua imagem será carregada na próxima vez que entrar na aplicação',
-            'success'
-          );
+          Swal.fire('Alteração realizada', data.message, 'success');
+        } else {
+          Swal.fire('Falha na alteração', data.message, 'error');
         }
       });
     }

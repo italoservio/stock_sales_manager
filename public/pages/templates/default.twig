@@ -24,7 +24,9 @@
 
     <div class="card p-3 mx-3">
       <div class="d-flex">
-        <img class="rounded-circle profile-pic" src="{{assetsPath}}/img/profiles/default.png" alt="Foto de perfil">
+        <div class="img-navbar-container rounded-circle">
+          <img class="profile-pic" src="{{assetsPath}}{{user['imagePath']}}" alt="Foto de perfil">
+        </div>
         <div class="ml-3">
           <span class="breakline">{{ user['name'] }}</span>
           <div class="d-flex align-items-center">
