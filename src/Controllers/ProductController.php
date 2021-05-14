@@ -119,7 +119,7 @@ class ProductController {
   public function create(Request $req, Response $res, $args): Response {
     date_default_timezone_set('America/Sao_Paulo');
     $arr = [];
-    $rota = '../public/assets/img/sys/products/';
+    $route = '../public/assets/img/sys/products/';
     $data = $req->getParsedBody();
 
 
@@ -132,7 +132,7 @@ class ProductController {
         $file = $_FILES['file'];
         $file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
         // Movendo arquivo:
-        move_uploaded_file($file['tmp_name'], $rota . $file['name']);
+        move_uploaded_file($file['tmp_name'], $route . $file['name']);
 
       }
       $Product = new Product();
@@ -173,7 +173,7 @@ class ProductController {
         $Product->setDesc($data['desc']);
         if ($data["imageUpdate"] !== '1') {
           $nameImage = explode("/", $Product->getImagePath());
-          unlink($rota . $nameImage[1]);
+          unlink($route . $nameImage[1]);
 
           $Product->setImagePath("products/" . $file['name']);
         }
