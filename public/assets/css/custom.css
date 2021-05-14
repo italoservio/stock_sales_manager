@@ -46,6 +46,40 @@ label {
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
+.img-products-container {
+  height: 180px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  float: left;
+}
+
+.img-products-container img {
+  top: 50%;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%, -50%);
+  height: auto;
+  width: 133%;
+}
+
+.img-container {
+  height: 120px;
+  width: 120px;
+  position: relative;
+  overflow: hidden;
+  float: left;
+}
+
+.img-container img {
+  top: 50%;
+  left: 50%;
+  position: relative;
+  transform: translate(-50%, -50%);
+  height: auto;
+  width: 133%;
+}
+
 .card {
   -webkit-box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
@@ -55,7 +89,8 @@ label {
 }
 
 .btn:focus,
-input:focus {
+input:focus,
+select:focus {
   box-shadow: none !important;
 }
 
@@ -178,4 +213,25 @@ input:focus {
   height: 120px;
   width: 120px;
   border-radius: 50%;
+}
+
+.input-file {
+  display: none;
+}
+
+.label-file {
+  transition: .2s;
+  padding: 8px 20px;
+  border-radius: 5px;
+  background-color: var(--success);
+  color: #FFF;
+  text-transform: uppercase;
+  text-align: center;
+  display: block;
+  cursor: pointer;
+}
+
+.label-file:hover {
+  transition: .2s;
+  background-color: #759c3e;
 }

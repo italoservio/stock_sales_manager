@@ -25,11 +25,16 @@ $(document).ready(function () {
         $('#inputDesc').val(p_data.product[0]["desc"]);
 
         image.html(`
-        <label for="inputPrice">Imagem do produto</label>
-        <img id="blah" src="${imgPath}" alt="..." idth="100" height="100" >
-        <input id="inputImg" type="file"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-        
-`);
+          <div class="my-3">
+            <div class="d-flex justify-content-center">
+              <div class="img-container rounded-circle">
+                <img id="imageModal" src="${imgPath}" alt="Imagem do produto" class="rounded-circle" width="120" height="120">
+              </div>
+            </div>
+            <label class="label-file mt-2" for="inputImg">Editar imagem</label>
+            <input class="input-file" id="inputImg" type="file" onchange="document.getElementById('imageModal').src = window.URL.createObjectURL(this.files[0])">
+          </div>
+        `);
       }
     });
 
@@ -42,10 +47,16 @@ $(document).ready(function () {
   $(document).on('click', 'button.actCreate', function () {
     let image = $('#image');
     image.html(`
-        <label for="inputPrice">Imagem do produto</label>
-        <img id="blah" alt="" idth="100" height="100" />
-        <input id="inputImg" type="file"  onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
-`);
+      <div class="my-3">
+        <div class="d-flex justify-content-center">
+          <div class="img-container rounded-circle">
+            <img id="imageModal" src="${ assetsPath }/img/sys/icons/default.png" alt="Imagem do produto" class="rounded-circle" width="120" height="120">
+          </div>
+        </div>
+        <label class="label-file mt-2" for="inputImg">Adicionar imagem</label>
+        <input class="input-file" id="inputImg" type="file" onchange="document.getElementById('imageModal').src = window.URL.createObjectURL(this.files[0])">
+      </div>
+    `);
     $('#inputNameCheck').hide();
     $('#inputId').val('');
     $('.spanContext').html('Criar');
@@ -136,21 +147,25 @@ $(document).ready(function () {
         let products = $('#products');
         products.html('');
         p_data.products.map(e => {
-            let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
-            products.append(`
-      <tr id="${e.id}">
-        <td class="w-25"> <img src="${imgPath}" class="img-fluid w-50 p-3" alt="..."></td>
-        <td>${e.name}</td>
-        <td>${e.price}</td>
-        <td>${e.qtd}</td>
-        <td>${e.desc}</td>
-        <td>${e.category['name']}</td>
-        
-        <td align="end">
-          <button id="${e.id}" class="btn btn-secondary mx-1 actEdit">Ver Produtos</button>
-          <button id="${e.id}" class="btn btn-danger mx-1 actRemove">Remover</button>
-        </td>
-      </tr>`)
+          let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
+          products.append(`
+            <tr id="${e.id}">
+              <td class="w-25">
+                <div class="img-container rounded-circle">
+                  <img src="${imgPath}" alt="${e.name}">
+                </div>
+              </td>
+              <td>${e.name}</td>
+              <td>${e.price}</td>
+              <td>${e.qtd}</td>
+              <td>${e.desc}</td>
+              <td>${e.category['name']}</td>
+              <td align="end">
+                <button id="${e.id}" class="btn btn-secondary mx-1 actEdit">Ver Produtos</button>
+                <button id="${e.id}" class="btn btn-danger mx-1 actRemove">Remover</button>
+              </td>
+            </tr>`
+            );
           }
         );
       }

@@ -26,13 +26,13 @@ $(document).ready(function () {
   function getAllCategories() {
     $.ajax({
       method: 'get',
-      url: 'categories/byproduct'
+      url: 'categories/'
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {
         let categories = $('#categories');
         p_data.categories.map(e => {
-          categories.append(`        
+          categories.append(`
             <option value="${e.id}">${e.name}</option>`);
         });
       }
@@ -47,16 +47,18 @@ $(document).ready(function () {
         let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
         let price = `R$ ${e.price}`;
         product.append(`
-      <div class="col-lg-3 mb-3">
-        <div  class="card card-product">
-          <img src="${imgPath}" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">${e.name}</h5>
-            <span>${price}</span>
-            <a href="products/${e.id}/details" class="stretched-link"></a>
+        <div class="col-lg-3 mb-3">
+          <div  class="card card-product">
+            <div class="img-products-container rounded">
+              <img src="${imgPath}" class="card-img-top" alt="${e.name}">
+            </div>
+            <div class="card-body">
+              <h5 class="card-title h4 mb-0" style="font-weight: 600; height: 55px">${e.name}</h5>
+              <span class="text-primary h4">${price}</span>
+              <a href="products/${e.id}/details" class="stretched-link"></a>
+            </div>
           </div>
-        </div>
-      </div>`)
+        </div>`)
       });
     }
     else {

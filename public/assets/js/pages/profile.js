@@ -15,6 +15,32 @@ $(document).ready(function() {
 
   var imgChanged = false;
 
+  $('#btnSaveImage').on('click', function() {
+    let inputFile = $('#inputFile');
+    let formData = new FormData();
+    let imgFile = inputFile.prop('files')[0];
+
+    if (imgFile !== undefined) {
+      formData.append('imgFile', imgFile);
+      $.ajax({
+        method: 'post',
+        url: basePath + `/users/${userId}/image`,
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+      }).done(function (data) {
+        if (data.status) {
+          Swal.fire(
+            'Ação confirmada',
+            'Sua imagem será carregada na próxima vez que entrar na aplicação',
+            'success'
+          );
+        }
+      });
+    }
+  });
+
   $('#btnCep').on('click', function() {
     var inputCidade = $('#inputCidade');
     var inputEstado = $('#inputEstado');

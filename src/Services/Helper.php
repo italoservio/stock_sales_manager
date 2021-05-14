@@ -38,6 +38,7 @@ class Helper {
 				'name' 	=> $User->getName(),
 				'email' => $User->getEmail(),
 				'admin' => $User->getAdmin(),
+				'imagePath' => $User->getImagePath()
 			];
 			if (!is_null($Client)) {
 				$Client = [

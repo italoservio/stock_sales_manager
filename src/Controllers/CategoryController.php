@@ -47,35 +47,6 @@ class CategoryController {
     return $res;
   }
 
-  public function get(Request $req, Response $res, $args): Response {
-    $arr = [];
-    try {
-      $em = Database::manager();
-      $categoryRepository = $em->getRepository(Category::class);
-      $categories = $categoryRepository->findAll();
-      foreach ($categories as $value) {
-        if (count($value->getProducts()) > 0) {
-          $arr[] = [
-            'id' => $value->getId(),
-            'name' => $value->getName()
-          ];
-        }
-      }
-      $arr = [
-        'status' => true,
-        'categories' => $arr
-      ];
-    } catch (Exception $e) {
-      $arr = [
-        'status' => false,
-        'message' => 'Ocorreu um erro ao buscar as categorias no banco',
-        'error' => $e->getMessage()
-      ];
-    }
-    $res->getBody()->write(json_encode($arr));
-    return $res;
-  }
-
   public function create(Request $req, Response $res, $args): Response {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       $data = $req->getParsedBody();

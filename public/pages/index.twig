@@ -5,18 +5,30 @@
 {% block content %}
 <div class="jumbotron">
   <div class="container">
-
-    <div class="form-group">
-      <label>Categorias</label>
-      <select id="categories" class="form-control">
-        <option value="0" >Todos</option>
-      </select>
+    <div class="row justify-content-center">
+      <div>
+        <h1>Bem-vindo(a) à Stock Sales Manager</h1>
+        <h3 class="h5 mt-3">
+          Ítalo Sérvio Carvalho <br>
+          Matheus Henrique Moreira Braz
+        </h3>
+      </div>
     </div>
-
-    <div id="products" class="row">
-    </div>
-
   </div>
+</div>
+<div class="container">
+  <div class="row my-5">
+    <div class="col-lg-6 col-xl-4">
+      <div class="form-group">
+        <label>Categorias:</label>
+        <select id="categories" class="form-control">
+          <option value="0">Todos</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <h1 class="h2 mb-3">Produtos em alta</h1>
+  <div id="products" class="row"></div>
 </div>
 {% endblock %}
 

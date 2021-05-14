@@ -55,6 +55,11 @@ class UserController {
 		return Helper::render('login', $req, $res);
 	}
 
+	public function changeImage(Request $req, Response $res, $args) : Response {
+		$imgFile = $_FILES['imgFile'];
+		var_dump($imgFile);exit;
+	}
+
 	public function authenticate(Request $req, Response $res, $args) : Response {
 		$em = Database::manager();
 		$arr = $req->getQueryParams();

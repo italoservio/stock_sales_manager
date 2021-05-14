@@ -16,7 +16,6 @@ $app->get('/logout', UserController::class . ':logout');
 
 $app->group('/categories', function(RouteCollectorProxy $group) {
 	$group->get('[/]', CategoryController::class . ':getAll');
-  $group->get('/byproduct', CategoryController::class . ':get');
 	$group->post('/create', CategoryController::class . ':create');
 	$group->delete('/delete/{id}', CategoryController::class . ':delete');
 });
@@ -34,6 +33,7 @@ $app->group('/users', function(RouteCollectorProxy $group) {
 	$group->get('/auth', UserController::class . ':authenticate');
 	$group->post('/create', UserController::class . ':create');
 	$group->delete('/delete/{id}', UserController::class . ':delete');
+	$group->post('/{id}/image', UserController::class . ':changeImage');
 	$group->get('/{id}', UserController::class . ':profile');
 });
 

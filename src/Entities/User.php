@@ -23,7 +23,14 @@ class User {
   /**
    * @var string
    *
-   * @ORM\Column(name="login", type="text", length=64, nullable=false)
+   * @ORM\Column(name="imagePath", type="text", length=1024, nullable=true)
+   */
+  private $imagepath;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="login", type="text", length=64, nullable=true)
    */
   private $login;
 
@@ -89,6 +96,10 @@ class User {
     return $this->id;
   }
 
+  public function getImagePath() {
+    return $this->imagepath;
+  }
+
   public function getLogin() {
     return $this->login;
   }
@@ -126,6 +137,10 @@ class User {
    */
   public function setId($p_id) {
     $this->id = $p_id;
+  }
+
+  public function setImagePath($p_imagePath) {
+    $this->imagepath = $p_imagePath;
   }
 
   public function setLogin($p_login) {
