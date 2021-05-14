@@ -20,7 +20,7 @@ Just a simple PHP project using a micro framework to support us in routes (<b>Sl
 
 <br />
 
-<h3 align="center">🎨 Contributor(s)</h4>
+<h3 align="center">🎨 Contributors</h4>
 <table align="center">
   <tr>
     <td align="center">
