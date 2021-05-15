@@ -84,7 +84,7 @@ class Client {
 	private $user;
 
 	/**
-	 * @ORM\OneToMany(targetEntity="Order", mappedBy="Client")
+	 * @ORM\OneToMany(targetEntity="Orders", mappedBy="Client")
 	 */
 	private $orders;
 

@@ -9,12 +9,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Order
+ * Orders
  *
- * @ORM\Table(name="order")
+ * @ORM\Table(name="orders")
  * @ORM\Entity
  */
-class Order {
+class Orders {
   /**
    * @var int
    *
@@ -46,12 +46,12 @@ class Order {
   private $clientid;
 
   /**
-   * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="order")
+   * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="orders")
    */
   private $orderproducts;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Client", inversedBy="order")
+   * @ORM\ManyToOne(targetEntity="Client", inversedBy="orders")
    * @ORM\JoinColumn(name="clientId", referencedColumnName="id")
    */
   private $client;
@@ -74,11 +74,11 @@ class Order {
     return $this->active;
   }
 
-  public function getCreatedat() {
+  public function getCreatedAt() {
     return $this->createdat;
   }
 
-  public function getClientid() {
+  public function getClientId() {
     return $this->clientid;
   }
 
@@ -101,11 +101,11 @@ class Order {
     $this->active = $p_active;
   }
 
-  public function setCreatedat($p_createdat) {
+  public function setCreatedAt($p_createdat) {
     $this->createdat = $p_createdat;
   }
 
-  public function setClientid($p_clientid) {
+  public function setClientId($p_clientid) {
     $this->clientid = $p_clientid;
   }
 }

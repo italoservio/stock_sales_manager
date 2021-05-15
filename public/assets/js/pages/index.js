@@ -12,10 +12,10 @@ $(document).ready(function () {
       method: 'get',
       url: 'products',
       data: { category }
-    }).done(function (p_data) {
-      p_data = JSON.parse(p_data);
-      if (p_data.status && p_data.products.length > 0) {
-        displayProducts(p_data.products);
+    }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status && data.products.length > 0) {
+        displayProducts(data.products);
       }
       else {
         // ERROR
@@ -27,11 +27,11 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: 'categories/'
-    }).done(function (p_data) {
-      p_data = JSON.parse(p_data);
-      if (p_data.status) {
+    }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status) {
         let categories = $('#categories');
-        p_data.categories.map(e => {
+        data.categories.map(e => {
           categories.append(`
             <option value="${e.id}">${e.name}</option>`);
         });
@@ -39,11 +39,11 @@ $(document).ready(function () {
     });
   }
 
-  function displayProducts(p_data) {
+  function displayProducts(data) {
     let product = $('#products');
     product.html('');
-    if (p_data !== undefined) {
-      p_data.map(e => {
+    if (data !== undefined) {
+      data.map(e => {
         let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
         let price = `R$ ${e.price}`;
         product.append(`

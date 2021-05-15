@@ -13,16 +13,16 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: basePath + `/products/${id}`
-    }).done(function (p_data) {
-      p_data = JSON.parse(p_data);
-      if (p_data.status) {
-        imgPath = `${assetsPath}/img/sys/${p_data.product[0]["imagePath"]}`;
-        $('#inputId').val(p_data.product[0]["name"]);
-        $('#inputName').val(p_data.product[0]["name"]);
-        $('#inputQtd').val(p_data.product[0]["qtd"]);
-        $('#inputPrice').val(p_data.product[0]["price"]);
-        $('#inputCategory').val(p_data.product[0]["category"]["id"]);
-        $('#inputDesc').val(p_data.product[0]["desc"]);
+    }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status) {
+        imgPath = `${assetsPath}/img/sys/${data.product[0]["imagePath"]}`;
+        $('#inputId').val(data.product[0]["name"]);
+        $('#inputName').val(data.product[0]["name"]);
+        $('#inputQtd').val(data.product[0]["qtd"]);
+        $('#inputPrice').val(data.product[0]["price"]);
+        $('#inputCategory').val(data.product[0]["category"]["id"]);
+        $('#inputDesc').val(data.product[0]["desc"]);
 
         image.html(`
           <div class="my-3">
@@ -97,7 +97,7 @@ $(document).ready(function () {
       processData: false,
     }).done(function (data) {
       Swal.fire(
-        'Ação confirmada',
+        'Produto criado',
         '',
         'success'
       )
@@ -112,10 +112,10 @@ $(document).ready(function () {
       text: "Você não será capaz de reverter isso!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, delete!',
-      cancelButtonText: 'Cancelar!',
+      confirmButtonColor: '#325d88',
+      cancelButtonColor: '#d9534f',
+      confirmButtonText: 'Sim, remover!',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
@@ -128,8 +128,8 @@ $(document).ready(function () {
           }
         });
         Swal.fire(
-          'Deletado!',
-          'Seu produto foi excluído.',
+          'Produto excluído',
+          '',
           'success'
         )
       }
@@ -141,12 +141,12 @@ $(document).ready(function () {
       method: 'get',
       url: basePath + '/products',
       data: {category}
-    }).done(function (p_data) {
-      p_data = JSON.parse(p_data);
-      if (p_data.status) {
+    }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status) {
         let products = $('#products');
         products.html('');
-        p_data.products.map(e => {
+        data.products.map(e => {
           let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
           products.append(`
             <tr id="${e.id}">
@@ -176,11 +176,11 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: basePath + '/categories'
-    }).done(function (p_data) {
-      p_data = JSON.parse(p_data);
-      if (p_data.status) {
+    }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status) {
         let categories = $('#inputCategory');
-        p_data.categories.map(e => {
+        data.categories.map(e => {
           categories.append(`<option value="${e.id}">${e.name}</option>`);
         });
       }

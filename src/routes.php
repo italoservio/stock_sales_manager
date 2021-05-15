@@ -5,7 +5,7 @@ use Slim\Routing\RouteCollectorProxy;
 
 use \App\Controllers\UserController;
 use \App\Controllers\ProductController;
-use \App\Controllers\OrderController;
+use \App\Controllers\OrdersController;
 use \App\Controllers\CategoryController;
 use \App\Controllers\IndexController;
 
@@ -13,6 +13,7 @@ $app->get('/', IndexController::class . ':index');
 $app->get('/login', UserController::class . ':login');
 $app->get('/signup', UserController::class . ':signup');
 $app->get('/logout', UserController::class . ':logout');
+$app->get('/cart', OrdersController::class . ':cart');
 
 $app->group('/categories', function(RouteCollectorProxy $group) {
 	$group->get('[/]', CategoryController::class . ':getAll');
@@ -40,8 +41,12 @@ $app->group('/users', function(RouteCollectorProxy $group) {
 $app->group('/admin', function(RouteCollectorProxy $group) {
 	$group->get('[/]', IndexController::class . ':admin');
 	$group->get('/users', UserController::class . ':adminUsers');
-	$group->get('/orders', OrderController::class . ':adminOrders');
+	$group->get('/orders', OrdersController::class . ':adminOrders');
 	$group->get('/products', ProductController::class . ':adminProducts');
 	$group->get('/statistics', IndexController::class . ':adminStatistics');
 	$group->get('/categories', CategoryController::class . ':adminCategories');
+});
+
+$app->group('/orders', function(RouteCollectorProxy $group) {
+  $group->post('/set', OrdersController::class . ':set');
 });

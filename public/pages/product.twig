@@ -1,33 +1,72 @@
 {% extends "templates/default.twig" %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}
+  {{ title }}
+{% endblock %}
 
 {% block content %}
-    <div class="container img-thumbnail">
-        <div class="row" >
-            <div class="col-6">
-                <div id="image"></div>
-            </div>
-            <div class="col-6">
-                <div id="name"></div>
-                <div id="desc"></div>
-                <div id="qtd"></div>
-                <div id="price"></div>
-                <div id="buy">
-                    <button class="btn btn-primary" type="submit">Buy</button>
-                </div>
-            </div>
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6 mb-4 mb-md-0">
+      <div class="card">
+        <div class="img-product-details-container">
+          <img src="{{assetsPath}}/img/sys/{{optionals['product']['imagePath']}}" alt="${data.product.name}">
         </div>
-        <hr/>
-        <div class="row" id="columns"></div>
-        <hr/>
+      </div>
     </div>
+
+    <div class="col-md-6">
+      <h1>{{optionals['product']['name']}}</h1>
+      <hr>
+      <p class="text-muted mb-1">Descrição:</p>
+      <h5 class="text-dark text-justify">{{optionals['product']['desc']}}</h5>
+      <hr>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+          <p class="h1 mb-0 font-weight-bold">R$ {{optionals['product']['price']}}</p>
+          <span class="ml-2" style="line-height: 1;"> à vista <br> no boleto</span>
+        </div>
+        <span class="badge badge-primary my-3 px-3 py-2 font-weight-normal">Há {{optionals['product']['qtd']}} unidade(s)</span></h2>
+      </div>
+
+      <div class="row my-3">
+        <div class="col-lg-6">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="form-group">
+              <label for="inputCEP">Calcular CEP</label>
+              <input id="inputCEP" type="text" class="form-control">
+            </div>
+            <div>
+              <button id="btnCalculate" class="btn btn-secondary ml-2 mt-1">Calcular</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 d-flex align-items-center">
+          <div id="cepPrice"  class="d-flex align-items-center justify-content-end"></div>
+        </div>
+      </div>
+
+      <div>
+        <button id="btnBuy" class="btn btn-block btn-success">Comprar agora</button>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row" id="similarProducts"></div>
+
+</div>
 {% endblock %}
 
 {% block script %}
-    {{ parent() }}
-    <script>
-        const productId = "{{ optionals['productId'] }}";
-    </script>
-    <script type="text/javascript" src="{{ assetsPath }}/js/pages/product.js"></script>
+{{ parent() }}
+<script>
+  const productId = "{{ optionals['product']['id'] }}";
+  const productName = "{{ optionals['product']['name'] }}";
+  const productQtd = "{{ optionals['product']['qtd'] }}";
+  const productPrice = "{{ optionals['product']['price'] }}";
+  const productImagePath = "{{ optionals['product']['imagePath'] }}";
+  const categoryId = "{{ optionals['product']['category']['id'] }}";
+</script>
+<script type="text/javascript" src="{{ assetsPath }}/js/pages/product.js"></script>
 {% endblock %}

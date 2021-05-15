@@ -3,7 +3,7 @@
 namespace App\Entities;
 
 use \App\Entities\Product;
-use \App\Entities\Order;
+use \App\Entities\Orders;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -51,7 +51,7 @@ class Orderproduct {
   private $product;
 
   /**
-   * @ORM\ManyToOne(targetEntity="Order", inversedBy="orderProduct")
+   * @ORM\ManyToOne(targetEntity="Orders", inversedBy="orderProduct")
    * @ORM\JoinColumn(name="orderId", referencedColumnName="id")
    */
   private $order;

@@ -87,10 +87,10 @@ $(document).ready(function () {
       text: "Você não será capaz de reverter isso!",
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, delete!',
-      cancelButtonText: 'Cancelar!',
+      confirmButtonColor: '#325d88',
+      cancelButtonColor: '#d9534f',
+      confirmButtonText: 'Sim, remover!',
+      cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
@@ -105,7 +105,7 @@ $(document).ready(function () {
         });
         Swal.fire(
           'Deletado!',
-          'Sua Categoria foi excluído.',
+          'Sua Categoria foi excluída.',
           'success'
         )
       }

@@ -14,8 +14,23 @@ use Exception;
 class ProductController {
 
   public function details(Request $req, Response $res, $args): Response {
-
-    return Helper::render('product', $req, $res, ['productId' => $args['id']]);
+    $em = Database::manager();
+    $productRepository = $em->getRepository(Product::class);
+    $Product = $productRepository->findOneBy(['id' => $args['id']]);
+    if (!is_null($Product)) {
+      $product = [
+        'id' => $args['id'],
+        'name' => $Product->getName(),
+        'desc' => $Product->getDesc(),
+        'qtd' => $Product->getQtd(),
+        'price' => $Product->getPrice(),
+        'imagePath' => $Product->getImagePath(),
+        'category' => [
+          'id' => $Product->getCategory()->getId()
+        ]
+      ];
+    }
+    return Helper::render('product', $req, $res, ['product' => $product]);
   }
 
   public function adminProducts(Request $req, Response $res, $args): Response {
@@ -76,39 +91,38 @@ class ProductController {
   }
 
   public function get(Request $req, Response $res, $args): Response {
-
     $arr = [];
     $id = $args['id'];
     try {
       $em = Database::manager();
       $productRepository = $em->getRepository(Product::class);
-      $product = $productRepository->findOneBy(array('id' => $id));
-      if (!is_null($product)) {
-        $arr[] = [
-          'id' => $product->getId(),
-          'name' => $product->getName(),
-          'desc' => $product->getDesc(),
-          'qtd' => $product->getQtd(),
-          'price' => $product->getPrice(),
-          'imagePath' => $product->getImagePath(),
+      $Product = $productRepository->findOneBy(['id' => $id]);
+      if (!is_null($Product)) {
+        $product = [
+          'id' => $Product->getId(),
+          'name' => $Product->getName(),
+          'desc' => $Product->getDesc(),
+          'qtd' => $Product->getQtd(),
+          'price' => $Product->getPrice(),
+          'imagePath' => $Product->getImagePath(),
           'category' => [
-            'id' => $product->getCategory()->getId(),
+            'id' => $Product->getCategory()->getId(),
           ]
         ];
         $arr = [
           'status' => true,
-          'product' => $arr
+          'product' => $product
         ];
       } else {
         $arr = [
           'status' => false,
-          'message' => 'NIGUEM NO BANCO'
+          'message' => 'Não foi possível encontrar o produto'
         ];
       }
     } catch (Exception $e) {
       $arr = [
         'status' => false,
-        'message' => 'DEU ERRO GERAL',
+        'message' => 'Ocorreu um erro ao buscar o produto',
         'error' => $e->getMessage()
       ];
     }

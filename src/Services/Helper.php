@@ -20,6 +20,7 @@ class Helper {
 			case 'adminStatistics': return 'SSM Admin: Estatísticas';
 			case 'profile': return 'SSM: Perfil';
       case 'product': return 'SSM: Produto';
+      case 'cart': return 'SSM: Carrinho';
 			default: return 'SSM';
 		}
 	}
