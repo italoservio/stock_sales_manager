@@ -101,4 +101,11 @@ class Orderproduct {
   public function setQtd($p_qtd) {
     $this->qtd = $p_qtd;
   }
+
+  public function setOrder($p_order) {
+    $this->order = $p_order;
+  }
+  public function setProduct($p_product) {
+    $this->product = $p_product;
+  }
 }

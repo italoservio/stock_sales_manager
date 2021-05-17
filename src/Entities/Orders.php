@@ -108,4 +108,7 @@ class Orders {
   public function setClientId($p_clientid) {
     $this->clientid = $p_clientid;
   }
+  public function setCliente($p_Cliente) {
+    $this->client = $p_Cliente;
+  }
 }
