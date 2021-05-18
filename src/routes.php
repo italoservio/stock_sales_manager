@@ -17,6 +17,7 @@ $app->get('/cart', OrdersController::class . ':cart');
 
 $app->group('/categories', function(RouteCollectorProxy $group) {
 	$group->get('[/]', CategoryController::class . ':getAll');
+  $group->get('/get', CategoryController::class . ':get');
 	$group->post('/create', CategoryController::class . ':create');
 	$group->delete('/delete/{id}', CategoryController::class . ':delete');
 });

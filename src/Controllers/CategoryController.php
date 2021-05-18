@@ -28,19 +28,48 @@ class CategoryController {
       $categories = $categoryRepository->findAll();
       foreach ($categories as $value) {
         $arr[] = [
-          'id' => $value->getId(),
-          'name' => $value->getName()
+            'id' => $value->getId(),
+            'name' => $value->getName()
         ];
       }
       $arr = [
-        'status' => true,
-        'categories' => $arr
+          'status' => true,
+          'categories' => $arr
       ];
     } catch (Exception $e) {
       $arr = [
-        'status' => false,
-        'message' => 'Ocorreu um erro ao buscar as categorias no banco',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar as categorias no banco',
+          'error' => $e->getMessage()
+      ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+  }
+
+  public function get(Request $req, Response $res, $args): Response {
+    $arr = [];
+    try {
+      $em = Database::manager();
+      $categoryRepository = $em->getRepository(Category::class);
+      $categories = $categoryRepository->findAll();
+      foreach ($categories as $value) {
+        if (count($value->getProducts()) > 0) {
+          $arr[] = [
+              'id' => $value->getId(),
+              'name' => $value->getName()
+          ];
+        }
+      }
+      $arr = [
+          'status' => true,
+          'categories' => $arr
+      ];
+    } catch (Exception $e) {
+      $arr = [
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar as categorias no banco',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -63,19 +92,19 @@ class CategoryController {
         $em->getConnection()->commit();
 
         $arr = [
-          'status' => true,
-          'message' => 'Categoria criada com sucesso',
-          'category' => [
-            'id' => $Category->getId(),
-            'name' => $Category->getName()
-          ]
+            'status' => true,
+            'message' => 'Categoria criada com sucesso',
+            'category' => [
+                'id' => $Category->getId(),
+                'name' => $Category->getName()
+            ]
         ];
       } catch (Exception $e) {
         $em->getConnection()->rollBack();
         $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao criar a categoria',
-          'error' => $e->getMessage()
+            'status' => false,
+            'message' => 'Ocorreu um erro ao criar a categoria',
+            'error' => $e->getMessage()
         ];
       }
       $res->getBody()->write(json_encode($arr));
@@ -94,13 +123,13 @@ class CategoryController {
       $em->flush();
 
       $arr = [
-        'status' => true
+          'status' => true
       ];
     } catch (Exception $e) {
       $arr = [
-        'status' => false,
-        'message' => 'Ocorreu um erro ao remover a categoria',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao remover a categoria',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));

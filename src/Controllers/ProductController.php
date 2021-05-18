@@ -19,15 +19,15 @@ class ProductController {
     $Product = $productRepository->findOneBy(['id' => $args['id']]);
     if (!is_null($Product)) {
       $product = [
-        'id' => $args['id'],
-        'name' => $Product->getName(),
-        'desc' => $Product->getDesc(),
-        'qtd' => $Product->getQtd(),
-        'price' => $Product->getPrice(),
-        'imagePath' => $Product->getImagePath(),
-        'category' => [
-          'id' => $Product->getCategory()->getId()
-        ]
+          'id' => $args['id'],
+          'name' => $Product->getName(),
+          'desc' => $Product->getDesc(),
+          'qtd' => $Product->getQtd(),
+          'price' => $Product->getPrice(),
+          'imagePath' => $Product->getImagePath(),
+          'category' => [
+              'id' => $Product->getCategory()->getId()
+          ]
       ];
     }
     return Helper::render('product', $req, $res, ['product' => $product]);
@@ -44,46 +44,69 @@ class ProductController {
   public function getAll(Request $req, Response $res, $args): Response {
     $arr = [];
     $category = ($req->getQueryParams())['category'];
-
     try {
       $em = Database::manager();
       $productRepository = $em->getRepository(Product::class);
 
-      if ($category === '0') {
-        $products = $productRepository->findAll();
-      } else {
-        $products = $productRepository->findBy(array('categoryid' => $category));
-      }
-      if (!is_null($products)) {
-        foreach ($products as $value) {
-          $arr[] = [
-            'id' => $value->getId(),
-            'name' => $value->getName(),
-            'desc' => $value->getDesc(),
-            'qtd' => $value->getQtd(),
-            'price' => $value->getPrice(),
-            'imagePath' => $value->getImagePath(),
-            'category' => [
-              'id' => $value->getCategory()->getId(),
-              'name' => $value->getCategory()->getName()
-            ]
-          ];
+      if (!is_array($category)) {
+        if ($category === "0") {
+          $products = $productRepository->findAll();
+        } else {
+          $products = $productRepository->findBy(array('categoryid' => $category));
         }
-        $arr = [
-          'status' => true,
-          'products' => $arr
-        ];
+        if (!is_null($products)) {
+          foreach ($products as $value) {
+            $arr[] = [
+                'id' => $value->getId(),
+                'name' => $value->getName(),
+                'desc' => $value->getDesc(),
+                'qtd' => $value->getQtd(),
+                'price' => $value->getPrice(),
+                'imagePath' => $value->getImagePath(),
+                'category' => [
+                    'id' => $value->getCategory()->getId(),
+                    'name' => $value->getCategory()->getName()
+                ]
+            ];
+          }
+        }
       } else {
+        for ($i = 0; $i < count($category); $i++) {
+          $products = $productRepository->findBy(array('categoryid' => $category[$i]));
+          if (!is_null($products)) {
+            foreach ($products as $value) {
+              $arr[] = [
+                  'id' => $value->getId(),
+                  'name' => $value->getName(),
+                  'desc' => $value->getDesc(),
+                  'qtd' => $value->getQtd(),
+                  'price' => $value->getPrice(),
+                  'imagePath' => $value->getImagePath(),
+                  'category' => [
+                      'id' => $value->getCategory()->getId(),
+                      'name' => $value->getCategory()->getName()
+                  ]
+              ];
+            }
+          }
+        }
+      }
+      if (empty($arr)){
         $arr = [
-          'status' => false,
-          'message' => 'NIGUEM NO BANCO'
+            'status' => false,
+            'message' => 'NIGUEM NO BANCO'
+        ];
+      }else{
+        $arr = [
+            'status' => true,
+            'products' => $arr
         ];
       }
     } catch (Exception $e) {
       $arr = [
-        'status' => false,
-        'message' => 'DEU ERRO GERAL',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'DEU ERRO GERAL',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -99,31 +122,31 @@ class ProductController {
       $Product = $productRepository->findOneBy(['id' => $id]);
       if (!is_null($Product)) {
         $product = [
-          'id' => $Product->getId(),
-          'name' => $Product->getName(),
-          'desc' => $Product->getDesc(),
-          'qtd' => $Product->getQtd(),
-          'price' => $Product->getPrice(),
-          'imagePath' => $Product->getImagePath(),
-          'category' => [
-            'id' => $Product->getCategory()->getId(),
-          ]
+            'id' => $Product->getId(),
+            'name' => $Product->getName(),
+            'desc' => $Product->getDesc(),
+            'qtd' => $Product->getQtd(),
+            'price' => $Product->getPrice(),
+            'imagePath' => $Product->getImagePath(),
+            'category' => [
+                'id' => $Product->getCategory()->getId(),
+            ]
         ];
         $arr = [
-          'status' => true,
-          'product' => $product
+            'status' => true,
+            'product' => $product
         ];
       } else {
         $arr = [
-          'status' => false,
-          'message' => 'Não foi possível encontrar o produto'
+            'status' => false,
+            'message' => 'Não foi possível encontrar o produto'
         ];
       }
     } catch (Exception $e) {
       $arr = [
-        'status' => false,
-        'message' => 'Ocorreu um erro ao buscar o produto',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar o produto',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -173,8 +196,8 @@ class ProductController {
         $em->getConnection()->commit();
 
         $arr = [
-          'status' => true,
-          'message' => 'Produto criado com sucesso'
+            'status' => true,
+            'message' => 'Produto criado com sucesso'
         ];
 
       } else {
@@ -199,17 +222,17 @@ class ProductController {
         $em->getConnection()->commit();
 
         $arr = [
-          'status' => true,
-          'message' => 'Produto editado com sucesso'
+            'status' => true,
+            'message' => 'Produto editado com sucesso'
         ];
       }
 
     } catch (Exception $e) {
       $em->getConnection()->rollBack();
       $arr = [
-        'status' => false,
-        'message' => 'Falha na criação do produto',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Falha na criação do produto',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -230,13 +253,13 @@ class ProductController {
       $em->flush();
 
       $arr = [
-        'status' => true
+          'status' => true
       ];
     } catch (Exception $e) {
       $arr = [
-        'status' => false,
-        'message' => 'Ocorreu um erro ao remover o produto',
-        'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao remover o produto',
+          'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));

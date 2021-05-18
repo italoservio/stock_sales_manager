@@ -1,18 +1,67 @@
+var category = [];
+
 $(document).ready(function () {
     var total = 0;
     var listProduct = [];
     var listQtd = [];
+
     listProducts();
+    listProductsRecommended();
+
+    function listProductsRecommended() {
+        let similarTotal = 0;
+        let similarProducts = $('#similarProducts');
+        if (category != "") {
+            $.ajax({
+                method: 'get',
+                url: basePath + `/products`,
+                data: {category}
+            }).done(function (data) {
+                data = JSON.parse(data);
+                if (data.status) {
+                    console.log(data);
+                    console.log(listProduct);
+                    data.products.map(e => {
+                        for (let i = 0; i < listProduct.length; i++) {
+                            if (e.id == parseInt(listProduct[i])) {
+                                console.log(e.id);
+                                similarTotal = 1;
+                            }
+                        }
+                        if (similarTotal !== 1) {
+                            similarProducts.append(`
+            <div class="col-lg-3 my-3">
+              <div  class="card card-product">
+                <div class="img-products-container rounded">
+                  <img src="${assetsPath}/img/sys/${e.imagePath}" class="card-img-top" alt="${e.name}">
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title h4 mb-0" style="font-weight: 600; height: 55px">${e.name}</h5>
+                  <span class="text-primary h4">R$ ${e.price}</span>
+                  <a href="${basePath}/products/${e.id}/details" class="stretched-link"></a>
+                </div>
+              </div>
+            </div>
+          `);
+                        }
+                        similarTotal = 0;
+                    });
+                } else {
+
+                }
+            });
+        }
+    }
 
     function listProducts() {
         let cart = $('#cart');
         c = getCart();
         if (c !== null && c.length > 0) {
             c.forEach((e, i) => {
+                category.push(e.category);
                 listProduct.push(e.id);
                 listQtd.push(e.qtd);
                 total += parseFloat(e.price * e.qtd);
-
                 cart.append(`
         <li class="list-group-item">
           <div class="row">
@@ -79,7 +128,7 @@ $(document).ready(function () {
       </li>
       `);
         }
-        viewPrice(total);
+        viewPrice(total.toFixed(2));
     }
 
     $('#btnCalculate').on('click', function () {
@@ -102,59 +151,87 @@ $(document).ready(function () {
                 switch (data.uf) {
                     case 'RO':
                         price = '65,34';
+                        break;
                     case 'AC':
                         price = '53,12';
+                        break;
                     case 'AM':
                         price = '44,42';
+                        break;
                     case 'RR':
                         price = '62,66';
+                        break;
                     case 'PA':
                         price = '49,97';
+                        break;
                     case 'AP':
                         price = '47,37';
+                        break;
                     case 'TO':
                         price = '42,11';
+                        break;
                     case 'MA':
                         price = '43,80';
+                        break;
                     case 'PI':
                         price = '38,92';
+                        break;
                     case 'CE':
                         price = '39,10';
+                        break;
                     case 'RN':
                         price = '45,39';
+                        break;
                     case 'PB':
                         price = '46,56';
+                        break;
                     case 'PE':
                         price = '47,74';
+                        break;
                     case 'AL':
                         price = '38,33';
+                        break;
                     case 'SE':
                         price = '37,65';
+                        break;
                     case 'BA':
                         price = '34,78';
+                        break;
                     case 'MG':
                         price = '12,40';
+                        break;
                     case 'ES':
                         price = '32,33';
+                        break;
                     case 'RJ':
                         price = '26,80';
+                        break;
                     case 'SP':
                         price = '22,30';
+                        break;
                     case 'PR':
                         price = '32,43';
+                        break;
                     case 'SC':
                         price = '35,11';
+                        break;
                     case 'RS':
                         price = '37,45';
+                        break;
                     case 'MS':
                         price = '38,14';
+                        break;
                     case 'MT':
                         price = '40,30';
+                        break;
                     case 'GO':
                         price = '32,30';
+                        break;
                     case 'DF':
                         price = '18,10';
+                        break;
                 }
+
                 $('#cepPrice').html(`<div class="btn btn-outline-warning mb-0 mt-1">Frete: <b>R$ ${price}</b></div>`);
                 total = parseFloat(total) + parseFloat(price);
                 $('.spanContext').html(total);
@@ -176,7 +253,7 @@ $(document).ready(function () {
         $.ajax({
             method: 'post',
             url: basePath + `/orders/set`,
-            data: {listProduct,listQtd}
+            data: {listProduct, listQtd}
         }).done(function (data) {
 
         });
