@@ -1,7 +1,11 @@
 $(document).ready(function () {
 
-  $(document).keypress(function (e) {
-    if (e.which == 13) $('#btnLogin').click(); return false;
+  $('#inputUser').keypress(function (e) {
+    if (e.which == 13) { $('#inputPass').focus(); return false; }
+  });
+
+  $('#inputPass').keypress(function (e) {
+    if (e.which == 13) { $('#btnLogin').trigger('click'); return false; }
   });
 
   $('#btnLogin').on('click', function () {
