@@ -19,15 +19,15 @@ class ProductController {
     $Product = $productRepository->findOneBy(['id' => $args['id']]);
     if (!is_null($Product)) {
       $product = [
-          'id' => $args['id'],
-          'name' => $Product->getName(),
-          'desc' => $Product->getDesc(),
-          'qtd' => $Product->getQtd(),
-          'price' => $Product->getPrice(),
-          'imagePath' => $Product->getImagePath(),
-          'category' => [
-              'id' => $Product->getCategory()->getId()
-          ]
+        'id' => $args['id'],
+        'name' => $Product->getName(),
+        'desc' => $Product->getDesc(),
+        'qtd' => $Product->getQtd(),
+        'price' => $Product->getPrice(),
+        'imagePath' => $Product->getImagePath(),
+        'category' => [
+          'id' => $Product->getCategory()->getId()
+        ]
       ];
     }
     return Helper::render('product', $req, $res, ['product' => $product]);
@@ -49,14 +49,30 @@ class ProductController {
       $productRepository = $em->getRepository(Product::class);
 
       if (!is_array($category)) {
-        if ($category === "0") {
-          $products = $productRepository->findAll();
-        } else {
-          $products = $productRepository->findBy(array('categoryid' => $category));
-        }
+        $products = ($category == "0") ? $productRepository->findAll() : $productRepository->findBy(array('categoryid' => (int) $category));
+
         if (!is_null($products)) {
-          foreach ($products as $value) {
+          foreach ($products as $p) {
             $arr[] = [
+              'id' => $p->getId(),
+              'name' => $p->getName(),
+              'desc' => $p->getDesc(),
+              'qtd' => $p->getQtd(),
+              'price' => $p->getPrice(),
+              'imagePath' => $p->getImagePath(),
+              'category' => [
+                'id' => $p->getCategory()->getId(),
+                'name' => $p->getCategory()->getName()
+              ]
+            ];
+          }
+        }
+      } else {
+        foreach ($category as $key => $categoryId) {
+          $products = $productRepository->findBy(array('categoryid' => $category[$key]));
+          if (!is_null($products)) {
+            foreach ($products as $value) {
+              $arr[] = [
                 'id' => $value->getId(),
                 'name' => $value->getName(),
                 'desc' => $value->getDesc(),
@@ -64,49 +80,22 @@ class ProductController {
                 'price' => $value->getPrice(),
                 'imagePath' => $value->getImagePath(),
                 'category' => [
-                    'id' => $value->getCategory()->getId(),
-                    'name' => $value->getCategory()->getName()
+                  'id' => $value->getCategory()->getId(),
+                  'name' => $value->getCategory()->getName()
                 ]
-            ];
-          }
-        }
-      } else {
-        for ($i = 0; $i < count($category); $i++) {
-          $products = $productRepository->findBy(array('categoryid' => $category[$i]));
-          if (!is_null($products)) {
-            foreach ($products as $value) {
-              $arr[] = [
-                  'id' => $value->getId(),
-                  'name' => $value->getName(),
-                  'desc' => $value->getDesc(),
-                  'qtd' => $value->getQtd(),
-                  'price' => $value->getPrice(),
-                  'imagePath' => $value->getImagePath(),
-                  'category' => [
-                      'id' => $value->getCategory()->getId(),
-                      'name' => $value->getCategory()->getName()
-                  ]
               ];
             }
           }
         }
       }
-      if (empty($arr)){
-        $arr = [
-            'status' => false,
-            'message' => 'NIGUEM NO BANCO'
-        ];
-      }else{
-        $arr = [
-            'status' => true,
-            'products' => $arr
-        ];
-      }
+      $arr = (empty($arr)) ? ['status' => false, 'message' => 'Não há produtos para exibir']
+                           : ['status' => true, 'products' => $arr];
+
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'DEU ERRO GERAL',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao tentar buscar os produtos',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -122,31 +111,31 @@ class ProductController {
       $Product = $productRepository->findOneBy(['id' => $id]);
       if (!is_null($Product)) {
         $product = [
-            'id' => $Product->getId(),
-            'name' => $Product->getName(),
-            'desc' => $Product->getDesc(),
-            'qtd' => $Product->getQtd(),
-            'price' => $Product->getPrice(),
-            'imagePath' => $Product->getImagePath(),
-            'category' => [
-                'id' => $Product->getCategory()->getId(),
-            ]
+          'id' => $Product->getId(),
+          'name' => $Product->getName(),
+          'desc' => $Product->getDesc(),
+          'qtd' => $Product->getQtd(),
+          'price' => $Product->getPrice(),
+          'imagePath' => $Product->getImagePath(),
+          'category' => [
+            'id' => $Product->getCategory()->getId(),
+          ]
         ];
         $arr = [
-            'status' => true,
-            'product' => $product
+          'status' => true,
+          'product' => $product
         ];
       } else {
         $arr = [
-            'status' => false,
-            'message' => 'Não foi possível encontrar o produto'
+          'status' => false,
+          'message' => 'Não foi possível encontrar o produto'
         ];
       }
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao buscar o produto',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao buscar o produto',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -170,7 +159,6 @@ class ProductController {
         $file['name'] = md5(date('YmdHis')) . '_' . $file['name'];
         // Movendo arquivo:
         move_uploaded_file($file['tmp_name'], $route . $file['name']);
-
       }
       $Product = new Product();
 
@@ -179,8 +167,8 @@ class ProductController {
       $categoryRepository = $em->getRepository(Category::class);
       $Category = $categoryRepository->find((int)$data['category']);
       $userId = $User->getId();
-      if ($data['id'] === '0') {
 
+      if ($data['id'] === '0') {
         $Product->setName($data['name']);
         $Product->setQtd($data['qtd']);
         $Product->setPrice($data['price']);
@@ -196,10 +184,9 @@ class ProductController {
         $em->getConnection()->commit();
 
         $arr = [
-            'status' => true,
-            'message' => 'Produto criado com sucesso'
+          'status' => true,
+          'message' => 'Produto criado com sucesso'
         ];
-
       } else {
         $productRepository = $em->getRepository(Product::class);
         $Product = $productRepository->find($data['id']);
@@ -222,17 +209,16 @@ class ProductController {
         $em->getConnection()->commit();
 
         $arr = [
-            'status' => true,
-            'message' => 'Produto editado com sucesso'
+          'status' => true,
+          'message' => 'Produto editado com sucesso'
         ];
       }
-
     } catch (Exception $e) {
       $em->getConnection()->rollBack();
       $arr = [
-          'status' => false,
-          'message' => 'Falha na criação do produto',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Falha na criação do produto',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -253,17 +239,16 @@ class ProductController {
       $em->flush();
 
       $arr = [
-          'status' => true
+        'status' => true
       ];
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao remover o produto',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao remover o produto',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
-
   }
 }

@@ -34,5 +34,4 @@ class IndexController {
 			return Helper::render('login', $req, $res);
 		}
 	}
-
 }

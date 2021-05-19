@@ -1,6 +1,8 @@
 {% extends "templates/default.twig" %}
 
-{% block title %}{{title}}{% endblock %}
+{% block title %}
+  {{title}}
+{% endblock %}
 
 {% block content %}
   <div class="container mt-5">
@@ -63,7 +65,7 @@
 {% endblock %}
 
 {% block script %}
-{{ parent() }}
-<script type="text/javascript" src="{{assetsPath}}/js/core/md5.js"></script>
-<script type="text/javascript" src="{{assetsPath}}/js/pages/adminUsers.js"></script>
+  {{ parent() }}
+  <script type="text/javascript" src="{{assetsPath}}/js/core/md5.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/pages/adminUsers.js"></script>
 {% endblock %}

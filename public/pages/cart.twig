@@ -1,60 +1,68 @@
 {% extends "templates/default.twig" %}
 
 {% block title %}
-    {{ title }}
+{{ title }}
 {% endblock %}
 
 {% block content %}
-    <div class="container my-5">
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-12">
+      <h1 class="h2 text-center">Sacola</h1>
+    </div>
 
-        <div class="row justify-content-center">
-            <div class="col-lg-12">
-                <h1 class="h2 text-center">Carrinho</h1>
-            </div>
-            <div class="col-lg-12">
-                <div class="mt-4">
-                    <div class="card px-4 py-5">
-                        <ul id="cart" class="list-group list-group-flush">
-                        </ul>
-                    </div>
-                    <div class=" card px-4 py-5 col-lg-12">
-                        <div id="price">
-                        </div>
-                        <div class="col-lg-6">
-                            <div class=" d-flex align-items-center justify-content-between">
-                                <div class="form-group">
-                                    <label for="inputCEP">Calcular CEP</label>
-                                    <input id="inputCEP" type="text" class="form-control">
-                                </div>
-                                <div class="col-lg-6 d-flex align-items-center">
-                                    <div id="cepPrice" class="d-flex align-items-center justify-content-end"></div>
-                                </div>
-                                <div>
-                                    <button id="btnCalculate" class="btn btn-secondary ml-2 mt-1">Calcular</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="pricetotal" class=" text-center col-lg-6">
-                            <h2>Valor Total: R$ <span class="spanContext"> ?</span></h2>
-                            <button id="btnBuy" class="btn btn-secondary ml-2 mt-1">Comprar agora</button>
-                        </div>
-                        <div class="col-lg-12">
-                            <hr class="my-4">
-                            <h3 clas="mb-5">Produtos semelhantes:</h3>
-                        </div>
-                            <div id="similarProducts" class="row">
+    <div class="col-lg-12">
+      <div class="mt-4">
 
-                            </div>
-                    </div>
-
-                </div>
-            </div>
+        <div class="card px-4 py-5">
+          <ul id="cart" class="list-group list-group-flush">
+          </ul>
         </div>
+
+        <div class="card px-4 py-5 mt-3 col-lg-12">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class=" d-flex align-items-center">
+                <div class="form-group">
+                  <label for="inputCEP">Calcular CEP</label>
+                  <input id="inputCEP" type="text" class="form-control">
+                </div>
+
+                <div class="d-flex align-items-center">
+                  <div id="cepPrice" class="d-flex align-items-center justify-content-end"></div>
+                </div>
+
+                <div>
+                  <button id="btnCalculate" class="btn btn-secondary ml-2 mt-1">Calcular</button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center justify-content-end">
+              <div id="price"></div>
+            </div>
+          </div>
+
+          <div class="colg-lg-12 d-flex justify-content-end">
+            <h2>Valor Total: <b>R$</b> <b id="totalPrice"></b></h2>
+          </div>
+
+          <button id="btnBuy" class="btn btn-success mt-4 py-3">Finalizar pedido</button>
+        </div>
+
+        <div class="card px-4 py-5 mt-3">
+          <h3 clas="mb-5">Produtos semelhantes:</h3>
+          <div id="similarProducts" class="row">
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
+
+  </div>
+</div>
+</div>
 {% endblock %}
 
 {% block script %}
-    {{ parent() }}
-    <script type="text/javascript" src="{{ assetsPath }}/js/pages/cart.js"></script>
+  {{ parent() }}
+  <script type="text/javascript" src="{{ assetsPath }}/js/pages/cart.js"></script>
 {% endblock %}

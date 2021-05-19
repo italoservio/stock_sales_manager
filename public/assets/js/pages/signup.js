@@ -1,27 +1,27 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
-  $('#inputCep').on('keypress', function(event) {
+  $('#inputCep').on('keypress', function (event) {
     var str = $('#inputCep').val();
     var regex = new RegExp("^[0-9]+$");
     var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
     if (!regex.test(key) || str.length > 7) {
-       event.preventDefault();
-       return false;
+      event.preventDefault();
+      return false;
     }
   });
 
-  $('#btnCep').on('click', function() {
+  $('#btnCep').on('click', function () {
     var inputCidade = $('#inputCidade');
     var inputEstado = $('#inputEstado');
     var inputBairro = $('#inputBairro');
-    var inputCep    = $('#inputCep');
-    var cep         = inputCep.val();
-    var inputLogradouro  = $('#inputLogradouro');
+    var inputCep = $('#inputCep');
+    var cep = inputCep.val();
+    var inputLogradouro = $('#inputLogradouro');
 
     $.ajax({
-      method: 'get',
+      methAd: 'get',
       url: `http://viacep.com.br/ws/${cep}/json/`,
-    }).done(function(data) {
+    }).done(function (data) {
       inputCidade.val(data.localidade);
       inputEstado.val(data.uf);
       inputBairro.val(data.bairro);
@@ -29,19 +29,19 @@ $(document).ready(function() {
     });
   });
 
-  $('#btnSignup').on('click', function() {
-    var alrt   = $('#alert');
-    var login  = $('#inputLogin').val();
-    var pass   = $('#inputPass').val();
-    var name   = $('#inputName').val();
-    var email  = $('#inputEmail').val();
-    var cep    = $('#inputCep').val();
+  $('#btnSignup').on('click', function () {
+    var alrt = $('#alert');
+    var login = $('#inputLogin').val();
+    var pass = $('#inputPass').val();
+    var name = $('#inputName').val();
+    var email = $('#inputEmail').val();
+    var cep = $('#inputCep').val();
     var cidade = $('#inputCidade').val();
     var estado = $('#inputEstado').val();
     var bairro = $('#inputBairro').val();
     var numero = $('#inputNum').val();
     var complemento = $('#inputComplemento').val();
-    var logradouro  = $('#inputLogradouro').val();
+    var logradouro = $('#inputLogradouro').val();
     pass = MD5(pass);
 
     if (validateAll()) {
@@ -54,7 +54,7 @@ $(document).ready(function() {
           numero, complemento, logradouro,
           id: 0, admin: false, hasClient: true
         }
-      }).done(function(data) {
+      }).done(function (data) {
         $data = JSON.parse(data);
         if (data.status) {
           window.location.href = basePath + '/';
@@ -69,19 +69,19 @@ $(document).ready(function() {
   });
 
   function validateAll() {
-    var inputLogin   = $('#inputLogin');
-    var inputPass   = $('#inputPass');
-    var inputPass2  = $('#inputPass2');
-    var inputName   = $('#inputName');
-    var inputEmail  = $('#inputEmail');
-    var inputCep    = $('#inputCep');
+    var inputLogin = $('#inputLogin');
+    var inputPass = $('#inputPass');
+    var inputPass2 = $('#inputPass2');
+    var inputName = $('#inputName');
+    var inputEmail = $('#inputEmail');
+    var inputCep = $('#inputCep');
     var inputCidade = $('#inputCidade');
     var inputEstado = $('#inputEstado');
     var inputBairro = $('#inputBairro');
     var inputNumero = $('#inputNum');
     var inputComplemento = $('#inputComplemento');
-    var inputLogradouro  = $('#inputLogradouro');
-    var bool    = true;
+    var inputLogradouro = $('#inputLogradouro');
+    var bool = true;
     var arrFail = [];
 
     helper.clearFieldValidation([

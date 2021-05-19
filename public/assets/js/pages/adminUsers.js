@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   var arrUsers = [];
   var id = 0;
@@ -8,7 +8,7 @@ $(document).ready(function() {
   $.ajax({
     method: 'get',
     url: basePath + '/users'
-  }).done(function(data) {
+  }).done(function (data) {
     let users = $('#users');
     data = JSON.parse(data);
     if (data.status) {
@@ -18,16 +18,16 @@ $(document).ready(function() {
   });
 
   // Open modal to creation:
-  $(document).on('click', 'button.actCreate', function() {
+  $(document).on('click', 'button.actCreate', function () {
     $('.spanContext').html('Criar');
     $('#createModal').modal('show');
   });
 
   // Open modal to edition:
-  $(document).on('click', 'button.actEdit', function() {
+  $(document).on('click', 'button.actEdit', function () {
     $('.spanContext').html('Editar');
     $('#inputLogin').attr('disabled', 'disabled');
-    let index   = $(this).attr("id");
+    let index = $(this).attr("id");
     let element = arrUsers[index];
 
     id = element.id;
@@ -41,13 +41,13 @@ $(document).ready(function() {
   });
 
   // Remove user:
-  $(document).on('click', 'button.actRemove', function() {
-    let index   = $(this).attr("id");
+  $(document).on('click', 'button.actRemove', function () {
+    let index = $(this).attr("id");
     let element = arrUsers[index];
     $.ajax({
       method: 'delete',
       url: basePath + `/users/delete/${element.id}`,
-    }).done(function(data) {
+    }).done(function (data) {
       data = JSON.parse(data);
       if (data.status) {
         arrUsers.splice(index, 1);
@@ -57,26 +57,28 @@ $(document).ready(function() {
   });
 
   // Action to button create/edit user:
-  $(document).on('click', 'button#btnCreate', function() {
-    let alrt   = $('#alert');
-    let login  = $('#inputLogin').val();
-    let name   = $('#inputName').val();
-    let email  = $('#inputEmail').val();
-    let pass   = $('#inputPass').val();
-    let admin  = $('#inputAdmin').is(':checked');
+  $(document).on('click', 'button#btnCreate', function () {
+    let alrt = $('#alert');
+    let login = $('#inputLogin').val();
+    let name = $('#inputName').val();
+    let email = $('#inputEmail').val();
+    let pass = $('#inputPass').val();
+    let admin = $('#inputAdmin').is(':checked');
 
     if (pass !== '' && arrUsers[editingIndex].pass !== MD5(pass)) pass = MD5(pass);
     else pass = arrUsers[editingIndex].pass;
 
     if (validateAll()) {
       $.ajax({
-			  method: 'post',
-			  url: basePath + '/users/create',
-			  data: { login, name, email,
-          pass, admin, id, hasClient: false }
-			}).done(function(data) {
-		    data = JSON.parse(data);
-		  	if (data.status) {
+        method: 'post',
+        url: basePath + '/users/create',
+        data: {
+          login, name, email,
+          pass, admin, id, hasClient: false
+        }
+      }).done(function (data) {
+        data = JSON.parse(data);
+        if (data.status) {
           if (id !== 0) {
             // If editing, is necessary to remove from the array "users" the old user:
             arrUsers.splice(editingIndex, 1);
@@ -85,10 +87,10 @@ $(document).ready(function() {
           arrUsers.splice(arrUsers.length, 0, data.user);
           reloadTable();
           closeCreateModal();
-		  	} else {
-		  		alrt.html(helper.alert('danger', data.message));
-		  	}
-		  });
+        } else {
+          alrt.html(helper.alert('danger', data.message));
+        }
+      });
     }
   });
 
@@ -110,7 +112,7 @@ $(document).ready(function() {
     });
   }
 
-  $(document).on('click', 'button#btnCancel', function() {
+  $(document).on('click', 'button#btnCancel', function () {
     closeCreateModal();
   });
 
@@ -119,11 +121,11 @@ $(document).ready(function() {
     editingIndex = -1;
     $('input').removeAttr('disabled');
     $("#inputAdmin").prop("checked", false);
-    let inputLogin  = $('#inputLogin');
-    let inputName   = $('#inputName');
-    let inputEmail  = $('#inputEmail');
-    let inputPass   = $('#inputPass');
-    let inputAdmin  = $('#inputAdmin');
+    let inputLogin = $('#inputLogin');
+    let inputName = $('#inputName');
+    let inputEmail = $('#inputEmail');
+    let inputPass = $('#inputPass');
+    let inputAdmin = $('#inputAdmin');
     helper.clearFieldValidation([inputPass, inputLogin, inputName, inputEmail, inputAdmin]);
     inputLogin.val('');
     inputName.val('');
@@ -134,12 +136,12 @@ $(document).ready(function() {
   }
 
   function validateAll() {
-    let inputLogin  = $('#inputLogin');
-    let inputName   = $('#inputName');
-    let inputEmail  = $('#inputEmail');
-    let inputPass   = $('#inputPass');
-    let inputAdmin  = $('#inputAdmin');
-    var bool    = true;
+    let inputLogin = $('#inputLogin');
+    let inputName = $('#inputName');
+    let inputEmail = $('#inputEmail');
+    let inputPass = $('#inputPass');
+    let inputAdmin = $('#inputAdmin');
+    var bool = true;
     var arrFail = [];
 
     helper.clearFieldValidation([inputPass, inputLogin, inputName, inputEmail, inputAdmin]);
