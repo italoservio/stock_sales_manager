@@ -15,14 +15,15 @@ $(document).ready(function () {
       url: basePath + `/products/${id}`
     }).done(function (data) {
       data = JSON.parse(data);
+      console.log(data);
       if (data.status) {
-        imgPath = `${assetsPath}/img/sys/${data.product[0]["imagePath"]}`;
-        $('#inputId').val(data.product[0]["name"]);
-        $('#inputName').val(data.product[0]["name"]);
-        $('#inputQtd').val(data.product[0]["qtd"]);
-        $('#inputPrice').val(data.product[0]["price"]);
-        $('#inputCategory').val(data.product[0]["category"]["id"]);
-        $('#inputDesc').val(data.product[0]["desc"]);
+        imgPath = `${assetsPath}/img/sys/${data.product["imagePath"]}`;
+        $('#inputId').val(data.product["name"]);
+        $('#inputName').val(data.product["name"]);
+        $('#inputQtd').val(data.product["qtd"]);
+        $('#inputPrice').val(data.product["price"]);
+        $('#inputCategory').val(data.product["category"]["id"]);
+        $('#inputDesc').val(data.product["desc"]);
 
         image.html(`
           <div class="my-3">
@@ -46,11 +47,17 @@ $(document).ready(function () {
 
   $(document).on('click', 'button.actCreate', function () {
     let image = $('#image');
+    $('#inputId').val("");
+    $('#inputName').val("");
+    $('#inputQtd').val("");
+    $('#inputPrice').val("");
+    $('#inputCategory').val("");
+    $('#inputDesc').val("");
     image.html(`
       <div class="my-3">
         <div class="d-flex justify-content-center">
           <div class="img-container rounded-circle">
-            <img id="imageModal" src="${ assetsPath }/img/sys/icons/default.png" alt="Imagem do produto" class="rounded-circle" width="120" height="120">
+            <img id="imageModal" src="${assetsPath}/img/sys/icons/default.png" alt="Imagem do produto" class="rounded-circle" width="120" height="120">
           </div>
         </div>
         <label class="label-file mt-2" for="inputImg">Adicionar imagem</label>
@@ -147,8 +154,8 @@ $(document).ready(function () {
         let products = $('#products');
         products.html('');
         data.products.map(e => {
-          let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
-          products.append(`
+            let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
+            products.append(`
             <tr id="${e.id}">
               <td class="w-25">
                 <div class="img-container rounded-circle">

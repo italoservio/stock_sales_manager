@@ -15,7 +15,7 @@ $(document).ready(function () {
       $.ajax({
         method: 'get',
         url: basePath + `/products`,
-        data: { category }
+        data: {category}
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
@@ -47,6 +47,15 @@ $(document).ready(function () {
 
         }
       });
+    } else {
+      similarProducts.append(`
+        <div class="d-flex ">
+          <div>
+            <h4 class="text-center mb-0">Não há items para exibir</h4>
+          </div>
+        </div>
+      `);
+
     }
   }
 
@@ -249,14 +258,40 @@ $(document).ready(function () {
   });
 
   $('#btnBuy').on('click', function () {
+    let cart = $('#cart');
+    let similarProducts = $('#similarProducts');
     $.ajax({
       method: 'post',
       url: basePath + `/orders/set`,
-      data: { listProduct, listQtd }
+      data: {listProduct, listQtd}
     }).done(function (data) {
+      data = JSON.parse(data);
+      if (data.status) {
+        Swal.fire(
+          'Sucesso!',
+          data.message,
+          'success'
+        )
+        localStorage.clear('c');
+        similarProducts.html("");
+        cart.html(`
+          <li class="list-group-item">
+            <div class="d-flex justify-content-center">
+              <div>
+                <h4 class="text-center mb-0">Não há items para exibir</h4>
+                <p class="mb-0">Vá as compras e volte aqui para finalizar seu pedido!</p>
+              </div>
+            </div>
+          </li>
+      `);
+        listProduct = [];
+        listQtd = [];
+      } else {
 
+      }
     });
   });
+
 });
 
 function getCart() {
@@ -265,11 +300,7 @@ function getCart() {
     c = JSON.parse(c);
     return c;
   } else {
-    Swal.fire(
-      'Erro',
-      'Ocorreu uma falha ao carregar o carrinho',
-      'error'
-    );
+
     return null;
   }
 }
