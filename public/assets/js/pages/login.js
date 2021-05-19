@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+  $(document).keypress(function (e) {
+    if (e.which == 13) $('#btnLogin').click(); return false;
+  });
+
   $('#btnLogin').on('click', function () {
     var inputUser = $('#inputUser');
     var inputPass = $('#inputPass');

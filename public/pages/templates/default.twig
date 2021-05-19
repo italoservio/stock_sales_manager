@@ -85,6 +85,18 @@
       </div>
 
       {% if user is not null %}
+        {% if user['admin'] == 1 %}
+          <div class="col-6 px-1">
+            <div class="card-menu card text-center p-3">
+              <img class="mb-2" src="{{assetsPath}}/img/sys/icons/admin.svg" alt="Admin">
+              <span>ADMIN</span>
+              <a href="{{basePath}}/admin" class="stretched-link"></a>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+
+      {% if user is not null %}
       <div class="col-6 px-1">
         <div class="card-menu card text-center p-3">
           <img class="mb-2" src="{{assetsPath}}/img/sys/icons/signout.svg" alt="Sair">
