@@ -1,7 +1,7 @@
 <?php
 namespace App\Services;
 
-use \App\DB\Database;
+use \App\Database\Database;
 use \App\Entities\Client;
 
 session_start();

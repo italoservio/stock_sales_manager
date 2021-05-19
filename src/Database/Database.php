@@ -1,5 +1,5 @@
 <?php
-namespace App\DB;
+namespace App\Database;
 
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
