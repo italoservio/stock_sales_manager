@@ -297,3 +297,8 @@ input:focus {
   transition: .2s;
   background-color: #759c3e;
 }
+
+.title {
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
