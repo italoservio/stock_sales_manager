@@ -124,7 +124,7 @@ label {
 }
 
 .img-product-details-container {
-  height: 355px;
+  height: 505px;
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -304,29 +304,27 @@ input:focus {
 }
 
 .product-description {
-  padding-right: 10px;
+  padding-right: 8px;
   overflow: auto;
-  height: 200px;
+  height: 131px;
   font-size: 15px;
   line-height: 1.3;
 }
 
 .scroll::-webkit-scrollbar-track
 {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
   border-radius: 10px;
-  background-color: #F5F5F5;
+  background-color: #ececec;
 }
 
 .scroll::-webkit-scrollbar
 {
-  width: 9px;
+  width: 8px;
   background-color: #F5F5F5;
 }
 
 .scroll::-webkit-scrollbar-thumb
 {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  background-color: rgb(175, 175, 175);
+  background-color: rgb(202, 202, 202);
 }
