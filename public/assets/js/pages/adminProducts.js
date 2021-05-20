@@ -15,7 +15,6 @@ $(document).ready(function () {
       url: basePath + `/products/${id}`
     }).done(function (data) {
       data = JSON.parse(data);
-      console.log(data);
       if (data.status) {
         imgPath = `${assetsPath}/img/sys/${data.product["imagePath"]}`;
         $('#inputId').val(data.product["name"]);
@@ -156,8 +155,8 @@ $(document).ready(function () {
         data.products.map(e => {
             let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
             products.append(`
-            <tr id="${e.id}">
-              <td class="w-25">
+            <tr>
+              <td>
                 <div class="img-container rounded-circle">
                   <img src="${imgPath}" alt="${e.name}">
                 </div>
@@ -165,7 +164,11 @@ $(document).ready(function () {
               <td>${e.name}</td>
               <td>${e.price}</td>
               <td>${e.qtd}</td>
-              <td>${e.desc}</td>
+              <td class="p-0">
+                <div class="px-3 py-1 scroll" style="height: 140px; overflow: auto;">
+                  ${e.desc}
+                </div>
+              </td>
               <td>${e.category['name']}</td>
               <td align="end">
                 <button id="${e.id}" class="btn btn-secondary mx-1 actEdit">Ver Produtos</button>
