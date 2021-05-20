@@ -187,10 +187,14 @@ input:focus {
 
 #overlay {
   background-color: rgba(0,0,0,.5);
-  position: absolute;
-  z-index: 1;
+  position: fixed;
+  z-index: 10;
   height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   display: none;
 }
 
@@ -198,7 +202,7 @@ input:focus {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 2;
+  z-index: 20;
   top: 0;
   left: 0;
   background-color: #fff;
@@ -327,4 +331,21 @@ input:focus {
 {
   border-radius: 10px;
   background-color: rgb(202, 202, 202);
+}
+
+.sticky-top {
+  z-index: 9;
+}
+
+.badge-font {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn .badge {
+  top: -10px;
+}
+
+#card2, #card3 {
+  display: none;
 }

@@ -123,6 +123,8 @@ $(document).ready(function () {
         </li>
         `);
       });
+      $('#card2').show();
+      $('#card3').show();
     } else {
       cart.append(`
       <li class="list-group-item">
@@ -312,6 +314,7 @@ function addItem(p_index) {
     item.qtd += 1;
     localStorage.setItem('c', JSON.stringify(c));
     location.reload();
+    helper.increaseBag();
   }
 }
 
@@ -325,6 +328,7 @@ function removeItem(p_index) {
       item.qtd -= 1;
       localStorage.setItem('c', JSON.stringify(c));
       location.reload();
+      helper.decreaseBag();
     }
   }
 }
@@ -345,6 +349,7 @@ function removeFromCart(p_index) {
       if (result.isConfirmed) {
         c.splice(p_index, 1);
         localStorage.setItem('c', JSON.stringify(c));
+        helper.decreaseBag();
         location.reload();
         Swal.fire(
           'Item removido',

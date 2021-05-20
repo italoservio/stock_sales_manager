@@ -146,7 +146,6 @@ $(document).ready(function () {
           qtd: 1
         });
       }
-      localStorage.setItem('c', JSON.stringify(c));
     } else {
       c = [{
         id: productId,
@@ -156,8 +155,9 @@ $(document).ready(function () {
         category: categoryId,
         qtd: 1
       }];
-      localStorage.setItem('c', JSON.stringify(c));
     }
+    localStorage.setItem('c', JSON.stringify(c));
+    helper.increaseBag();
     Swal.fire(
       'Produto adicionado',
       'Uma unidade do produto selecionado foi adicionada ao carrinho.',

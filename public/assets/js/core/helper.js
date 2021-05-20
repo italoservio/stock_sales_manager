@@ -1,5 +1,7 @@
-const helper = {
+if (localStorage.getItem('bc') === null) localStorage.setItem('bc', 0);
+else $('#bag').html(localStorage.getItem('bc'));
 
+const helper = {
   validate(p_value, p_arr) {
     p_value = p_value.trim();
     var valid = true;
@@ -62,5 +64,17 @@ const helper = {
     $('#sidenav').css('width', '0px');
     $('#overlay').hide();
   },
+
+  increaseBag() {
+    let bagCount = (parseInt(localStorage.getItem('bc')) + 1);
+    localStorage.setItem('bc', bagCount)
+    $('#bag').html(bagCount);
+  },
+
+  decreaseBag() {
+    let bagCount = (parseInt(localStorage.getItem('bc')) - 1);
+    localStorage.setItem('bc', bagCount)
+    $('#bag').html(bagCount);
+  }
 
 }
