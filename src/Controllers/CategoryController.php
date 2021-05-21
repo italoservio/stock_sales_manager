@@ -80,25 +80,33 @@ class CategoryController {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       $data = $req->getParsedBody();
       $em = Database::manager();
-
+      $categoryRepository = $em->getRepository(Category::class);
       try {
-        $em->getConnection()->beginTransaction();
+        if (is_null($categoryRepository->findOneBy(['name' => $data["name"]]))) {
+          if ($data["id"] === "-1") {
+            $Category = new Category();
+          } else {
+            $Category = $categoryRepository->findOneBy(['id' => $data["id"]]);
+          }
+          $Category->setName($data["name"]);
+          $em->persist($Category);
+          $em->flush();
 
-        $Category = new Category();
-        $Category->setName($data['name']);
+          $arr = [
+              'status' => true,
+              'message' => 'sucesso',
+              'category' => [
+                  'id' => $Category->getId(),
+                  'name' => $Category->getName()
+              ]
+          ];
+        }else{
+          $arr = [
+              'status' => false,
+              'message' => 'Nome já Existe',
+          ];
+        }
 
-        $em->persist($Category);
-        $em->flush();
-        $em->getConnection()->commit();
-
-        $arr = [
-            'status' => true,
-            'message' => 'Categoria criada com sucesso',
-            'category' => [
-                'id' => $Category->getId(),
-                'name' => $Category->getName()
-            ]
-        ];
       } catch (Exception $e) {
         $em->getConnection()->rollBack();
         $arr = [

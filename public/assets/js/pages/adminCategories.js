@@ -1,29 +1,20 @@
 $(document).ready(function () {
 
   var arrCategories = [];
+  var id = -1;
 
-  $.ajax({
-    method: 'get',
-    url: basePath + '/categories'
-  }).done(function (data) {
-    let categories = $('#categories');
-    data = JSON.parse(data);
-
-    if (data.status) {
-      arrCategories = data.categories;
-      reloadTable();
-    }
-
-  });
+  reloadTable();
 
   $(document).on('click', 'button#createCategory', function () {
+    $('#inputCategory').val("");
     $('.spanContext').html('Criar');
   });
 
   $(document).on('click', 'button.actEdit', function () {
     $('.spanContext').html('Editar');
-    let id = $(this).attr("id");
+    id = $(this).attr("id");
     $('#inputCategory').val(arrCategories[id]["name"]);
+    id = arrCategories[id]["id"];
   });
 
   $(document).on('click', 'button#btnCreate', function () {
@@ -38,15 +29,33 @@ $(document).ready(function () {
       $.ajax({
         method: 'post',
         url: basePath + '/categories/create',
-        data: { name }
+        data: {name, id}
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
           arrCategories.splice(arrCategories.length, 0, data.category);
           reloadTable();
           closeCreateModal();
+          if (id == -1) {
+            Swal.fire(
+              'Sucesso!',
+              'Sua categoria foi criada!',
+              'success'
+            )
+          } else {
+            Swal.fire(
+              'Sucesso!',
+              'Sua categoria foi editada!',
+              'success'
+            )
+          }
+          id = -1;
         } else {
-          alrt.html(helper.alert('danger', data.message));
+          Swal.fire(
+            'Falha!',
+            data.message,
+            'error'
+          )
         }
       });
 
@@ -62,7 +71,7 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: basePath + `/products`,
-      data: { category }
+      data: {category}
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {
@@ -77,7 +86,6 @@ $(document).ready(function () {
       }
     });
   });
-
 
   $(document).on('click', 'button.actRemove', function () {
     let index = $(this).attr("id");
@@ -116,20 +124,30 @@ $(document).ready(function () {
   function reloadTable() {
     let categories = $('#categories');
     categories.html('');
-    arrCategories.forEach((e, index) => {
-      categories.append(`
-      <tr id="${index}">
-        <th scope="row">${e.id}</th>
-        <td>${e.name}</td>
-        <td align="end">
-          <button id="${index}" class="btn btn-secondary mx-1 actEdit" data-toggle="modal" data-target="#createModal">Editar Categoria</button>
-          <button id="${index}" class="btn btn-secondary mx-1 actProduct" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">Ver Produtos</button>
-          <button id="${index}" class="btn btn-danger mx-1 actRemove">Remover</button>
-        </td>
-      </tr>
+    $.ajax({
+      method: 'get',
+      url: basePath + '/categories/'
+    }).done(function (data) {
+      data = JSON.parse(data);
+      arrCategories = data.categories;
+      if (data.status) {
+        data.categories.forEach((e, index) => {
+          categories.append(`
+              <tr id="${index}">
+                <th scope="row">${e.id}</th>
+                <td>${e.name}</td>
+                <td align="end">
+                  <button id="${index}" class="btn btn-secondary mx-1 actEdit" data-toggle="modal" data-target="#createModal">Editar Categoria</button>
+                  <button id="${index}" class="btn btn-secondary mx-1 actProduct" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">Ver Produtos</button>
+                  <button id="${index}" class="btn btn-danger mx-1 actRemove">Remover</button>
+                </td>
+              </tr>
       `);
+        });
+      }
     });
   }
+
 
   function closeCreateModal() {
     $('#inputCategory').val('');
