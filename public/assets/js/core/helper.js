@@ -71,8 +71,8 @@ const helper = {
     $('#bag').html(bagCount);
   },
 
-  decreaseBag() {
-    let bagCount = (parseInt(localStorage.getItem('bc')) - 1);
+  decreaseBag(p_qtd = 1) {
+    let bagCount = (parseInt(localStorage.getItem('bc')) - p_qtd);
     localStorage.setItem('bc', bagCount)
     $('#bag').html(bagCount);
   }

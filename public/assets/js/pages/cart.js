@@ -297,14 +297,9 @@ $(document).ready(function () {
 });
 
 function getCart() {
-  c = localStorage.getItem('c');
-  if (c !== null) {
-    c = JSON.parse(c);
-    return c;
-  } else {
-
-    return null;
-  }
+  let c = localStorage.getItem('c');
+  if (c !== null) return JSON.parse(c)
+  return null;
 }
 
 function addItem(p_index) {
@@ -323,7 +318,7 @@ function removeItem(p_index) {
   if (c !== null) {
     let item = c[p_index];
     if ((item.qtd - 1) === 0) {
-      removeFromCart();
+      removeFromCart(p_index);
     } else {
       item.qtd -= 1;
       localStorage.setItem('c', JSON.stringify(c));
@@ -347,9 +342,9 @@ function removeFromCart(p_index) {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
+        helper.decreaseBag(getCart()[p_index].qtd);
         c.splice(p_index, 1);
         localStorage.setItem('c', JSON.stringify(c));
-        helper.decreaseBag();
         location.reload();
         Swal.fire(
           'Item removido',
