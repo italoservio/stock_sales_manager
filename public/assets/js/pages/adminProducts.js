@@ -1,7 +1,7 @@
 $(document).ready(function () {
-  let category = 0;
+  var category = 0;
   var id = 0;
-
+  let text;
   reloadTable();
   getCategory();
 
@@ -40,6 +40,7 @@ $(document).ready(function () {
 
     $('#inputNameCheck').show();
     $('.spanContext').html('Editar');
+    text = 'Editado';
     $('#inputId').attr('disabled', 'disabled');
     $('#createModal').modal('show');
   });
@@ -52,6 +53,7 @@ $(document).ready(function () {
     $('#inputPrice').val("");
     $('#inputCategory').val("");
     $('#inputDesc').val("");
+
     image.html(`
       <div class="my-3">
         <div class="d-flex justify-content-center">
@@ -66,6 +68,7 @@ $(document).ready(function () {
     $('#inputNameCheck').hide();
     $('#inputId').val('');
     $('.spanContext').html('Criar');
+    text = 'Criado';
     $('#createModal').modal('show');
   });
 
@@ -86,29 +89,38 @@ $(document).ready(function () {
     inputPrice = $('#inputPrice');
     inputCategory = $('#inputCategory');
     inputDesc = $('#inputDesc');
-    formData.append('id', id);
-    formData.append('file', fileData);
-    formData.append('imageUpdate', imageUpdate);
-    formData.append('name', inputName.val());
-    formData.append('qtd', inputQtd.val());
-    formData.append('price', inputPrice.val());
-    formData.append('category', inputCategory.val());
-    formData.append('desc', inputDesc.val());
-    $.ajax({
-      method: 'post',
-      url: basePath + '/products/create',
-      data: formData,
-      cache: false,
-      contentType: false,
-      processData: false,
-    }).done(function (data) {
+
+    if (validateAll(inputName, inputQtd, inputPrice, inputCategory)) {
+      formData.append('id', id);
+      formData.append('file', fileData);
+      formData.append('imageUpdate', imageUpdate);
+      formData.append('name', inputName.val());
+      formData.append('qtd', inputQtd.val());
+      formData.append('price', inputPrice.val());
+      formData.append('category', inputCategory.val());
+      formData.append('desc', inputDesc.val());
+      $.ajax({
+        method: 'post',
+        url: basePath + '/products/create',
+        data: formData,
+        cache: false,
+        contentType: false,
+        processData: false,
+      }).done(function (data) {
+        Swal.fire(
+          'Produto ' + text,
+          '',
+          'success'
+        )
+        reloadTable();
+      });
+    } else {
       Swal.fire(
-        'Produto criado',
+        'Alguns campos estão incorretos, tente novamente',
         '',
-        'success'
+        'error'
       )
-      reloadTable();
-    });
+    }
   });
 
   $(document).on('click', 'button.actRemove', function () {
@@ -197,42 +209,33 @@ $(document).ready(function () {
     });
   }
 
-  function validateAll() {
-    let inputName = $('#inputName');
-    let inputQtd = $('#inputQtd');
-    let inputPrice = $('#inputDesc');
-    let inputDesc = $('#inputDesc');
-    var bool = true;
-    var arrFail = [];
+  function validateAll(p_inputName, p_inputQtd, p_inputPrice, p_inputCategory) {
+    let inputName = p_inputName;
+    let inputQtd = p_inputQtd;
+    let inputPrice = p_inputPrice;
+    let inputCategory = p_inputCategory;
 
-    helper.clearFieldValidation([inputName, inputQtd, inputDes, inputPrice]);
+    let bool = true;
 
-    if (!helper.validate(inputName.val(), ['textnumber'])) {
-      arrFail.push(inputName);
+    helper.clearFieldValidation([inputName, inputDesc]);
+
+    if (!helper.validate(inputName.val(), ['textnumber', 'required'])) {
       bool = false;
     }
 
-    if (!helper.validate(inputQtd.val(), ['number'])) {
-      arrFail.push(inputQtd);
+    if (!helper.validate(inputPrice.val(), ['textnumber', 'required'])) {
       bool = false;
     }
 
-    if (!helper.validate(inputDes.val(), ['textnumber'])) {
-      arrFail.push(inputDes);
+    if (!helper.validate(inputQtd.val(), ['textnumber', 'required'])) {
       bool = false;
     }
 
-    if (!helper.validate(inputPrice.val(), ['number'])) {
-      arrFail.push(inputPrice);
+    if (inputCategory.val() == null) {
       bool = false;
-    }
-
-    if (!bool) {
-      helper.addFieldValidation(arrFail, false);
     }
 
     return bool;
   }
 
-})
-;
+});
