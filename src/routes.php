@@ -34,7 +34,9 @@ $app->group('/users', function(RouteCollectorProxy $group) {
 	$group->get('[/]', UserController::class . ':getAll');
 	$group->get('/auth', UserController::class . ':authenticate');
 	$group->post('/create', UserController::class . ':create');
+  $group->get('/orders', UserController::class . ':orders');
 	$group->delete('/delete/{id}', UserController::class . ':delete');
+  $group->get('/orders/all', OrdersController::class . ':getByUserId');
 	$group->post('/{id}/image', UserController::class . ':changeImage');
 	$group->get('/{id}', UserController::class . ':profile');
 });

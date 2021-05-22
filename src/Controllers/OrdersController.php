@@ -24,6 +24,58 @@ class OrdersController {
     }
   }
 
+  public function getByUserId(Request $req, Response $res, $args): Response {
+    $arr = [];
+    if (Auth::hasSession()) {
+      try {
+        $userId = (Auth::getSession())->getId();
+        $em = Database::manager();
+        $clientRepository = $em->getRepository(Client::class);
+        $orderRepository = $em->getRepository(Orders::class);
+        $orderProductRepository = $em->getRepository(Orderproduct::class);
+        $productRepository = $em->getRepository(Product::class);
+
+        $Client = $clientRepository->findOneBy(['userid' => $userId]);
+        $Orders = $orderRepository->findBy([
+          'clientid' => $Client->getId(),
+          'active' => 1
+        ]);
+
+        foreach ($Orders as $Order) {
+          $products = [];
+          $OrderProducts = $orderProductRepository->findBy(['orderid' => $Order->getId()]);
+          foreach ($OrderProducts as $OrderProduct) {
+            $Product = $productRepository->findOneBy(['id' => $OrderProduct->getProductId()]);
+            $products[] = [
+              'id' => $Product->getId(),
+              'qtd' => $OrderProduct->getQtd(),
+              'name' => $Product->getName(),
+              'price' => $Product->getPrice(),
+              'imagePath' => $Product->getImagePath()
+            ];
+          }
+          $arr[] = [
+            'id' => $Order->getId(),
+            'createdAt' => date('d/m/Y H:i:s', strtotime($Order->getCreatedAt())),
+            'products' => $products
+          ];
+        }
+        $arr = [
+          'status' => true,
+          'orders' => $arr
+        ];
+      } catch (\Exception $e) {
+        $arr[] = [
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
+          'error' => $e->getMessage()
+        ];
+      }
+      $res->getBody()->write(json_encode($arr));
+      return $res;
+    }
+  }
+
   public function cart(Request $req, Response $res, $args): Response {
     return Helper::render('cart', $req, $res);
   }

@@ -22,6 +22,7 @@ class Helper {
       case 'product': return 'SSM: Produto';
       case 'cart': return 'SSM: Sacola';
       case 'order': return 'SSM: Pedido';
+      case 'orders': return 'SSM: Pedidos';
 			default: return 'SSM';
 		}
 	}
