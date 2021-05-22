@@ -21,13 +21,13 @@ $(document).ready(function () {
       pass = MD5(pass);
       $.ajax({
         method: 'get',
-        url: 'users/auth',
+        url: `${basePath}/users/auth`,
         data: { user, pass }
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
           if (data.admin === 1) {
-            window.location.href = 'admin';
+            window.location.href = `${basePath}/admin`;
           } else {
             window.location.href = basePath + '/';
           }
