@@ -63,11 +63,11 @@ class Orderproduct {
     return $this->id;
   }
 
-  public function getProductid() {
+  public function getProductId() {
     return $this->productid;
   }
 
-  public function getOrderid() {
+  public function getOrderId() {
     return $this->orderid;
   }
 
@@ -90,11 +90,11 @@ class Orderproduct {
     $this->id = $p_id;
   }
 
-  public function setProductid($p_productid) {
+  public function setProductId($p_productid) {
     $this->productid = $p_productid;
   }
 
-  public function setOrderid($p_orderid) {
+  public function setOrderId($p_orderid) {
     $this->orderid = $p_orderid;
   }
 

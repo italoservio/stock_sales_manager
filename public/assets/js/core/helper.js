@@ -72,7 +72,7 @@ const helper = {
   },
 
   decreaseBag(p_qtd = 1) {
-    let bagCount = (parseInt(localStorage.getItem('bc')) - p_qtd);
+    let bagCount = ((p_qtd === 0) ? 0 : (parseInt(localStorage.getItem('bc')) - p_qtd));
     localStorage.setItem('bc', bagCount)
     $('#bag').html(bagCount);
   }

@@ -260,8 +260,6 @@ $(document).ready(function () {
   });
 
   $('#btnBuy').on('click', function () {
-    let cart = $('#cart');
-    let similarProducts = $('#similarProducts');
     $.ajax({
       method: 'post',
       url: basePath + `/orders/set`,
@@ -269,27 +267,13 @@ $(document).ready(function () {
     }).done(function (data) {
       data = JSON.parse(data);
       if (data.status) {
-        Swal.fire(
-          'Sucesso!',
-          data.message,
-          'success'
-        )
         localStorage.clear('c');
-        similarProducts.html("");
-        cart.html(`
-          <li class="list-group-item">
-            <div class="d-flex justify-content-center">
-              <div>
-                <h4 class="text-center mb-0">Não há items para exibir</h4>
-                <p class="mb-0">Vá as compras e volte aqui para finalizar seu pedido!</p>
-              </div>
-            </div>
-          </li>
-      `);
-        listProduct = [];
-        listQtd = [];
+        helper.decreaseBag(0);
+        location.href = `${basePath}/orders/${data.orderId}`;
+      } else if (data.redirect !== undefined && data.redirect) {
+        location.href = `${basePath}/login`;
       } else {
-
+        Swal.fire('Um erro ocorreu ao finalizar o pedido', data.message, 'error');
       }
     });
   });

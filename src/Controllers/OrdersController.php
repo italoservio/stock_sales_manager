@@ -2,14 +2,15 @@
 
 namespace App\Controllers;
 
-use App\Entities\Client;
-use App\Entities\Orderproduct;
-use App\Entities\Product;
-use App\Entities\User;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Services\Helper;
 use \App\Services\Auth;
+
+use App\Entities\Client;
+use App\Entities\Orderproduct;
+use App\Entities\Product;
+use App\Entities\User;
 use \App\Database\Database;
 use \App\Entities\Orders;
 
@@ -25,6 +26,70 @@ class OrdersController {
 
   public function cart(Request $req, Response $res, $args): Response {
     return Helper::render('cart', $req, $res);
+  }
+
+  public function get(Request $req, Response $res, $args): Response {
+    return Helper::render('order', $req, $res, ['orderId' => $args['id']]);
+  }
+
+  public function getById(Request $req, Response $res, $args): Response {
+    if (Auth::hasSession()) {
+      try {
+        $em = Database::manager();
+        $User = Auth::getSession();
+
+        $orderRepository = $em->getRepository(Orders::class);
+        $clientRepository = $em->getRepository(Client::class);
+        $userRepository = $em->getRepository(User::class);
+
+        $Order = $orderRepository->findOneBy(['id' => $args['id']]);
+        $Client = $clientRepository->findOneBy(['id' => $Order->getClientId()]);
+        $UserOrder = $userRepository->findOneBy(['id' => $Client->getUserId()]);
+
+        // Only the owner can see your order:
+        if ($UserOrder->getId() === $User->getId()) {
+          $arr = [];
+          $orderProductRepository = $em->getRepository(Orderproduct::class);
+          $productRepository = $em->getRepository(Product::class);
+
+          $orderProducts = $orderProductRepository->findBy(['orderid' => (int) $args['id']]);
+
+          foreach ($orderProducts as $value) {
+            $Product = $productRepository->findOneBy(['id' => $value->getProductId()]);
+            $arr[] = [
+              'id' => $Product->getId(),
+              'name' => $Product->getName(),
+              'price' => $Product->getPrice(),
+              'imagePath' => $Product->getImagePath(),
+              'qtd' => $value->getQtd(),
+            ];
+          }
+
+          $arr = [
+            'status' => true,
+            'products' => $arr
+          ];
+        } else {
+          $arr = [
+            'status' => false,
+            'redirect' => true
+          ];
+        }
+      } catch (\Exception $e) {
+        $arr = [
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
+          'error' => $e->getMessage()
+        ];
+      }
+    } else {
+      $arr = [
+        'status' => false,
+        'redirect' => true
+      ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
   }
 
   public function set(Request $req, Response $res, $args): Response {
@@ -53,8 +118,8 @@ class OrdersController {
           $OrderProduct = new Orderproduct();
           $OrderProduct->setOrder($Orders);
           $OrderProduct->setProduct($Product);
-          $OrderProduct->setOrderid($Orders->getId());
-          $OrderProduct->setProductid($Product->getId());
+          $OrderProduct->setOrderId($Orders->getId());
+          $OrderProduct->setProductId($Product->getId());
           $OrderProduct->setQtd($data["listQtd"][$i]);
           $Product->setQtd($Product->getQtd() - $data["listQtd"][$i]);
           $em->persist($OrderProduct);
@@ -62,11 +127,23 @@ class OrdersController {
           $em->flush();
         }
 
-
-        $arr = ['status' => true, 'message' => 'Pedido finalizado com sucesso, aguardando aprovação do pagamento'];
-      } catch (Exception $e) {
-        $arr = ['status' => false, 'message' => 'Ocorreu um erro ao finalizar o pedido', 'error' => $e->getMessage()];
+        $arr = [
+          'status' => true,
+          'orderId' => $Orders->getId(),
+          'message' => 'Pedido finalizado com sucesso'
+        ];
+      } catch (\Exception $e) {
+        $arr = [
+          'status' => false,
+          'message' => 'Ocorreu um erro ao finalizar o pedido',
+          'error' => $e->getMessage()
+        ];
       }
+    } else {
+      $arr = [
+        'status' => false,
+        'redirect' => true
+      ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
