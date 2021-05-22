@@ -21,6 +21,7 @@ $(document).ready(function () {
     let inputCategory = $('#inputCategory');
     let alrt = $('#alert');
     let name = inputCategory.val();
+    id = -1;
 
     helper.clearFieldValidation([inputCategory]);
 
@@ -67,6 +68,8 @@ $(document).ready(function () {
 
   $(document).on('click', 'button.actProduct', function () {
     let category = $(this).attr("id");
+    let products = $('#products');
+    products.html("");
     category = arrCategories[category]["id"];
     $.ajax({
       method: 'get',
@@ -75,7 +78,6 @@ $(document).ready(function () {
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {
-        let products = $('#products');
         products.html('');
         p_data.products.map(e => {
           let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
