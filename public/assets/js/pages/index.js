@@ -15,8 +15,10 @@ $(document).ready(function () {
       data: { category }
     }).done(function (data) {
       data = JSON.parse(data);
-      if (data.status && data.products.length > 0) {
+      if (data.status) {
+        $('#products').html('');
         displayProducts(data.products);
+
       }
     });
   }
@@ -39,7 +41,6 @@ $(document).ready(function () {
 
   function displayProducts(data) {
     let product = $('#products');
-    product.html('');
     if (data !== undefined) {
       data.map(e => {
         let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;

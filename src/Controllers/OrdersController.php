@@ -37,8 +37,8 @@ class OrdersController {
 
         $Client = $clientRepository->findOneBy(['userid' => $userId]);
         $Orders = $orderRepository->findBy([
-          'clientid' => $Client->getId(),
-          'active' => 1
+            'clientid' => $Client->getId(),
+            'active' => 1
         ]);
 
         foreach ($Orders as $Order) {
@@ -47,28 +47,28 @@ class OrdersController {
           foreach ($OrderProducts as $OrderProduct) {
             $Product = $productRepository->findOneBy(['id' => $OrderProduct->getProductId()]);
             $products[] = [
-              'id' => $Product->getId(),
-              'qtd' => $OrderProduct->getQtd(),
-              'name' => $Product->getName(),
-              'price' => $Product->getPrice(),
-              'imagePath' => $Product->getImagePath()
+                'id' => $Product->getId(),
+                'qtd' => $OrderProduct->getQtd(),
+                'name' => $Product->getName(),
+                'price' => $Product->getPrice(),
+                'imagePath' => $Product->getImagePath()
             ];
           }
           $arr[] = [
-            'id' => $Order->getId(),
-            'createdAt' => date('d/m/Y H:i:s', strtotime($Order->getCreatedAt())),
-            'products' => $products
+              'id' => $Order->getId(),
+              'createdAt' => date('d/m/Y H:i:s', strtotime($Order->getCreatedAt())),
+              'products' => $products
           ];
         }
         $arr = [
-          'status' => true,
-          'orders' => $arr
+            'status' => true,
+            'orders' => $arr
         ];
       } catch (\Exception $e) {
         $arr[] = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
-          'error' => $e->getMessage()
+            'status' => false,
+            'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
+            'error' => $e->getMessage()
         ];
       }
       $res->getBody()->write(json_encode($arr));
@@ -104,40 +104,40 @@ class OrdersController {
           $orderProductRepository = $em->getRepository(Orderproduct::class);
           $productRepository = $em->getRepository(Product::class);
 
-          $orderProducts = $orderProductRepository->findBy(['orderid' => (int) $args['id']]);
+          $orderProducts = $orderProductRepository->findBy(['orderid' => (int)$args['id']]);
 
           foreach ($orderProducts as $value) {
             $Product = $productRepository->findOneBy(['id' => $value->getProductId()]);
             $arr[] = [
-              'id' => $Product->getId(),
-              'name' => $Product->getName(),
-              'price' => $Product->getPrice(),
-              'imagePath' => $Product->getImagePath(),
-              'qtd' => $value->getQtd(),
+                'id' => $Product->getId(),
+                'name' => $Product->getName(),
+                'price' => $Product->getPrice(),
+                'imagePath' => $Product->getImagePath(),
+                'qtd' => $value->getQtd(),
             ];
           }
 
           $arr = [
-            'status' => true,
-            'products' => $arr
+              'status' => true,
+              'products' => $arr
           ];
         } else {
           $arr = [
-            'status' => false,
-            'redirect' => true
+              'status' => false,
+              'redirect' => true
           ];
         }
       } catch (\Exception $e) {
         $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
-          'error' => $e->getMessage()
+            'status' => false,
+            'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
+            'error' => $e->getMessage()
         ];
       }
     } else {
       $arr = [
-        'status' => false,
-        'redirect' => true
+          'status' => false,
+          'redirect' => true
       ];
     }
     $res->getBody()->write(json_encode($arr));
@@ -147,54 +147,79 @@ class OrdersController {
   public function set(Request $req, Response $res, $args): Response {
     date_default_timezone_set('America/Sao_Paulo');
     $arr = [];
+    $arrList = [];
+
     if (Auth::hasSession()) {
       $User = Auth::getSession();
       $data = $req->getParsedBody();
-      $productId = $data['listProduct'];
+      $qtd = 0;
       try {
         $em = Database::manager();
         $clientRepository = $em->getRepository(Client::class);
         $productRepository = $em->getRepository(Product::class);
-        $Client = $clientRepository->findOneBy(['userid' => $User->getId()]);
-
-        $Orders = new Orders();
-        $Orders->setActive(1);
-        $Orders->setCliente($Client);
-        $Orders->setClientId($Client->getId());
-        $Orders->setCreatedAt(date('Y-m-d H:i:s'));
-        $em->persist($Orders);
-        $em->flush();
 
         for ($i = 0; $i < count($data["listProduct"]); $i++) {
           $Product = $productRepository->findOneBy(['id' => $data["listProduct"][$i]]);
-          $OrderProduct = new Orderproduct();
-          $OrderProduct->setOrder($Orders);
-          $OrderProduct->setProduct($Product);
-          $OrderProduct->setOrderId($Orders->getId());
-          $OrderProduct->setProductId($Product->getId());
-          $OrderProduct->setQtd($data["listQtd"][$i]);
-          $Product->setQtd($Product->getQtd() - $data["listQtd"][$i]);
-          $em->persist($OrderProduct);
-          $em->persist($Product);
+          $qtdTotal = $Product->getQtd() - $data["listQtd"][$i];
+          if ($qtdTotal < 0) {
+            $qtd = 1;
+            $arrList = [
+                'id' => $Product->getId(),
+                'name' => $Product->getName(),
+                'price' => $Product->getPrice(),
+                'qtd' => $Product->getQtd(),
+            ];
+          }
+        }
+        if ($qtd === 0) {
+          $Client = $clientRepository->findOneBy(['userid' => $User->getId()]);
+
+          $Orders = new Orders();
+          $Orders->setActive(1);
+          $Orders->setCliente($Client);
+          $Orders->setClientId($Client->getId());
+          $Orders->setCreatedAt(date('Y-m-d H:i:s'));
+          $em->persist($Orders);
           $em->flush();
+
+          for ($i = 0; $i < count($data["listProduct"]); $i++) {
+            $Product = $productRepository->findOneBy(['id' => $data["listProduct"][$i]]);
+            $OrderProduct = new Orderproduct();
+            $OrderProduct->setOrder($Orders);
+            $OrderProduct->setProduct($Product);
+            $OrderProduct->setOrderId($Orders->getId());
+            $OrderProduct->setProductId($Product->getId());
+            $OrderProduct->setQtd($data["listQtd"][$i]);
+            $Product->setQtd($Product->getQtd() - $data["listQtd"][$i]);
+            $em->persist($OrderProduct);
+            $em->persist($Product);
+            $em->flush();
+          }
+
+          $arr = [
+              'status' => true,
+              'orderId' => $Orders->getId(),
+              'message' => 'Pedido finalizado com sucesso'
+          ];
+        } else {
+          $arr = [
+              'status' => false,
+              'products' => $arrList,
+              'message' => 'Algum produto no carrinho está com o estoque abaixo do total pedido, favor verificar'
+          ];
         }
 
-        $arr = [
-          'status' => true,
-          'orderId' => $Orders->getId(),
-          'message' => 'Pedido finalizado com sucesso'
-        ];
       } catch (\Exception $e) {
         $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao finalizar o pedido',
-          'error' => $e->getMessage()
+            'status' => false,
+            'message' => 'Ocorreu um erro ao finalizar o pedido',
+            'error' => $e->getMessage()
         ];
       }
     } else {
       $arr = [
-        'status' => false,
-        'redirect' => true
+          'status' => false,
+          'redirect' => true
       ];
     }
     $res->getBody()->write(json_encode($arr));

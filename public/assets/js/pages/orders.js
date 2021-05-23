@@ -31,6 +31,8 @@ $(document).ready(function() {
           `;
         });
 
+
+
         $('#orders').append(`
           <div class="card px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-center">
