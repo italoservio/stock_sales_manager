@@ -19,10 +19,18 @@ $(document).ready(function () {
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
-          data.products.map(e => {
+          data.products.map((e, index) => {
             for (let i = 0; i < listProduct.length; i++) {
               if (e.id == parseInt(listProduct[i])) {
                 similarTotal = 1;
+              }
+            }
+            if (similarTotal == 0) {
+              for (let i = index + 1; i < data.products.length; i++) {
+                if (e.id == data.products[i]["id"]) {
+                  similarTotal = 1;
+                  console.log(data.products[i]["id"]);
+                }
               }
             }
             if (similarTotal !== 1) {
@@ -332,12 +340,12 @@ function removeFromCart(p_index) {
         helper.decreaseBag(getCart()[p_index].qtd);
         c.splice(p_index, 1);
         localStorage.setItem('c', JSON.stringify(c));
-        location.reload();
         Swal.fire(
           'Item removido',
           'Este item foi removido de seu carrinho.',
           'success'
         );
+        location.reload();
       }
     });
   }

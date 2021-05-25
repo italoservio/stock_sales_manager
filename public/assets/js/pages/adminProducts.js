@@ -107,11 +107,13 @@ $(document).ready(function () {
         contentType: false,
         processData: false,
       }).done(function (data) {
+        closeCreateModal();
         Swal.fire(
           'Produto ' + text,
           '',
           'success'
         )
+        $('#createModal').modal('hide');
         reloadTable();
       });
     } else {
@@ -152,6 +154,10 @@ $(document).ready(function () {
         )
       }
     })
+  });
+
+  $(document).on('click', 'button#btnCancel', function () {
+    closeCreateModal();
   });
 
   function reloadTable() {
@@ -214,28 +220,53 @@ $(document).ready(function () {
     let inputQtd = p_inputQtd;
     let inputPrice = p_inputPrice;
     let inputCategory = p_inputCategory;
+    let arrFail = [];
 
     let bool = true;
 
     helper.clearFieldValidation([inputName, inputDesc]);
 
     if (!helper.validate(inputName.val(), ['textnumber', 'required'])) {
+      arrFail.push(inputName);
       bool = false;
     }
 
     if (!helper.validate(inputPrice.val(), ['textnumber', 'required'])) {
+      arrFail.push(inputPrice);
       bool = false;
     }
 
     if (!helper.validate(inputQtd.val(), ['textnumber', 'required'])) {
+      arrFail.push(inputQtd);
       bool = false;
     }
 
     if (inputCategory.val() == null) {
+      arrFail.push(inputCategory);
       bool = false;
     }
 
+    if (!bool) {
+      helper.addFieldValidation(arrFail, false);
+    }
+
     return bool;
+  }
+
+  function closeCreateModal() {
+    id = 0;
+    let inputId = $('#inputId');
+    let inputName = $('#inputName');
+    let inputQtd = $('#inputQtd');
+    let inputPrice = $('#inputPrice');
+    let inputCategory = $('#inputCategory');
+    helper.clearFieldValidation([inputId, inputName, inputQtd, inputPrice, inputCategory]);
+    inputId.val('');
+    inputName.val('');
+    inputQtd.val('');
+    inputPrice.val('');
+    inputCategory.val('');
+    $('#createModal').modal('hide');
   }
 
 });

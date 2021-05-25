@@ -20,12 +20,14 @@ $(document).ready(function () {
   // Open modal to creation:
   $(document).on('click', 'button.actCreate', function () {
     $('.spanContext').html('Criar');
+    $('#passview').hide();
     $('#createModal').modal('show');
   });
 
   // Open modal to edition:
   $(document).on('click', 'button.actEdit', function () {
     $('.spanContext').html('Editar');
+    $('#passview').show();
     $('#inputLogin').attr('disabled', 'disabled');
     let index = $(this).attr("id");
     let element = arrUsers[index];
@@ -42,18 +44,36 @@ $(document).ready(function () {
 
   // Remove user:
   $(document).on('click', 'button.actRemove', function () {
-    let index = $(this).attr("id");
-    let element = arrUsers[index];
-    $.ajax({
-      method: 'delete',
-      url: basePath + `/users/delete/${element.id}`,
-    }).done(function (data) {
-      data = JSON.parse(data);
-      if (data.status) {
-        arrUsers.splice(index, 1);
-        reloadTable();
+    Swal.fire({
+      title: 'Tem certeza?',
+      text: "Você não será capaz de reverter isso!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sim, remover!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let index = $(this).attr("id");
+        let element = arrUsers[index];
+        $.ajax({
+          method: 'delete',
+          url: basePath + `/users/delete/${element.id}`,
+        }).done(function (data) {
+          data = JSON.parse(data);
+          if (data.status) {
+            arrUsers.splice(index, 1);
+            reloadTable();
+          }
+        });
+        Swal.fire(
+          'Usuario excluído',
+          '',
+          'success'
+        )
       }
-    });
+    })
   });
 
   // Action to button create/edit user:
@@ -64,9 +84,15 @@ $(document).ready(function () {
     let email = $('#inputEmail').val();
     let pass = $('#inputPass').val();
     let admin = $('#inputAdmin').is(':checked');
+    console.log(editingIndex);
+    if (editingIndex != -1) {
+      if (pass !== '' && arrUsers[editingIndex].pass !== MD5(pass)) {
+        pass = MD5(pass);
+      } else {
+        pass = arrUsers[editingIndex].pass;
+      }
+    }
 
-    if (pass !== '' && arrUsers[editingIndex].pass !== MD5(pass)) pass = MD5(pass);
-    else pass = arrUsers[editingIndex].pass;
 
     if (validateAll()) {
       $.ajax({
