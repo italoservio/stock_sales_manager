@@ -349,3 +349,7 @@ input:focus {
 #card2, #card3 {
   display: none;
 }
+
+.table-boleto .logobanco img {
+  margin-bottom: 7px !important;
+}

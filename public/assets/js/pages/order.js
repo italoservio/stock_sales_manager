@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  console.log(orderId);
+  let totalPrice = 0;
 
   // Getting products and listing:
   $.ajax({
@@ -35,11 +35,39 @@ $(document).ready(function() {
         `);
       });
       $('#totalPrice').html('R$ ' + productsPrice.toFixed(2));
+      totalPrice = productsPrice.toFixed(2);
     } else if (data.redirect) {
       location.href = `${basePath}/`;
     } else {
       Swal.fire('Erro', data.message, 'error');
     }
+  });
+
+  $('#btnBoleto').on('click', function() {
+    $.ajax({
+      method: 'get',
+      url: basePath + `/orders/boleto?price=${totalPrice}`,
+    }).done(function (data) {
+        $('#modalBoletoBody').html(data);
+        $('#modalBoleto').modal('show');
+    }).fail(function (data) {
+      data = JSON.parse(data);
+      Swal.fire('Erro', data.message, 'error');
+    });
+  });
+
+  $('#btnPrint').on('click', function() {
+    $('.container').hide();
+    $('.close').hide();
+    $('#btnPrint').hide();
+    $('#modalBoletoLabel').hide();
+    $('#modalContent').removeClass('modal-content');
+    window.print();
+    $('#modalContent').addClass('modal-content');
+    $('.container').show();
+    $('#btnPrint').show();
+    $('.close').show();
+    $('#modalBoletoLabel').show();
   });
 
 });

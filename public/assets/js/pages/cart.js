@@ -280,7 +280,7 @@ $(document).ready(function () {
       if (data.status) {
         localStorage.clear('c');
         helper.decreaseBag(0);
-        // location.href = `${basePath}/orders/${data.orderId}`;
+        location.href = `${basePath}/orders/${data.orderId}`;
       } else if (data.redirect !== undefined && data.redirect) {
         location.href = `${basePath}/login`;
       } else if (data.status === false) {

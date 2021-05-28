@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use \App\Services\Helper;
 use \App\Services\Auth;
+use \App\Services\Boleto;
 
 use App\Entities\Client;
 use App\Entities\Orderproduct;
@@ -15,6 +16,31 @@ use \App\Database\Database;
 use \App\Entities\Orders;
 
 class OrdersController {
+
+  public function getBoleto(Request $req, Response $res, $args): Response {
+    try {
+      $price = ($req->getQueryParams())['price'];
+      $em = Database::manager();
+      $clientRepository = $em->getRepository(Client::class);
+      $Client = $clientRepository->findOneBy(['userid' => (Auth::getSession())->getId()]);
+      $arr = [
+        'name' => $Client->getUser()->getName(),
+        'cpf' => '00000000000',
+        'address' => $Client->getLogradouro() . ', ' . $Client->getNumero() . ', ' . $Client->getComplemento(),
+        'zip' => $Client->getCep(),
+        'city' => $Client->getCidade(),
+        'uf' => $Client->getEstado()
+      ];
+      $ticket = Boleto::generate($arr, $price);
+      $res->getBody()->write($ticket);
+    } catch (\Exception $e) {
+      $res->getBody()->write([
+        'status' => false,
+        'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
+      ]);
+    }
+    return $res;
+  }
 
   public function adminOrders(Request $req, Response $res, $args): Response {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
