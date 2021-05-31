@@ -58,58 +58,85 @@ $(document).ready(function () {
         switch (data.uf) {
           case 'RO':
             price = '65,34';
+            break;
           case 'AC':
             price = '53,12';
+            break;
           case 'AM':
             price = '44,42';
+            break;
           case 'RR':
             price = '62,66';
+            break;
           case 'PA':
             price = '49,97';
+            break;
           case 'AP':
             price = '47,37';
+            break;
           case 'TO':
             price = '42,11';
+            break;
           case 'MA':
             price = '43,80';
+            break;
           case 'PI':
             price = '38,92';
+            break;
           case 'CE':
             price = '39,10';
+            break;
           case 'RN':
             price = '45,39';
+            break;
           case 'PB':
             price = '46,56';
+            break;
           case 'PE':
             price = '47,74';
+            break;
           case 'AL':
             price = '38,33';
+            break;
           case 'SE':
             price = '37,65';
+            break;
           case 'BA':
             price = '34,78';
+            break;
           case 'MG':
             price = '12,40';
+            break;
           case 'ES':
             price = '32,33';
+            break;
           case 'RJ':
             price = '26,80';
+            break;
           case 'SP':
             price = '22,30';
+            break;
           case 'PR':
             price = '32,43';
+            break;
           case 'SC':
             price = '35,11';
+            break;
           case 'RS':
             price = '37,45';
+            break;
           case 'MS':
             price = '38,14';
+            break;
           case 'MT':
             price = '40,30';
+            break;
           case 'GO':
             price = '32,30';
+            break;
           case 'DF':
             price = '18,10';
+            break;
         }
         $('#cepPrice').html(`<div class="btn btn-outline-warning mb-0 mt-1">Frete: <b>R$ ${price}</b></div>`);
       }).fail(function () {

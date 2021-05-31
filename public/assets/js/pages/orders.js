@@ -9,7 +9,9 @@ $(document).ready(function() {
 
       data.orders.forEach((e, i) => {
         let htmlProducts = '';
+        let totalProdutct = 0;
         e.products.forEach(p => {
+          totalProdutct = (p.price * p.qtd).toFixed(2);
           htmlProducts += `
           <li class="list-group-item">
             <div class="row justify-content-between align-items-center">
@@ -18,12 +20,15 @@ $(document).ready(function() {
                   <img src="${assetsPath + '/img/sys/' + p.imagePath}" alt="A">
                 </div>
                 <p class="ml-3 mb-0">
-                  <span class="h4">${p.name}</span> <br>
+                  <span class="h4 px-md-2">${p.name}</span> <br>
+                </p>
+                <p class="ml-3 mb-0">
+                  <span class="h4 px-md-5"> Quantidade: ${p.qtd}</span> <br>
                 </p>
               </div>
 
               <div class="d-flex align-items-center">
-                <span class="text-muted h4">R$ ${p.price}</span>
+                <span class="text-muted h4">R$ ${totalProdutct}</span>
               </div>
             </div>
           </li>

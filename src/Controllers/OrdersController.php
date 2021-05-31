@@ -24,19 +24,19 @@ class OrdersController {
       $clientRepository = $em->getRepository(Client::class);
       $Client = $clientRepository->findOneBy(['userid' => (Auth::getSession())->getId()]);
       $arr = [
-        'name' => $Client->getUser()->getName(),
-        'cpf' => '00000000000',
-        'address' => $Client->getLogradouro() . ', ' . $Client->getNumero() . ', ' . $Client->getComplemento(),
-        'zip' => $Client->getCep(),
-        'city' => $Client->getCidade(),
-        'uf' => $Client->getEstado()
+          'name' => $Client->getUser()->getName(),
+          'cpf' => '00000000000',
+          'address' => $Client->getLogradouro() . ', ' . $Client->getNumero() . ', ' . $Client->getComplemento(),
+          'zip' => $Client->getCep(),
+          'city' => $Client->getCidade(),
+          'uf' => $Client->getEstado()
       ];
       $ticket = Boleto::generate($arr, $price);
       $res->getBody()->write($ticket);
     } catch (\Exception $e) {
       $res->getBody()->write([
-        'status' => false,
-        'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
+          'status' => false,
+          'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
       ]);
     }
     return $res;
@@ -235,7 +235,7 @@ class OrdersController {
           ];
         }
 
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr = [
             'status' => false,
             'message' => 'Ocorreu um erro ao finalizar o pedido',
@@ -247,6 +247,88 @@ class OrdersController {
           'status' => false,
           'redirect' => true
       ];
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+  }
+
+  public function getAll(Request $req, Response $res, $args): Response {
+    $arr = [];
+    $ordersEnd = [];
+    if (Auth::hasSession()) {
+      try {
+        $em = Database::manager();
+        $ordersRepository = $em->getRepository(Orders::class);
+        $clientRepository = $em->getRepository(Client::class);
+        $userRepository = $em->getRepository(User::class);
+        $ordersProductsRepository = $em->getRepository(Orderproduct::class);
+        $productsRepository = $em->getRepository(Product::class);
+        $orders = $ordersRepository->findAll();
+
+        foreach ($orders as $p) {
+          $products = [];
+          $client = $clientRepository->findOneBy(array('id' => (int)$p->getClientId()));
+          $user = $userRepository->findOneBy(array('id' => (int)$client->getUserId()));
+          $ordersProducts = $ordersProductsRepository->findBy(array('orderid' => (int)$p->getId()));
+
+          foreach ($ordersProducts as $o) {
+            $product = $productsRepository->find(['id' => $o->getProductId()]);
+
+            $products[] = [
+                'id' => $product->getId(),
+                'qtd' => $o->getQtd(),
+                'name' => $product->getName(),
+                'price' => $product->getPrice(),
+                'imagePath' => $product->getImagePath()
+            ];
+          }
+          $ordersEnd[] = [
+              'id' => $p->getId(),
+              'createdAt' => $p->getCreatedAt(),
+              'payed' => $p->getPayed(),
+              'products' => $products
+          ];
+        }
+
+        $arr = [
+            'status' => true,
+            'orders' => $ordersEnd
+        ];
+      } catch (Exception $e) {
+        $arr = [
+            'status' => false,
+            'message' => 'Tudo errado',
+            'error' => $e->getMessage()
+        ];
+      }
+    }
+    $res->getBody()->write(json_encode($arr));
+    return $res;
+  }
+
+  public function setPayed(Request $req, Response $res, $args): Response {
+
+    $id = $req->getParsedBody();
+    $arr = [];
+    if (Auth::hasSession()) {
+      try {
+        $em = Database::manager();
+        $ordersRepository = $em->getRepository(Orders::class);
+        $Order = $ordersRepository->findOneBy(['id' => $id["id"]]);
+        $Order->setPayed(1);
+        $em->persist($Order);
+        $em->flush();
+        $arr = [
+            'status' => true,
+            'message' => 'Pagamento confirmado'
+        ];
+      }catch (Exception $e){
+        $arr = [
+            'status' => false,
+            'message' => 'Falha na criação do produto',
+            'error' => $e->getMessage()
+        ];
+      }
     }
     $res->getBody()->write(json_encode($arr));
     return $res;

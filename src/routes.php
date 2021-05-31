@@ -51,6 +51,8 @@ $app->group('/admin', function(RouteCollectorProxy $group) {
 });
 
 $app->group('/orders', function(RouteCollectorProxy $group) {
+  $group->get('/all', OrdersController::class . ':getAll');
+  $group->post('/payed', OrdersController::class . ':setPayed');
   $group->post('/set', OrdersController::class . ':set');
   $group->get('/boleto', OrdersController::class . ':getBoleto');
   $group->get('/{id}/all', OrdersController::class . ':getById');

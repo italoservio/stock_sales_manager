@@ -29,7 +29,6 @@ $(document).ready(function () {
               for (let i = index + 1; i < data.products.length; i++) {
                 if (e.id == data.products[i]["id"]) {
                   similarTotal = 1;
-                  console.log(data.products[i]["id"]);
                 }
               }
             }
@@ -160,7 +159,6 @@ $(document).ready(function () {
         method: 'get',
         url: `https://viacep.com.br/ws/${cep}/json/`
       }).done(function (data) {
-        console.log(data)
         if (data.erro !== undefined && data.erro === true) {
           Swal.fire(
             'Ocorreu um falha',

@@ -32,6 +32,13 @@ class Orders {
   private $active = '0';
 
   /**
+   * @var int
+   *
+   * @ORM\Column(name="payed", type="integer", nullable=false)
+   */
+  private $payed = '0';
+
+  /**
    * @var string
    *
    * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
@@ -90,6 +97,10 @@ class Orders {
     return $this->client;
   }
 
+  public function getPayed() {
+    return $this->payed;
+  }
+
   /*
    * Setters
    */
@@ -110,5 +121,9 @@ class Orders {
   }
   public function setCliente($p_Cliente) {
     $this->client = $p_Cliente;
+  }
+
+  public function setPayed($p_Payed) {
+    $this->payed = $p_Payed;
   }
 }
