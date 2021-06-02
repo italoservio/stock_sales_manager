@@ -9,7 +9,20 @@
   <div class="row justify-content-center">
     <div class="col-lg-12">
       <h1 class="h2 text-center title mb-5">Estatísticas</h1>
-      <div c></div>
+    </div>
+    <div class="col-lg-6 my-4 px-4">
+      <h2 class="h3">Vendas por mês</h2>
+      <canvas id="lineChart"></canvas>
+    </div>
+    <div class="col-lg-6 my-4 px-4">
+      <h2 class="h3">Lucro por mês</h2>
+      <canvas id="barChart"></canvas>
+    </div>
+    <div class="col d-flex justify-content-center mt-5">
+      <div class="col-lg-6 my-4 px-4">
+        <h2 class="h3 mb-3">Vendas confimadas / Vendas pendentes</h2>
+        <canvas id="pieChart"></canvas>
+      </div>
     </div>
   </div>
 </div>
@@ -17,4 +30,5 @@
 
 {% block script %}
 {{ parent() }}
+<script src="{{ assetsPath }}/js/pages/adminStatistics.js"></script>
 {% endblock %}
