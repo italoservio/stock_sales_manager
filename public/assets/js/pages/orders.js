@@ -36,7 +36,6 @@ $(document).ready(function () {
           `;
         });
 
-
         $('#orders').append(`
           <div class="card px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-center">
@@ -52,9 +51,9 @@ $(document).ready(function () {
                 <ul class="list-group list-group-flush">
                   ${htmlProducts}
                 </ul>
-                <div class="d-flex justify-content-end">
-                    <a href="${basePath}/orders/${e.id}}">
-                    <button class="btn btn-primary">Status do pedido</button>
+                <div class="d-flex justify-content-center pt-4">
+                    <a href="${basePath}/orders/${e.id}}" class="btn btn-primary">
+                      Detalhes do pedido
                     </a>
                 </div>
               </div>
