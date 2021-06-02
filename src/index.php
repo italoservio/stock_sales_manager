@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Symfony\Component\Dotenv\Dotenv;

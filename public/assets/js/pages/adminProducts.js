@@ -164,15 +164,15 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: basePath + '/products',
-      data: {category}
+      data: { category }
     }).done(function (data) {
       data = JSON.parse(data);
       if (data.status) {
         let products = $('#products');
         products.html('');
         data.products.map(e => {
-            let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
-            products.append(`
+          let imgPath = `${assetsPath}/img/sys/${e.imagePath}`;
+          products.append(`
             <tr>
               <td>
                 <div class="img-container rounded-circle">
@@ -193,8 +193,8 @@ $(document).ready(function () {
                 <button id="${e.id}" class="btn btn-danger mx-1 actRemove">Remover</button>
               </td>
             </tr>`
-            );
-          }
+          );
+        }
         );
       }
     });

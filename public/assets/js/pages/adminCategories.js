@@ -30,7 +30,7 @@ $(document).ready(function () {
       $.ajax({
         method: 'post',
         url: basePath + '/categories/create',
-        data: {name, id}
+        data: { name, id }
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
@@ -74,7 +74,7 @@ $(document).ready(function () {
     $.ajax({
       method: 'get',
       url: basePath + `/products`,
-      data: {category}
+      data: { category }
     }).done(function (p_data) {
       p_data = JSON.parse(p_data);
       if (p_data.status) {

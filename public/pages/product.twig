@@ -1,7 +1,7 @@
 {% extends "templates/default.twig" %}
 
 {% block title %}
-  {{ title }}
+{{ title }}
 {% endblock %}
 
 {% block content %}
@@ -26,7 +26,8 @@
           <p class="h1 mb-0 font-weight-bold">R$ {{optionals['product']['price']}}</p>
           <span class="ml-2" style="line-height: 1;"> à vista <br> no boleto</span>
         </div>
-        <span class="badge badge-primary my-3 px-3 py-2 font-weight-normal">Há {{optionals['product']['qtd']}} unidade(s)</span></h2>
+        <span class="badge badge-primary my-3 px-3 py-2 font-weight-normal">Há {{optionals['product']['qtd']}}
+          unidade(s)</span></h2>
       </div>
 
       <div class="row my-3">
@@ -42,7 +43,7 @@
           </div>
         </div>
         <div class="col-lg-6 d-flex align-items-center">
-          <div id="cepPrice"  class="d-flex align-items-center justify-content-end"></div>
+          <div id="cepPrice" class="d-flex align-items-center justify-content-end"></div>
         </div>
       </div>
 
@@ -63,14 +64,14 @@
 {% endblock %}
 
 {% block script %}
-  {{ parent() }}
-  <script>
-    const productId = "{{ optionals['product']['id'] }}";
-    const productName = "{{ optionals['product']['name'] }}";
-    const productQtd = "{{ optionals['product']['qtd'] }}";
-    const productPrice = "{{ optionals['product']['price'] }}";
-    const productImagePath = "{{ optionals['product']['imagePath'] }}";
-    const categoryId = "{{ optionals['product']['category']['id'] }}";
-  </script>
-  <script type="text/javascript" src="{{ assetsPath }}/js/pages/product.js"></script>
+{{ parent() }}
+<script>
+  const productId = "{{ optionals['product']['id'] }}";
+  const productName = "{{ optionals['product']['name'] }}";
+  const productQtd = "{{ optionals['product']['qtd'] }}";
+  const productPrice = "{{ optionals['product']['price'] }}";
+  const productImagePath = "{{ optionals['product']['imagePath'] }}";
+  const categoryId = "{{ optionals['product']['category']['id'] }}";
+</script>
+<script type="text/javascript" src="{{ assetsPath }}/js/pages/product.js"></script>
 {% endblock %}

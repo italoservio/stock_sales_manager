@@ -15,34 +15,37 @@ use App\Entities\User;
 use \App\Database\Database;
 use \App\Entities\Orders;
 
-class OrdersController {
+class OrdersController
+{
 
-  public function getBoleto(Request $req, Response $res, $args): Response {
+  public function getBoleto(Request $req, Response $res, $args): Response
+  {
     try {
       $price = ($req->getQueryParams())['price'];
       $em = Database::manager();
       $clientRepository = $em->getRepository(Client::class);
       $Client = $clientRepository->findOneBy(['userid' => (Auth::getSession())->getId()]);
       $arr = [
-          'name' => $Client->getUser()->getName(),
-          'cpf' => '00000000000',
-          'address' => $Client->getLogradouro() . ', ' . $Client->getNumero() . ', ' . $Client->getComplemento(),
-          'zip' => $Client->getCep(),
-          'city' => $Client->getCidade(),
-          'uf' => $Client->getEstado()
+        'name' => $Client->getUser()->getName(),
+        'cpf' => '00000000000',
+        'address' => $Client->getLogradouro() . ', ' . $Client->getNumero() . ', ' . $Client->getComplemento(),
+        'zip' => $Client->getCep(),
+        'city' => $Client->getCidade(),
+        'uf' => $Client->getEstado()
       ];
       $ticket = Boleto::generate($arr, $price);
       $res->getBody()->write($ticket);
     } catch (\Exception $e) {
       $res->getBody()->write([
-          'status' => false,
-          'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
+        'status' => false,
+        'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
       ]);
     }
     return $res;
   }
 
-  public function adminOrders(Request $req, Response $res, $args): Response {
+  public function adminOrders(Request $req, Response $res, $args): Response
+  {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       return Helper::render('adminOrders', $req, $res);
     } else {
@@ -50,7 +53,8 @@ class OrdersController {
     }
   }
 
-  public function getByUserId(Request $req, Response $res, $args): Response {
+  public function getByUserId(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     if (Auth::hasSession()) {
       try {
@@ -63,8 +67,8 @@ class OrdersController {
 
         $Client = $clientRepository->findOneBy(['userid' => $userId]);
         $Orders = $orderRepository->findBy([
-            'clientid' => $Client->getId(),
-            'active' => 1
+          'clientid' => $Client->getId(),
+          'active' => 1
         ]);
 
         foreach ($Orders as $Order) {
@@ -73,28 +77,28 @@ class OrdersController {
           foreach ($OrderProducts as $OrderProduct) {
             $Product = $productRepository->findOneBy(['id' => $OrderProduct->getProductId()]);
             $products[] = [
-                'id' => $Product->getId(),
-                'qtd' => $OrderProduct->getQtd(),
-                'name' => $Product->getName(),
-                'price' => $Product->getPrice(),
-                'imagePath' => $Product->getImagePath()
+              'id' => $Product->getId(),
+              'qtd' => $OrderProduct->getQtd(),
+              'name' => $Product->getName(),
+              'price' => $Product->getPrice(),
+              'imagePath' => $Product->getImagePath()
             ];
           }
           $arr[] = [
-              'id' => $Order->getId(),
-              'createdAt' => date('d/m/Y H:i:s', strtotime($Order->getCreatedAt())),
-              'products' => $products
+            'id' => $Order->getId(),
+            'createdAt' => date('d/m/Y H:i:s', strtotime($Order->getCreatedAt())),
+            'products' => $products
           ];
         }
         $arr = [
-            'status' => true,
-            'orders' => $arr
+          'status' => true,
+          'orders' => $arr
         ];
       } catch (\Exception $e) {
         $arr[] = [
-            'status' => false,
-            'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
+          'error' => $e->getMessage()
         ];
       }
       $res->getBody()->write(json_encode($arr));
@@ -102,15 +106,18 @@ class OrdersController {
     }
   }
 
-  public function cart(Request $req, Response $res, $args): Response {
+  public function cart(Request $req, Response $res, $args): Response
+  {
     return Helper::render('cart', $req, $res);
   }
 
-  public function get(Request $req, Response $res, $args): Response {
+  public function get(Request $req, Response $res, $args): Response
+  {
     return Helper::render('order', $req, $res, ['orderId' => $args['id']]);
   }
 
-  public function getById(Request $req, Response $res, $args): Response {
+  public function getById(Request $req, Response $res, $args): Response
+  {
     if (Auth::hasSession()) {
       try {
         $em = Database::manager();
@@ -135,43 +142,44 @@ class OrdersController {
           foreach ($orderProducts as $value) {
             $Product = $productRepository->findOneBy(['id' => $value->getProductId()]);
             $arr[] = [
-                'id' => $Product->getId(),
-                'name' => $Product->getName(),
-                'price' => $Product->getPrice(),
-                'imagePath' => $Product->getImagePath(),
-                'qtd' => $value->getQtd(),
+              'id' => $Product->getId(),
+              'name' => $Product->getName(),
+              'price' => $Product->getPrice(),
+              'imagePath' => $Product->getImagePath(),
+              'qtd' => $value->getQtd(),
             ];
           }
 
           $arr = [
-              'status' => true,
-              'products' => $arr,
-              'payed' => $Order->getPayed()
+            'status' => true,
+            'products' => $arr,
+            'payed' => $Order->getPayed()
           ];
         } else {
           $arr = [
-              'status' => false,
-              'redirect' => true
+            'status' => false,
+            'redirect' => true
           ];
         }
       } catch (\Exception $e) {
         $arr = [
-            'status' => false,
-            'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
+          'error' => $e->getMessage()
         ];
       }
     } else {
       $arr = [
-          'status' => false,
-          'redirect' => true
+        'status' => false,
+        'redirect' => true
       ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
 
-  public function set(Request $req, Response $res, $args): Response {
+  public function set(Request $req, Response $res, $args): Response
+  {
     date_default_timezone_set('America/Sao_Paulo');
     $arr = [];
     $arrList = [];
@@ -191,10 +199,10 @@ class OrdersController {
           if ($qtdTotal < 0) {
             $qtd = 1;
             $arrList = [
-                'id' => $Product->getId(),
-                'name' => $Product->getName(),
-                'price' => $Product->getPrice(),
-                'qtd' => $Product->getQtd(),
+              'id' => $Product->getId(),
+              'name' => $Product->getName(),
+              'price' => $Product->getPrice(),
+              'qtd' => $Product->getQtd(),
             ];
           }
         }
@@ -224,36 +232,36 @@ class OrdersController {
           }
 
           $arr = [
-              'status' => true,
-              'orderId' => $Orders->getId(),
-              'message' => 'Pedido finalizado com sucesso'
+            'status' => true,
+            'orderId' => $Orders->getId(),
+            'message' => 'Pedido finalizado com sucesso'
           ];
         } else {
           $arr = [
-              'status' => false,
-              'products' => $arrList,
-              'message' => 'Algum produto no carrinho está com o estoque abaixo do total pedido, favor verificar'
+            'status' => false,
+            'products' => $arrList,
+            'message' => 'Algum produto no carrinho está com o estoque abaixo do total pedido, favor verificar'
           ];
         }
-
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         $arr = [
-            'status' => false,
-            'message' => 'Ocorreu um erro ao finalizar o pedido',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao finalizar o pedido',
+          'error' => $e->getMessage()
         ];
       }
     } else {
       $arr = [
-          'status' => false,
-          'redirect' => true
+        'status' => false,
+        'redirect' => true
       ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
 
-  public function getAll(Request $req, Response $res, $args): Response {
+  public function getAll(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     $ordersEnd = [];
     if (Auth::hasSession()) {
@@ -276,30 +284,30 @@ class OrdersController {
             $product = $productsRepository->find(['id' => $o->getProductId()]);
 
             $products[] = [
-                'id' => $product->getId(),
-                'qtd' => $o->getQtd(),
-                'name' => $product->getName(),
-                'price' => $product->getPrice(),
-                'imagePath' => $product->getImagePath()
+              'id' => $product->getId(),
+              'qtd' => $o->getQtd(),
+              'name' => $product->getName(),
+              'price' => $product->getPrice(),
+              'imagePath' => $product->getImagePath()
             ];
           }
           $ordersEnd[] = [
-              'id' => $p->getId(),
-              'createdAt' => $p->getCreatedAt(),
-              'payed' => $p->getPayed(),
-              'products' => $products
+            'id' => $p->getId(),
+            'createdAt' => $p->getCreatedAt(),
+            'payed' => $p->getPayed(),
+            'products' => $products
           ];
         }
 
         $arr = [
-            'status' => true,
-            'orders' => $ordersEnd
+          'status' => true,
+          'orders' => $ordersEnd
         ];
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         $arr = [
-            'status' => false,
-            'message' => 'Tudo errado',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Tudo errado',
+          'error' => $e->getMessage()
         ];
       }
     }
@@ -307,7 +315,8 @@ class OrdersController {
     return $res;
   }
 
-  public function setPayed(Request $req, Response $res, $args): Response {
+  public function setPayed(Request $req, Response $res, $args): Response
+  {
 
     $id = $req->getParsedBody();
     $arr = [];
@@ -320,14 +329,14 @@ class OrdersController {
         $em->persist($Order);
         $em->flush();
         $arr = [
-            'status' => true,
-            'message' => 'Pagamento confirmado'
+          'status' => true,
+          'message' => 'Pagamento confirmado'
         ];
-      }catch (Exception $e){
+      } catch (\Exception $e) {
         $arr = [
-            'status' => false,
-            'message' => 'Falha na criação do produto',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Falha na criação do produto',
+          'error' => $e->getMessage()
         ];
       }
     }

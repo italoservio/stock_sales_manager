@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,204 +11,229 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="product")
  * @ORM\Entity
  */
-class Product {
-	/**
-	 * @var int
-	 *
-	 * @ORM\Column(name="id", type="integer", nullable=false)
-	 * @ORM\Id
-	 * @ORM\GeneratedValue(strategy="IDENTITY")
-	 */
-	private $id;
+class Product
+{
+  /**
+   * @var int
+   *
+   * @ORM\Column(name="id", type="integer", nullable=false)
+   * @ORM\Id
+   * @ORM\GeneratedValue(strategy="IDENTITY")
+   */
+  private $id;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="name", type="text", length=128, nullable=false)
-	 */
-	private $name;
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="name", type="text", length=128, nullable=false)
+   */
+  private $name;
 
-	/**
-	 * @var string|null
-	 *
-	 * @ORM\Column(name="desc", type="text", length=1024, nullable=true)
-	 */
-	private $desc;
+  /**
+   * @var string|null
+   *
+   * @ORM\Column(name="desc", type="text", length=1024, nullable=true)
+   */
+  private $desc;
 
-	/**
-	 * @var int
-	 *
-	 * @ORM\Column(name="qtd", type="integer", nullable=false)
-	 */
-	private $qtd = '0';
+  /**
+   * @var int
+   *
+   * @ORM\Column(name="qtd", type="integer", nullable=false)
+   */
+  private $qtd = '0';
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="price", type="decimal", precision=10, scale=0, nullable=false)
-	 */
-	private $price = '0';
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="price", type="decimal", precision=10, scale=0, nullable=false)
+   */
+  private $price = '0';
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
-	 */
-	private $createdat;
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="createdAt", type="text", nullable=false, options={"default"="datetime('now')"})
+   */
+  private $createdat;
 
-	/**
-	 * @var string
-	 *
-	 * @ORM\Column(name="updatedAt", type="text", nullable=false, options={"default"="datetime('now')"})
-	 */
-	private $updatedat;
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="updatedAt", type="text", nullable=false, options={"default"="datetime('now')"})
+   */
+  private $updatedat;
 
-	/**
-	 * @var string|null
-	 *
-	 * @ORM\Column(name="imagePath", type="text", nullable=true)
-	 */
-	private $imagepath;
+  /**
+   * @var string|null
+   *
+   * @ORM\Column(name="imagePath", type="text", nullable=true)
+   */
+  private $imagepath;
 
-	/**
-	 * @var int
-	 *
-	 * @ORM\Column(name="createdBy", type="integer", nullable=false)
-	 */
-	private $createdby;
+  /**
+   * @var int
+   *
+   * @ORM\Column(name="createdBy", type="integer", nullable=false)
+   */
+  private $createdby;
 
-	/**
-	 * @var int
-	 *
-	 * @ORM\Column(name="categoryId", type="integer", nullable=false)
-	 */
-	private $categoryid;
+  /**
+   * @var int
+   *
+   * @ORM\Column(name="categoryId", type="integer", nullable=false)
+   */
+  private $categoryid;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
-	 * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
-	 */
-	private $category;
+  /**
+   * @ORM\ManyToOne(targetEntity="Category", inversedBy="product")
+   * @ORM\JoinColumn(name="categoryId", referencedColumnName="id")
+   */
+  private $category;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="User", inversedBy="product")
-	 * @ORM\JoinColumn(name="createdBy", referencedColumnName="id")
-	 */
-	private $user;
+  /**
+   * @ORM\ManyToOne(targetEntity="User", inversedBy="product")
+   * @ORM\JoinColumn(name="createdBy", referencedColumnName="id")
+   */
+  private $user;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="product")
-	 */
-	private $orders;
+  /**
+   * @ORM\OneToMany(targetEntity="Orderproduct", mappedBy="product")
+   */
+  private $orders;
 
-	public function __construct() {
-	  $this->orders = new ArrayCollection();
+  public function __construct()
+  {
+    $this->orders = new ArrayCollection();
 
-	  date_default_timezone_set('America/Sao_Paulo');
+    date_default_timezone_set('America/Sao_Paulo');
     $this->createdat = (string) date('Y-m-d H:i:s');
     $this->updatedat = (string) date('Y-m-d H:i:s');
-	}
+  }
 
-	/*
+  /*
    * Getters
    */
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getName() {
+  public function getName()
+  {
     return $this->name;
   }
 
-  public function getDesc() {
+  public function getDesc()
+  {
     return $this->desc;
   }
 
-  public function getQtd() {
+  public function getQtd()
+  {
     return $this->qtd;
   }
 
-  public function getPrice() {
+  public function getPrice()
+  {
     return $this->price;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->createdat;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updatedat;
   }
 
-  public function getImagePath() {
+  public function getImagePath()
+  {
     return $this->imagepath;
   }
 
-  public function getCreatedBy() {
+  public function getCreatedBy()
+  {
     return $this->createdby;
   }
 
-  public function getCategoryId() {
+  public function getCategoryId()
+  {
     return $this->categoryid;
   }
 
-  public function getCategory() {
+  public function getCategory()
+  {
     return $this->category;
   }
 
-  public function getUser() {
+  public function getUser()
+  {
     return $this->user;
   }
 
-  public function getOrders() {
+  public function getOrders()
+  {
     return $this->orders;
   }
 
   /*
    * Setters
    */
-	public function setUser($p_User) {
+  public function setUser($p_User)
+  {
     $this->user = $p_User;
   }
 
-	public function setCategory($p_Category) {
+  public function setCategory($p_Category)
+  {
     $this->category = $p_Category;
   }
 
-  public function setId($p_id) {
+  public function setId($p_id)
+  {
     $this->id = $p_id;
   }
 
-  public function setName($p_name) {
+  public function setName($p_name)
+  {
     $this->name = $p_name;
   }
 
-  public function setDesc($p_desc) {
+  public function setDesc($p_desc)
+  {
     $this->desc = $p_desc;
   }
 
-  public function setQtd($p_qtd) {
+  public function setQtd($p_qtd)
+  {
     $this->qtd = $p_qtd;
   }
 
-  public function setPrice($p_price) {
+  public function setPrice($p_price)
+  {
     $this->price = $p_price;
   }
 
-  public function setUpdatedAt($p_updatedAt) {
+  public function setUpdatedAt($p_updatedAt)
+  {
     $this->updatedat = $p_updatedAt;
   }
 
-  public function setImagePath($p_imagePath) {
+  public function setImagePath($p_imagePath)
+  {
     $this->imagepath = $p_imagePath;
   }
 
-  public function setCreatedBy($p_createdBy) {
+  public function setCreatedBy($p_createdBy)
+  {
     $this->createdby = $p_createdBy;
   }
 
-  public function setCategoryId($p_categoryId) {
+  public function setCategoryId($p_categoryId)
+  {
     $this->categoryid = $p_categoryId;
   }
-
 }

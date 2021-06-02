@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-	{% block head %}
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="preconnect" href="https://fonts.gstatic.com">
-		<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;400;600;800&display=swap" rel="stylesheet">
-		<link rel="stylesheet" href="{{assetsPath}}/css/bootstrap.min.css">
-		<link rel="stylesheet" href="{{assetsPath}}/css/custom.css">
-		<title>{% block title %}{% endblock %}</title>
-	{% endblock %}
+  {% block head %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{assetsPath}}/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{assetsPath}}/css/custom.css">
+  <title>{% block title %}{% endblock %}</title>
+  {% endblock %}
 </head>
+
 <body class="bg-primary">
 
-	<main class="centered">
-		{% block content %}{% endblock %}
-	</main>
+  <main class="centered">
+    {% block content %}{% endblock %}
+  </main>
 
-	{% block script %}
-		<script type="text/javascript" src="{{assetsPath}}/js/core/jquery-3.6.0.min.js"></script>
-		<script type="text/javascript" src="{{assetsPath}}/js/core/bootstrap.min.js"></script>
-		<script type="text/javascript" src="{{assetsPath}}/js/core/helper.js"></script>
-		<script type="text/javascript"> const basePath = '{{ basePath }}'</script>
-	{% endblock %}
+  {% block script %}
+  <script type="text/javascript" src="{{assetsPath}}/js/core/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/core/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/core/helper.js"></script>
+  <script type="text/javascript"> const basePath = '{{ basePath }}'</script>
+  {% endblock %}
 </body>
+
 </html>

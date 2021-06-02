@@ -13,7 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="orderProduct")
  * @ORM\Entity
  */
-class Orderproduct {
+class Orderproduct
+{
   /**
    * @var int
    *
@@ -59,53 +60,65 @@ class Orderproduct {
   /*
    * Getters
    */
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getProductId() {
+  public function getProductId()
+  {
     return $this->productid;
   }
 
-  public function getOrderId() {
+  public function getOrderId()
+  {
     return $this->orderid;
   }
 
-  public function getQtd() {
+  public function getQtd()
+  {
     return $this->qtd;
   }
 
-  public function getProduct() {
+  public function getProduct()
+  {
     return $this->product;
   }
 
-  public function getOrder() {
+  public function getOrder()
+  {
     return $this->order;
   }
 
   /*
    * Setters
    */
-  public function setId($p_id) {
+  public function setId($p_id)
+  {
     $this->id = $p_id;
   }
 
-  public function setProductId($p_productid) {
+  public function setProductId($p_productid)
+  {
     $this->productid = $p_productid;
   }
 
-  public function setOrderId($p_orderid) {
+  public function setOrderId($p_orderid)
+  {
     $this->orderid = $p_orderid;
   }
 
-  public function setQtd($p_qtd) {
+  public function setQtd($p_qtd)
+  {
     $this->qtd = $p_qtd;
   }
 
-  public function setOrder($p_order) {
+  public function setOrder($p_order)
+  {
     $this->order = $p_order;
   }
-  public function setProduct($p_product) {
+  public function setProduct($p_product)
+  {
     $this->product = $p_product;
   }
 }

@@ -1,7 +1,7 @@
 {% extends "templates/default.twig" %}
 
 {% block title %}
-  {{ title }}
+{{ title }}
 {% endblock %}
 
 {% block content %}
@@ -20,9 +20,9 @@
 {% endblock %}
 
 {% block script %}
-	{{ parent() }}
-  <script>
-    const orderId = "{{ optionals['orderId'] }}";
-  </script>
-  <script type="text/javascript" src="{{ assetsPath }}/js/pages/orders.js"></script>
+{{ parent() }}
+<script>
+  const orderId = "{{ optionals['orderId'] }}";
+</script>
+<script type="text/javascript" src="{{ assetsPath }}/js/pages/orders.js"></script>
 {% endblock %}

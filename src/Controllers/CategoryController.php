@@ -10,9 +10,11 @@ use \App\Database\Database;
 use \App\Entities\Category;
 use Exception;
 
-class CategoryController {
+class CategoryController
+{
 
-  public function adminCategories(Request $req, Response $res, $args): Response {
+  public function adminCategories(Request $req, Response $res, $args): Response
+  {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       return Helper::render('adminCategories', $req, $res);
     } else {
@@ -20,7 +22,8 @@ class CategoryController {
     }
   }
 
-  public function getAll(Request $req, Response $res, $args): Response {
+  public function getAll(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     try {
       $em = Database::manager();
@@ -28,26 +31,27 @@ class CategoryController {
       $categories = $categoryRepository->findAll();
       foreach ($categories as $value) {
         $arr[] = [
-            'id' => $value->getId(),
-            'name' => $value->getName()
+          'id' => $value->getId(),
+          'name' => $value->getName()
         ];
       }
       $arr = [
-          'status' => true,
-          'categories' => $arr
+        'status' => true,
+        'categories' => $arr
       ];
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao buscar as categorias no banco',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao buscar as categorias no banco',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
 
-  public function get(Request $req, Response $res, $args): Response {
+  public function get(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     try {
       $em = Database::manager();
@@ -56,27 +60,28 @@ class CategoryController {
       foreach ($categories as $value) {
         if (count($value->getProducts()) > 0) {
           $arr[] = [
-              'id' => $value->getId(),
-              'name' => $value->getName()
+            'id' => $value->getId(),
+            'name' => $value->getName()
           ];
         }
       }
       $arr = [
-          'status' => true,
-          'categories' => $arr
+        'status' => true,
+        'categories' => $arr
       ];
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao buscar as categorias no banco',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao buscar as categorias no banco',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));
     return $res;
   }
 
-  public function create(Request $req, Response $res, $args): Response {
+  public function create(Request $req, Response $res, $args): Response
+  {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       $data = $req->getParsedBody();
       $em = Database::manager();
@@ -93,26 +98,25 @@ class CategoryController {
           $em->flush();
 
           $arr = [
-              'status' => true,
-              'message' => 'sucesso',
-              'category' => [
-                  'id' => $Category->getId(),
-                  'name' => $Category->getName()
-              ]
+            'status' => true,
+            'message' => 'sucesso',
+            'category' => [
+              'id' => $Category->getId(),
+              'name' => $Category->getName()
+            ]
           ];
-        }else{
+        } else {
           $arr = [
-              'status' => false,
-              'message' => 'Nome já Existe',
+            'status' => false,
+            'message' => 'Nome já Existe',
           ];
         }
-
       } catch (Exception $e) {
         $em->getConnection()->rollBack();
         $arr = [
-            'status' => false,
-            'message' => 'Ocorreu um erro ao criar a categoria',
-            'error' => $e->getMessage()
+          'status' => false,
+          'message' => 'Ocorreu um erro ao criar a categoria',
+          'error' => $e->getMessage()
         ];
       }
       $res->getBody()->write(json_encode($arr));
@@ -120,7 +124,8 @@ class CategoryController {
     }
   }
 
-  public function delete(Request $req, Response $res, $args): Response {
+  public function delete(Request $req, Response $res, $args): Response
+  {
     $id = $args['id'];
     $arr = [];
     try {
@@ -131,13 +136,13 @@ class CategoryController {
       $em->flush();
 
       $arr = [
-          'status' => true
+        'status' => true
       ];
     } catch (Exception $e) {
       $arr = [
-          'status' => false,
-          'message' => 'Ocorreu um erro ao remover a categoria',
-          'error' => $e->getMessage()
+        'status' => false,
+        'message' => 'Ocorreu um erro ao remover a categoria',
+        'error' => $e->getMessage()
       ];
     }
     $res->getBody()->write(json_encode($arr));

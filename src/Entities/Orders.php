@@ -14,7 +14,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="orders")
  * @ORM\Entity
  */
-class Orders {
+class Orders
+{
   /**
    * @var int
    *
@@ -63,7 +64,8 @@ class Orders {
    */
   private $client;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->orderproducts = new ArrayCollection();
 
     date_default_timezone_set('America/Sao_Paulo');
@@ -73,57 +75,71 @@ class Orders {
   /*
    * Getters
    */
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getActive() {
+  public function getActive()
+  {
     return $this->active;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->createdat;
   }
 
-  public function getClientId() {
+  public function getClientId()
+  {
     return $this->clientid;
   }
 
-  public function getOrderProducts() {
+  public function getOrderProducts()
+  {
     return $this->orderproducts;
   }
 
-  public function getClient() {
+  public function getClient()
+  {
     return $this->client;
   }
 
-  public function getPayed() {
+  public function getPayed()
+  {
     return $this->payed;
   }
 
   /*
    * Setters
    */
-  public function setId($p_id) {
+  public function setId($p_id)
+  {
     $this->id = $p_id;
   }
 
-  public function setActive($p_active) {
+  public function setActive($p_active)
+  {
     $this->active = $p_active;
   }
 
-  public function setCreatedAt($p_createdat) {
+  public function setCreatedAt($p_createdat)
+  {
     $this->createdat = $p_createdat;
   }
 
-  public function setClientId($p_clientid) {
+  public function setClientId($p_clientid)
+  {
     $this->clientid = $p_clientid;
   }
-  public function setCliente($p_Cliente) {
+
+  public function setCliente($p_Cliente)
+  {
     $this->client = $p_Cliente;
   }
 
-  public function setPayed($p_Payed) {
+  public function setPayed($p_Payed)
+  {
     $this->payed = $p_Payed;
   }
 }

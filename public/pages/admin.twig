@@ -1,52 +1,52 @@
 {% extends "templates/default.twig" %}
 
 {% block title %}
-  {{title}}
+{{title}}
 {% endblock %}
 
 {% block content %}
-	<div class="container mt-5">
-		<h1 class="h2 text-center title mb-5">Administração</h1>
-		<div class="row justify-content-center">
-			<div class="col-lg-2">
-				<div class="card pt-4 pb-3 px-3">
-          <img src="{{assetsPath}}/img/sys/icons/users.svg" height="65px" alt="Usuários">
-					<h2 class="h3 text-center mt-3">Usuários</h2>
-					<a href="admin/users" class="stretched-link"></a>
-				</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="card pt-4 pb-3 px-3">
-          <img src="{{assetsPath}}/img/sys/icons/categories.svg" height="65px" alt="Categorias">
-					<h2 class="h3 text-center mt-3">Categorias</h2>
-					<a href="admin/categories" class="stretched-link"></a>
-				</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="card pt-4 pb-3 px-3">
-          <img src="{{assetsPath}}/img/sys/icons/products.svg" height="65px" alt="Produtos">
-					<h2 class="h3 text-center mt-3">Produtos</h2>
-					<a href="admin/products" class="stretched-link"></a>
-				</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="card pt-4 pb-3 px-3">
-          <img src="{{assetsPath}}/img/sys/icons/orders.svg" height="65px" alt="Vendas">
-					<h2 class="h3 text-center mt-3">Vendas</h2>
-					<a href="admin/orders" class="stretched-link"></a>
-				</div>
-			</div>
-			<div class="col-lg-2">
-				<div class="card pt-4 pb-3 px-3">
-          <img src="{{assetsPath}}/img/sys/icons/analytics.svg" height="65px" alt="Vendas">
-					<h2 class="h3 text-center mt-3">Estatísticas</h2>
-					<a href="admin/statistics" class="stretched-link"></a>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="container mt-5">
+  <h1 class="h2 text-center title mb-5">Administração</h1>
+  <div class="row justify-content-center">
+    <div class="col-lg-2">
+      <div class="card pt-4 pb-3 px-3">
+        <img src="{{assetsPath}}/img/sys/icons/users.svg" height="65px" alt="Usuários">
+        <h2 class="h3 text-center mt-3">Usuários</h2>
+        <a href="admin/users" class="stretched-link"></a>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card pt-4 pb-3 px-3">
+        <img src="{{assetsPath}}/img/sys/icons/categories.svg" height="65px" alt="Categorias">
+        <h2 class="h3 text-center mt-3">Categorias</h2>
+        <a href="admin/categories" class="stretched-link"></a>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card pt-4 pb-3 px-3">
+        <img src="{{assetsPath}}/img/sys/icons/products.svg" height="65px" alt="Produtos">
+        <h2 class="h3 text-center mt-3">Produtos</h2>
+        <a href="admin/products" class="stretched-link"></a>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card pt-4 pb-3 px-3">
+        <img src="{{assetsPath}}/img/sys/icons/orders.svg" height="65px" alt="Vendas">
+        <h2 class="h3 text-center mt-3">Vendas</h2>
+        <a href="admin/orders" class="stretched-link"></a>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="card pt-4 pb-3 px-3">
+        <img src="{{assetsPath}}/img/sys/icons/analytics.svg" height="65px" alt="Vendas">
+        <h2 class="h3 text-center mt-3">Estatísticas</h2>
+        <a href="admin/statistics" class="stretched-link"></a>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}
-	{{ parent() }}
+{{ parent() }}
 {% endblock %}

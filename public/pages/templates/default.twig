@@ -3,20 +3,20 @@
 
 <head>
   {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.0/sweetalert2.min.css">
-    <link rel="stylesheet" href="{{assetsPath}}/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{assetsPath}}/css/custom.css">
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="180x180" href="{{assetsPath}}/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{assetsPath}}/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{assetsPath}}/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="{{assetsPath}}/img/favicon/site.webmanifest">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@100;400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.0/sweetalert2.min.css">
+  <link rel="stylesheet" href="{{assetsPath}}/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{assetsPath}}/css/custom.css">
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{assetsPath}}/img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{assetsPath}}/img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{assetsPath}}/img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="{{assetsPath}}/img/favicon/site.webmanifest">
 
-    <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>
   {% endblock %}
 </head>
 
@@ -83,15 +83,15 @@
       </div>
 
       {% if user is not null %}
-        {% if user['admin'] == 1 %}
-          <div class="col-6 px-1">
-            <div class="card-menu card text-center p-3">
-              <img class="mb-2" src="{{assetsPath}}/img/sys/icons/admin.svg" alt="Admin">
-              <span>ADMIN</span>
-              <a href="{{basePath}}/admin" class="stretched-link"></a>
-            </div>
-          </div>
-        {% endif %}
+      {% if user['admin'] == 1 %}
+      <div class="col-6 px-1">
+        <div class="card-menu card text-center p-3">
+          <img class="mb-2" src="{{assetsPath}}/img/sys/icons/admin.svg" alt="Admin">
+          <span>ADMIN</span>
+          <a href="{{basePath}}/admin" class="stretched-link"></a>
+        </div>
+      </div>
+      {% endif %}
       {% endif %}
 
       {% if user is not null %}
@@ -141,14 +141,14 @@
   </footer>
 
   {% block script %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.0/sweetalert2.js"></script>
-    <script type="text/javascript" src="{{assetsPath}}/js/core/jquery-3.6.0.min.js"></script>
-    <script type="text/javascript" src="{{assetsPath}}/js/core/bootstrap.min.js"></script>
-    <script type="text/javascript" src="{{assetsPath}}/js/core/helper.js"></script>
-    <script type="text/javascript">
-      const basePath = '{{basePath}}'
-      const assetsPath = '{{assetsPath}}'
-    </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.16.0/sweetalert2.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/core/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/core/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{{assetsPath}}/js/core/helper.js"></script>
+  <script type="text/javascript">
+    const basePath = '{{basePath}}'
+    const assetsPath = '{{assetsPath}}'
+  </script>
   {% endblock %}
 </body>
 

@@ -43,7 +43,7 @@
         <div class="colg-lg-12 d-flex justify-content-end">
           <h2>Valor Total: <b>R$</b> <b id="totalPrice"></b></h2>
         </div>
-          <small class="text-primary align-self-end"><i>Para finalizar o pedido coloque o frete</i></small>
+        <small class="text-primary align-self-end"><i>Para finalizar o pedido coloque o frete</i></small>
         <button id="btnBuy" class="btn btn-success btn-block mt-4 py-3" disabled>Finalizar pedido</button>
       </div>
 
@@ -60,6 +60,6 @@
 {% endblock %}
 
 {% block script %}
-  {{ parent() }}
-  <script type="text/javascript" src="{{ assetsPath }}/js/pages/cart.js"></script>
+{{ parent() }}
+<script type="text/javascript" src="{{ assetsPath }}/js/pages/cart.js"></script>
 {% endblock %}

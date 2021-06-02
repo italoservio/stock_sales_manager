@@ -11,9 +11,11 @@ use \App\Entities\Category;
 use \App\Entities\Product;
 use Exception;
 
-class ProductController {
+class ProductController
+{
 
-  public function details(Request $req, Response $res, $args): Response {
+  public function details(Request $req, Response $res, $args): Response
+  {
     $em = Database::manager();
     $productRepository = $em->getRepository(Product::class);
     $Product = $productRepository->findOneBy(['id' => $args['id']]);
@@ -33,7 +35,8 @@ class ProductController {
     return Helper::render('product', $req, $res, ['product' => $product]);
   }
 
-  public function adminProducts(Request $req, Response $res, $args): Response {
+  public function adminProducts(Request $req, Response $res, $args): Response
+  {
     if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
       return Helper::render('adminProducts', $req, $res);
     } else {
@@ -41,7 +44,8 @@ class ProductController {
     }
   }
 
-  public function getAll(Request $req, Response $res, $args): Response {
+  public function getAll(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     $category = ($req->getQueryParams())['category'];
     try {
@@ -89,8 +93,7 @@ class ProductController {
         }
       }
       $arr = (empty($arr)) ? ['status' => false, 'message' => 'Não há produtos para exibir']
-                           : ['status' => true, 'products' => $arr];
-
+        : ['status' => true, 'products' => $arr];
     } catch (Exception $e) {
       $arr = [
         'status' => false,
@@ -102,7 +105,8 @@ class ProductController {
     return $res;
   }
 
-  public function get(Request $req, Response $res, $args): Response {
+  public function get(Request $req, Response $res, $args): Response
+  {
     $arr = [];
     $id = $args['id'];
     try {
@@ -142,7 +146,8 @@ class ProductController {
     return $res;
   }
 
-  public function create(Request $req, Response $res, $args): Response {
+  public function create(Request $req, Response $res, $args): Response
+  {
     date_default_timezone_set('America/Sao_Paulo');
     $arr = [];
     $route = '../public/assets/img/sys/products/';
@@ -225,7 +230,8 @@ class ProductController {
     return $res;
   }
 
-  public function delete(Request $req, Response $res, $args): Response {
+  public function delete(Request $req, Response $res, $args): Response
+  {
     $id = $args['id'];
     $arr = [];
     try {

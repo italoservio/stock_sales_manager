@@ -15,7 +15,7 @@ $(document).ready(function () {
       $.ajax({
         method: 'get',
         url: basePath + `/products`,
-        data: {category}
+        data: { category }
       }).done(function (data) {
         data = JSON.parse(data);
         if (data.status) {
@@ -272,7 +272,7 @@ $(document).ready(function () {
     $.ajax({
       method: 'post',
       url: basePath + `/orders/set`,
-      data: {listProduct, listQtd}
+      data: { listProduct, listQtd }
     }).done(function (data) {
       data = JSON.parse(data);
       if (data.status) {

@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Services;
+
 use OpenBoleto\Banco\Caixa;
 use OpenBoleto\Agente;
 
-class Boleto {
-  public static function generate($p_client, $p_price) {
+class Boleto
+{
+  public static function generate($p_client, $p_price)
+  {
     $client = new Agente(
       $p_client['name'],
       $p_client['cpf'],

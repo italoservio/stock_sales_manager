@@ -1,7 +1,7 @@
 {% extends "templates/default.twig" %}
 
 {% block title %}
-  {{title}}
+{{title}}
 {% endblock %}
 
 {% block content %}
@@ -39,6 +39,6 @@
 {% endblock %}
 
 {% block script %}
-  {{ parent() }}
-  <script type="text/javascript" src="{{assetsPath}}/js/pages/index.js"></script>
+{{ parent() }}
+<script type="text/javascript" src="{{assetsPath}}/js/pages/index.js"></script>
 {% endblock %}

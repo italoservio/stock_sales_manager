@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table(name="user")
  * @ORM\Entity
  */
-class User {
+class User
+{
   /**
    * @var int
    *
@@ -81,7 +83,8 @@ class User {
    */
   private $products;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->products = new ArrayCollection();
 
     date_default_timezone_set('America/Sao_Paulo');
@@ -92,82 +95,101 @@ class User {
   /*
    * Getters
    */
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
-  public function getImagePath() {
+  public function getImagePath()
+  {
     return $this->imagepath;
   }
 
-  public function getLogin() {
+  public function getLogin()
+  {
     return $this->login;
   }
 
-  public function getPass() {
+  public function getPass()
+  {
     return $this->pass;
   }
 
-  public function getName() {
+  public function getName()
+  {
     return $this->name;
   }
 
-  public function getEmail() {
+  public function getEmail()
+  {
     return $this->email;
   }
 
-  public function getAdmin() {
+  public function getAdmin()
+  {
     return $this->admin;
   }
 
-  public function getCreatedAt() {
+  public function getCreatedAt()
+  {
     return $this->createdat;
   }
 
-  public function getUpdatedAt() {
+  public function getUpdatedAt()
+  {
     return $this->updatedat;
   }
 
-  public function getProducts() {
+  public function getProducts()
+  {
     return $this->products;
   }
 
   /*
    * Setters
    */
-  public function setId($p_id) {
+  public function setId($p_id)
+  {
     $this->id = $p_id;
   }
 
-  public function setImagePath($p_imagePath) {
+  public function setImagePath($p_imagePath)
+  {
     $this->imagepath = $p_imagePath;
   }
 
-  public function setLogin($p_login) {
+  public function setLogin($p_login)
+  {
     $this->login = $p_login;
   }
 
-  public function setPass($p_pass) {
+  public function setPass($p_pass)
+  {
     $this->pass = $p_pass;
   }
 
-  public function setName($p_name) {
+  public function setName($p_name)
+  {
     $this->name = $p_name;
   }
 
-  public function setEmail($p_email) {
+  public function setEmail($p_email)
+  {
     $this->email = $p_email;
   }
 
-  public function setAdmin($p_admin) {
+  public function setAdmin($p_admin)
+  {
     $this->admin = $p_admin;
   }
 
-  public function setCreatedAt($p_createdAt) {
+  public function setCreatedAt($p_createdAt)
+  {
     $this->createdat = $p_createdAt;
   }
 
-  public function setUpdatedAt($p_updatedAt) {
+  public function setUpdatedAt($p_updatedAt)
+  {
     $this->updatedat = $p_updatedAt;
   }
 }
