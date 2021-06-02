@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   $.ajax({
     method: 'get',
@@ -37,7 +37,6 @@ $(document).ready(function() {
         });
 
 
-
         $('#orders').append(`
           <div class="card px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-center">
@@ -51,8 +50,13 @@ $(document).ready(function() {
               <div class="pt-4">
                 <p class="text-muted mb-2"><i>Produtos:</i></p>
                 <ul class="list-group list-group-flush">
-                  ${ htmlProducts }
+                  ${htmlProducts}
                 </ul>
+                <div class="d-flex justify-content-end">
+                    <a href="${basePath}/orders/${e.id}}">
+                    <button class="btn btn-primary">Status do pedido</button>
+                    </a>
+                </div>
               </div>
             </div>
           </div>

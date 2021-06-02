@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
   let totalPrice = 0;
 
@@ -9,6 +9,15 @@ $(document).ready(function() {
   }).done(function (data) {
     data = JSON.parse(data);
     if (data.status) {
+      if (data.payed == 0) {
+        $('#pay').append(`
+        <h2 class="h5 title text-warning">Aguardando aprovação do pagamento</h2>
+      `)
+      } else {
+        $('#pay').append(`
+        <h2 class="h5 title text-warning">Pagamento aprovado</h2>
+      `)
+      }
       let products = data.products;
       let productsPrice = 0;
       products.forEach((e, i) => {
@@ -43,20 +52,20 @@ $(document).ready(function() {
     }
   });
 
-  $('#btnBoleto').on('click', function() {
+  $('#btnBoleto').on('click', function () {
     $.ajax({
       method: 'get',
       url: basePath + `/orders/boleto?price=${totalPrice}`,
     }).done(function (data) {
-        $('#modalBoletoBody').html(data);
-        $('#modalBoleto').modal('show');
+      $('#modalBoletoBody').html(data);
+      $('#modalBoleto').modal('show');
     }).fail(function (data) {
       data = JSON.parse(data);
       Swal.fire('Erro', data.message, 'error');
     });
   });
 
-  $('#btnPrint').on('click', function() {
+  $('#btnPrint').on('click', function () {
     $('.container').hide();
     $('.close').hide();
     $('#btnPrint').hide();

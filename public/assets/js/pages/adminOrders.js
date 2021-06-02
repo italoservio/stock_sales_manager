@@ -14,7 +14,7 @@ $(document).ready(function () {
         $('#orders').html("");
         reloadTable();
         Swal.fire(
-          'Pagamento do pedido: ' + id +  ' confirmado com sucesso',
+          'Pagamento do pedido: ' + id + ' confirmado com sucesso',
           '',
           'success'
         )
@@ -33,7 +33,7 @@ $(document).ready(function () {
           let htmlProducts = '';
           let totalProdutct = 0;
           let totalProdutctEnd = 0;
-          let statusProduct = (e.payed == 0) ? "Aguardando pagamento" : "Pagamento concluido";
+          let statusProduct = (e.payed === 1) ? "Pagamento confirmado" : "Aguardando pagamento";
 
           e.products.forEach(p => {
             totalProdutct = (p.price * p.qtd).toFixed(2);
@@ -60,7 +60,6 @@ $(document).ready(function () {
           \r\n
           `;
           });
-
           $('#orders').append(`
           <div class="card px-4 py-3 mb-2">
             <div class="d-flex justify-content-between align-items-center">
@@ -89,6 +88,7 @@ $(document).ready(function () {
             </div>
           </div>
         `);
+
         });
       }
     });

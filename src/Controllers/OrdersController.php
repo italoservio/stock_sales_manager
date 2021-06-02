@@ -145,7 +145,8 @@ class OrdersController {
 
           $arr = [
               'status' => true,
-              'products' => $arr
+              'products' => $arr,
+              'payed' => $Order->getPayed()
           ];
         } else {
           $arr = [
