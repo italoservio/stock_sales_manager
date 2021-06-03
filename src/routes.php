@@ -9,6 +9,7 @@ use \App\Controllers\ProductController;
 use \App\Controllers\OrdersController;
 use \App\Controllers\CategoryController;
 use \App\Controllers\IndexController;
+use App\Controllers\StatisticsController;
 
 $app->get('/', IndexController::class . ':index');
 $app->get('/login', UserController::class . ':login');
@@ -58,4 +59,10 @@ $app->group('/orders', function (RouteCollectorProxy $group) {
   $group->get('/boleto', OrdersController::class . ':getBoleto');
   $group->get('/{id}/all', OrdersController::class . ':getById');
   $group->get('/{id}', OrdersController::class . ':get');
+});
+
+$app->group('/statistics', function (RouteCollectorProxy $group) {
+  $group->get('/linechart', StatisticsController::class . ':getLineChartData');
+  $group->get('/piechart', StatisticsController::class . ':getPieChartData');
+  $group->get('/barchart', StatisticsController::class . ':getBarChartData');
 });

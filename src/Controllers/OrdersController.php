@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Exception;
+
 use \App\Services\Helper;
 use \App\Services\Auth;
 use \App\Services\Boleto;
@@ -35,7 +37,7 @@ class OrdersController
       ];
       $ticket = Boleto::generate($arr, $price);
       $res->getBody()->write($ticket);
-    } catch (\Exception $e) {
+    } catch (Exception $e) {
       $res->getBody()->write([
         'status' => false,
         'message' => 'Ocorreu um erro ao gerar o boleto de pagamento'
@@ -94,7 +96,7 @@ class OrdersController
           'status' => true,
           'orders' => $arr
         ];
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr[] = [
           'status' => false,
           'message' => 'Ocorreu um erro ao buscar os pedidos do usuário',
@@ -161,7 +163,7 @@ class OrdersController
             'redirect' => true
           ];
         }
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr = [
           'status' => false,
           'message' => 'Ocorreu um erro ao buscar os produtos deste pedido',
@@ -243,7 +245,7 @@ class OrdersController
             'message' => 'Algum produto no carrinho está com o estoque abaixo do total pedido, favor verificar'
           ];
         }
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr = [
           'status' => false,
           'message' => 'Ocorreu um erro ao finalizar o pedido',
@@ -303,7 +305,7 @@ class OrdersController
           'status' => true,
           'orders' => $ordersEnd
         ];
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr = [
           'status' => false,
           'message' => 'Tudo errado',
@@ -332,7 +334,7 @@ class OrdersController
           'status' => true,
           'message' => 'Pagamento confirmado'
         ];
-      } catch (\Exception $e) {
+      } catch (Exception $e) {
         $arr = [
           'status' => false,
           'message' => 'Falha na criação do produto',

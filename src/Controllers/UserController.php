@@ -4,10 +4,12 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Exception;
+
 use \App\Services\Helper;
 use \App\Services\Auth;
 use \App\Database\Database;
-use Exception;
+
 use \App\Entities\User;
 use \App\Entities\Client;
 use \App\Entities\Product;
