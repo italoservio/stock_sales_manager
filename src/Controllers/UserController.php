@@ -34,7 +34,7 @@ class UserController
 
   public function orders(Request $req, Response $res, $args): Response
   {
-    if (Auth::hasSession() && (Auth::getSession())->getAdmin() === 1) {
+    if (Auth::hasSession()) {
       return Helper::render('orders', $req, $res);
     } else {
       return Helper::render('login', $req, $res);
